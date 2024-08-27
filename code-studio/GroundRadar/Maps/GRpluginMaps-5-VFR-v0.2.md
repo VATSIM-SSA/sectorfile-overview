@@ -1,0 +1,23 @@
+// ##################################################################
+//                 #5 VFR v0.2
+// ##################################################################
+
+// HUEN | ENTEBBE
+
+MAP:VFR:A
+FOLDER:DIAP
+AIRPORT:DIAP
+ACTIVE:1
+COLOR:BLACK
+SYMBOL:VFR:N005.28.55:W004.02.49:N:0:-17
+SYMBOL:VFR:N005.12.13:W003.44.17:E:0:-17
+SYMBOL:VFR:N005.17.18:W004.06.30:W1:0:-17
+SYMBOL:VFR:N005.14.10:W004.06.15:W2:0:-17
+
+
+MAP:OBSTACLES:A
+FOLDER:VFR
+AIRPORT:ICAO
+ACTIVE:1
+COLOR:RED
+SYMBOL:OBSTACLE:S004.26.17:E015.31.27.1:2356:0:-17

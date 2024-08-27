@@ -1,9 +1,9 @@
 {
-  "id": 1515584,
+  "id": 1519946,
   "name": "Main",
   "target": "branch",
   "source_type": "Repository",
-  "source": "VATSIM-SSA/sectorfile-gvsc",
+  "source": "VATSIM-SSA/sectorfile-fqbe",
   "enforcement": "active",
   "conditions": {
     "ref_name": {
@@ -22,15 +22,12 @@
       "type": "non_fast_forward"
     },
     {
-      "type": "update"
-    },
-    {
       "type": "creation"
     },
     {
       "type": "pull_request",
       "parameters": {
-        "required_approving_review_count": 0,
+        "required_approving_review_count": 1,
         "dismiss_stale_reviews_on_push": true,
         "require_code_owner_review": false,
         "require_last_push_approval": false,

@@ -1,0 +1,31 @@
+// ##################################################################
+//                 #11 AIRSPACE v0.3
+// ##################################################################
+
+// SECTORS
+
+MAP:DNKK WEST HIGH
+FOLDER:AIRSPACE
+ASRDATA:FIR
+ACTIVE:1
+COLOR:AIRSPACE
+STYLE:SOLID
+// SECTORLINE:39
+
+// TMAs
+
+MAP:DNMA TMA
+FOLDER:AIRSPACE
+ASRDATA:DNKK,DNMA
+ACTIVE:ID:ESE:*:*:*
+COLOR:AIRSPACE
+STYLE:Dot
+
+// CONTROL ZONES
+
+MAP:DNMA CTR
+FOLDER:AIRSPACE
+ASRDATA:DNKK,DNMA
+ACTIVE:ID:ESE:*:*:*
+COLOR:AIRSPACE
+STYLE:Dot

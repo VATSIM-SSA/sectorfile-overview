@@ -1,0 +1,15 @@
+// ##################################################################
+//                 #3 SETTINGS v0.4
+// ##################################################################
+
+OVERRIDE_SCT_MAP:AIRWAYS H
+OVERRIDE_SCT_MAP:AIRWAYS L
+OVERRIDE_SCT_MAP:ARTCC
+OVERRIDE_SCT_MAP:ARTCC HIGH
+OVERRIDE_SCT_MAP:ARTCC LOW
+OVERRIDE_SCT_MAP:FREE TEXT
+OVERRIDE_SCT_MAP:GEO
+OVERRIDE_SCT_MAP:MISC
+OVERRIDE_SCT_MAP:REGIONS
+OVERRIDE_SCT_MAP:SID
+OVERRIDE_SCT_MAP:STAR

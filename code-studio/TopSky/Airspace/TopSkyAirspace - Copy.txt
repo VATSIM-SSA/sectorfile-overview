@@ -1,0 +1,50 @@
+// ##################################################################
+//                 VATSSA | FIR DNKK | TopSky | Airspace
+// ##################################################################
+
+// Version v0.5
+// Update Date 06/06/2022
+
+// Changelog
+// v0.5 | Initial CFL Added for DNMM VFR Flights
+
+
+// ##################################################################
+//                 DN NIGERIA
+// ##################################################################
+
+// TL Transition Level
+QNHTL:DNAA:65
+QNHTL:DNAI:50
+QNHTL:DNAK:70
+QNHTL:DNBC:65
+QNHTL:DNBE:50
+QNHTL:DNBK:65
+QNHTL:DNCA:50
+QNHTL:DNDS:65
+QNHTL:DNDS:65
+QNHTL:DNIB:50
+QNHTL:DNIL:50
+QNHTL:DNJO:100
+QNHTL:DNKA:65
+QNHTL:DNKN:50
+QNHTL:DNKT:65
+QNHTL:DNMA:50
+QNHTL:DNMM:65,962,60,979,55,996,50,1013,45,1029,40,1046,35,1099,35
+QNHTL:DNMN:60
+QNHTL:DNIM:50
+QNHTL:DNPO:50
+QNHTL:DNSO:65
+QNHTL:DNSU:50
+QNHTL:DNYO:65,962,60,979,55,996,50,1013,45,1029,40,1046,35,1099,35
+QNHTL:DNZA:70
+
+// LEVELS
+LEVELS:DNMM:17,20,22,23,25,28,30
+LEVELS:DNKN:32,34
+LEVELS:DNYO:25,30,35,39,41,49
+
+// INITIAL CFL
+INITIAL_CFL:1500
+CFL_FRUL:V
+CFL_ADEP:DNMM
