@@ -1,0 +1,43 @@
+{
+  "id": 1515575,
+  "name": "Everything Else",
+  "target": "branch",
+  "source_type": "Repository",
+  "source": "VATSIM-SSA/sectorfile-gvsc",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "exclude": [
+        "refs/heads/feat-*",
+        "refs/heads/fix-*",
+        "refs/heads/main"
+      ],
+      "include": [
+        "~ALL"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "creation"
+    },
+    {
+      "type": "update"
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    },
+    {
+      "actor_id": 1,
+      "actor_type": "OrganizationAdmin",
+      "bypass_mode": "always"
+    }
+  ]
+}
