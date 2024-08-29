@@ -1,7 +1,7 @@
 ## PR Type
 
 What kind of change does this PR introduce?
-[Write inside all the backets an "x" to indicate which one you chose]
+(Write inside all the backets an "x" to indicate which one you choose, like this: [x] )
 
 - [ ] Bug Fix
 - [ ] Feature / Enhancement
@@ -19,7 +19,7 @@ closes (Insert linnk to your issue you are fixing here)
 
 
 # Checklist 
-[Write inside all the backets an "x" to indicate you agree]
+(Write inside all the backets an "x" to indicate you agree, like this: [x] )
 
 - [ ] My code follows the style guidelines of this project
 - [ ] I have performed a self-review of my code
