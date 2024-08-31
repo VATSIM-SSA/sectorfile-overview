@@ -1,6 +1,6 @@
 ---
 name: GNG
-about: Document a new GNG Change Requirement
+about: Document a new GNG Change Requirement for this Sector File
 title: "[GNG]"
 labels: enhancement
 assignees: ""
