@@ -31,7 +31,7 @@ jobs:
           destination-github-username: "vatssa"
           destination-repository-name: "sectorfile-gvsc"
           user-email: me@miguelalbano.com
-          target-branch: vatis
+          target-branch: main
           target-directory: "Plugins/vATIS Profile"
           create-target-branch-if-needed: true
           commit-message: "update: vatis airports.json"
