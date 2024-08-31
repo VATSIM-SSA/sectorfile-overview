@@ -25,13 +25,13 @@ jobs:
       - name: Pushes to another repository
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY_GVSC }}
+          SSH_DEPLOY_KEY: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
           source-directory: vatis/airports-json
           destination-github-username: "VATSIM-SSA"
           destination-repository-name: "sectorfile-gvsc"
           user-email: me@miguelalbano.com
-          target-branch: main
+          target-branch: vatis
           target-directory: "Plugins/vATIS Profile"
           create-target-branch-if-needed: true
           commit-message: "update: vatis airports.json"
