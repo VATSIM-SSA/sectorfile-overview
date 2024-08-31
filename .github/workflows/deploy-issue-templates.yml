@@ -27,7 +27,7 @@ jobs:
           destination-repository-name: "sectorfile-afrc"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_afrs:
@@ -49,7 +49,7 @@ jobs:
           destination-repository-name: "sectorfile-afrs"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_afrw:
@@ -71,7 +71,7 @@ jobs:
           destination-repository-name: "sectorfile-afrw"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_dgac:
@@ -93,7 +93,7 @@ jobs:
           destination-repository-name: "sectorfile-dgac"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_dnkk:
@@ -115,7 +115,7 @@ jobs:
           destination-repository-name: "sectorfile-dnkk"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fajo:
@@ -137,7 +137,7 @@ jobs:
           destination-repository-name: "sectorfile-fajo"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fasa:
@@ -159,7 +159,7 @@ jobs:
           destination-repository-name: "sectorfile-fasa"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fbgr:
@@ -181,7 +181,7 @@ jobs:
           destination-repository-name: "sectorfile-fbgr"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fccc:
@@ -203,7 +203,7 @@ jobs:
           destination-repository-name: "sectorfile-fccc"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fimm:
@@ -225,7 +225,7 @@ jobs:
           destination-repository-name: "sectorfile-fimm"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_flfi:
@@ -247,7 +247,7 @@ jobs:
           destination-repository-name: "sectorfile-flfi"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fmmm:
@@ -269,7 +269,7 @@ jobs:
           destination-repository-name: "sectorfile-fmmm"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fnan:
@@ -291,7 +291,7 @@ jobs:
           destination-repository-name: "sectorfile-fnan"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fqbe:
@@ -313,7 +313,7 @@ jobs:
           destination-repository-name: "sectorfile-fqbe"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fsss:
@@ -335,7 +335,7 @@ jobs:
           destination-repository-name: "sectorfile-fsss"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fvhf:
@@ -357,7 +357,7 @@ jobs:
           destination-repository-name: "sectorfile-fvhf"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fwll:
@@ -379,7 +379,7 @@ jobs:
           destination-repository-name: "sectorfile-fwll"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fywf:
@@ -401,7 +401,7 @@ jobs:
           destination-repository-name: "sectorfile-fywf"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_fzza:
@@ -423,7 +423,7 @@ jobs:
           destination-repository-name: "sectorfile-fzza"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_gooo:
@@ -445,7 +445,7 @@ jobs:
           destination-repository-name: "sectorfile-gooo"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_goooo:
@@ -467,7 +467,7 @@ jobs:
           destination-repository-name: "sectorfile-goooo"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_gvsc:
@@ -489,7 +489,7 @@ jobs:
           destination-repository-name: "sectorfile-gvsc"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_hkna:
@@ -511,7 +511,7 @@ jobs:
           destination-repository-name: "sectorfile-hkna"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_htdc:
@@ -533,7 +533,7 @@ jobs:
           destination-repository-name: "sectorfile-htdc"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
   deploy_tpl_issue_huec:
@@ -555,6 +555,6 @@ jobs:
           destination-repository-name: "sectorfile-huec"
           user-email: 30835922+miguelalbano@users.noreply.github.com
           target-branch: main
-          target-directory: ".gitub/ISSUE_TEMPLATE"
+          target-directory: ".github/ISSUE_TEMPLATE"
           create-target-branch-if-needed: false
           commit-message: "update: issue templates"
