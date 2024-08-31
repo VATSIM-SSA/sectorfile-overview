@@ -29,7 +29,7 @@ jobs:
           destination-github-username: "VATSIM-SSA"
           destination-repository-name: "sectorfile-gvsc"
           user-email: 30835922+miguelalbano@users.noreply.github.com
-          target-branch: templates
+          target-branch: main
           target-directory: ".gitub/ISSUE_TEMPLATE"
-          create-target-branch-if-needed: true
+          create-target-branch-if-needed: false
           commit-message: "update: issue templates"
