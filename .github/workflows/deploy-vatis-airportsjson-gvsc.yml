@@ -17,11 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: creates output
-        run: |
-          #sh ./build.sh # some command from your repository that creates
-          # output to "source-directory" ("output" in the example)
-              mkdir output
-              cp -r vatis/airports-json output
+        run: sh ./build.sh # some command from your repository that creates
+        # output to "source-directory" ("output" in the example)
       - name: Pushes to another repository
         uses: cpina/github-action-push-to-another-repository@main
         env:
@@ -32,6 +29,6 @@ jobs:
           destination-repository-name: "sectorfile-gvsc"
           user-email: me@miguelalbano.com
           target-branch: vatis
-          target-directory: "Plugins/vATIS Profile"
+          target-directory: "Plugins/vATIS Profile/Airports"
           create-target-branch-if-needed: true
           commit-message: "update: vatis airports.json"
