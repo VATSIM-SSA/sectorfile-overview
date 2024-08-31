@@ -1,4 +1,4 @@
-name: Deploy vATIS Airports.json to GVSC
+name: Deploy vATIS Airports.json
 
 on:
   push:
@@ -8,12 +8,31 @@ on:
       - main
 
 jobs:
-  build:
+  deploy_vatis_dgac:
+    name: "Deploy vATIS Airports.json to DGAC"
     runs-on: ubuntu-latest
-    #    container:
-    #      pandoc/latex # "ubuntu" is a more generic container
-    # using "pandoc/latex" because of dependencies
-    # used in the specific "build.sh"
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-dgac"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_gvsc:
+    name: "Deploy vATIS Airports.json to GVSC"
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: creates output
