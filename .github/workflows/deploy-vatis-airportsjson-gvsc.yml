@@ -25,7 +25,7 @@ jobs:
       - name: Pushes to another repository
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          SSH_DEPLOY_KEY: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
           source-directory: vatis/airports-json
           destination-github-username: "VATSIM-SSA"
