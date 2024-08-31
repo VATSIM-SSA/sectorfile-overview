@@ -14,6 +14,7 @@ assignees: ""
 - [ ] Holdings
 - [ ] Sectors
 - [ ] Radars
+- [ ] Other
 
 **Description**
 Describe the changes you would like to perform.
