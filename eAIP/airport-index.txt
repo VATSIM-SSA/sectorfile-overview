@@ -2,43 +2,43 @@
 
 ==== Angola =====
 
-{{page>angola-airports#Angola Airports}}
+{{page>country:angola:airports#Angola Airports}}
 
 ==== Benin =====
 
-{{page>benin-airports#Benin Airports}}
+{{page>country:benin:airports#Benin Airports}}
 
 ==== Botswana =====
 
-{{page>botswana-airports#Botswana Airports}}
+{{page>country:botswana:airports#Botswana Airports}}
 
 ==== Burundi =====
 
-{{page>burundi-airports#Burundi Airports}}
+{{page>country:burundi:airports#Burundi Airports}}
 
 ==== Cameroon =====
 
-{{page>cameroon-airports#Cameroon Airports}}
+{{page>country:cameroon:airports#Cameroon Airports}}
 
 ==== Cape Verde =====
 
-{{page>cape_verde-airports#Cape Verde Airports}}
+{{page>country:cape-verde:airports#Cape Verde Airports}}
 
 ==== Central African Republic =====
 
-{{page>central_african_republic-airports#Central African Republic Airports}}
+{{page>country:car:airports#Central African Republic Airports}}
 
 ==== Comoros =====
 
-{{page>comoros-airports#Comoros Airports}}
+{{page>country:comoros:airports#Comoros Airports}}
 
 ==== Eswatini =====
 
-{{page>eswatini-airports#Eswatini Airports}}
+{{page>country:eswatini:airports#Eswatini Airports}}
 
 ==== Gabon =====
 
-{{page>gabon-airports#Gabon Airports}}
+{{page>country:gabon:airports#Gabon Airports}}
 
 ==== Gambia =====
 
@@ -46,11 +46,11 @@
 
 ==== Kenya =====
 
-{{page>kenya-airports#Kenya Airports}}
+{{page>country:kenya:airports#Kenya Airports}}
 
 ==== Lesotho =====
 
-{{page>lesotho-airports#Lesotho Airports}}
+{{page>country:lesotho:airports#Lesotho Airports}}
 
 ==== Liberia =====
 
@@ -58,11 +58,11 @@
 
 ==== Madagascar =====
 
-{{page>madagascar-airports#Madagascar Airports}}
+{{page>country:madagascar:airports#Madagascar Airports}}
 
 ==== Nigeria =====
 
-{{page>nigeria-airports#Nigeria Airports}}
+{{page>country:nigeria:airports#Nigeria Airports}}
 
 ==== Senegal =====
 
@@ -70,15 +70,15 @@
 
 ==== Seychelles =====
 
-{{page>seychelles-airports#Seychelles Airports}}
+{{page>country:seychelles:airports#Seychelles Airports}}
 
 ==== South Africa =====
 
-{{page>south_africa-airports#South Africa Airports}}
+{{page>country:south-africa:airports#South Africa Airports}}
 
 ==== Tanzania =====
 
-{{page>tanzania-airports#Tanzania Airports}}
+{{page>country:tanzania:airports#Tanzania Airports}}
 
 ==== Uganda =====
 
@@ -86,8 +86,8 @@
 
 ==== Zambia =====
 
-{{page>zambia-airports#Zambia Airports}}
+{{page>country:zambia:airports#Zambia Airports}}
 
 ==== Zimbabwe =====
 
-{{page>zimbabwe-airports#Zimbabwe Airports}}
+{{page>country:zimbabwe:airports#Zimbabwe Airports}}
