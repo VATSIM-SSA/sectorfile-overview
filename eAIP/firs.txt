@@ -1,0 +1,27 @@
+===== VATSSA Flight Information Regions =====
+
+^ ICAO     ^ FIR Name             ^ Countries ^ Remarks ^
+| [[DGAC]] | Accra                | [[benin|Benin]], [[ghana|Ghana]] & [[togo|Togo]] | - |
+| [[DNKK]] | Kano                 | [[nigeria|Nigeria]] | - |
+| [[FACA]] | Cape Town            | [[south_africa|South Africa]] | - |
+| [[FAJA]] | Johannesburg         | [[south_africa|South Africa]] | - |
+| [[FAJO]] | Johannesburg Oceanic | - | - |
+| [[FBGR]] | Gaborone             | [[botswana|Botswana]] | - |
+| [[FCCC]] | Brazzaville          | [[cameroon|Cameroon]], [[central_african_republic|Central African Republic]], [[congo_republic|Congo Republic of]], [[equatorial_guinea|Equatorial Guinea]], [[gabon|Gabon]] & [[sao_tome_principe|Sao Tome & Principe]] | - |
+| [[FIMM]] | Mauritius            | [[biot|BIOT]] & [[mauritius|Mauritius]] | - |
+| [[FLFI]] | Lusaka               | [[zambia|Zambia]] | - |
+| [[FMMM]] | Antananarivo         | [[comoros|Comoros]], [[reunion|La Reunion]], [[madagascar|Madagascar]] & [[mayotte|Mayotte]] | - |
+| [[FNAN]] | Luanda               | [[angola|Angola]] & [[st_helena|Saint Helena]] | - |
+| [[FQBE]] | Beira                | [[mozambique|Mozambique]] | - |
+| [[FSSS]] | Seychelles           | [[seychelles|Seychelles]] | - |
+| [[FVHF]] | Harare               | [[zimbabwe|Zimbabwe]] | - |
+| [[FWLL]] | Lilongwe             | [[malawi|Malawi]] | - |
+| [[FYWF]] | Windhoek             | [[namibia|Namibia]] | - |
+| [[FZZA]] | Kinshasa             | [[congo_democratic_republic|Congo, Democratic Republic of]] | - |
+| [[GLRB]] | Roberts              | [[guinea|Guinea]], [[liberia|Liberia]] & [[sierra_leone|Sierra Leone]] | - |
+| [[GOOC]] | Dakar Oceanic        | - | - |
+| [[GOOO]] | Dakar                | [[guinea_bissau|Guinea-Bissau]], [[mali|Mali]], [[mauritania|Mauritania]] & [[senegal|Senegal]] | - |
+| [[GVSC]] | Sal                  | [[cape_verde|Cape Verde]] | - |
+| [[HKNA]] | Nairobi              | [[kenya|Kenya]] | - |
+| [[HTDC]] | Dar es Salaam        | [[burundi|Burundi]], [[rwanda|Rwanda]] & [[tanzania|Tanzania]] | - |
+| [[HUEC]] | Entebbe              | [[uganda|Uganda]] | - |

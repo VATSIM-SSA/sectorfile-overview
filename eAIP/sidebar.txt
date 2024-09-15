@@ -1,0 +1,74 @@
+====== About the eAIP ======
+
+  * [[vatssa|About VATSSA]]
+  * [[eaip|About the eAIP]]
+  * [[faq|FAQs]]
+  * [[contribute|How to Contribute]]
+
+
+====== Part 1 General @one.svg ======
+
+  * [[airport-index|Airport Index]]
+  * [[pilot-briefings|Pilot Briefings]]
+  * [[cpdlc|CPDLC]]
+  * [[procedural|Procedural Airspace]]
+
+
+====== Part 2 FSS & Oceanic @two.svg ======
+
+  * [[oceanic|Oceanic]]
+  * [[fss|Flight Service Station]]
+
+
+====== Part 3 Airspace & Aerodromes @airports.svg ======
+
+  * [[firs|VATSSA FIRs]]
+
+  * [[angola|Angola (FN)]]
+  * [[benin|Benin (DB)]]
+  * [[botswana|Botswana (FB)]]
+  * [[burundi|Burundi (HB)]]
+  * [[cameroon|Cameroon (FK)]]
+  * [[cape_verde|Cape Verde (GV)]]
+  * [[central_african_republic|Central African Republic (FE)]]
+  * [[comoros|Comoros (FM)]]
+  * [[congo_democratic_republic|Congo, Democratic Republic of (FZ)]]
+  * [[congo_republic|Congo, Republic of (FC)]]
+  * [[biot|British Indian Ocean Territories (FJ)]]
+  * [[equatorial_guinea|Equatorial Guinea (FG)]]
+  * [[eswatini|Eswatini (FD)]]
+  * [[gabon|Gabon (FO)]]
+  * [[ghana|Ghana (DG)]]
+  * [[guinea|Guinea Republic (GU)]]
+  * [[guinea_bissau|Guinea-Bissau (GG)]]
+  * [[ivory_coast|Ivory Coast (DI)]]
+  * [[kenya|Kenya (HK)]]
+  * [[reunion|La Reunion (FM)]]
+  * [[lesotho|Lesotho (FX)]]
+  * [[liberia|Liberia (GL)]]
+  * [[madagascar|Madagascar (FM)]]
+  * [[malawi|Malawi (FW)]]
+  * [[mali|Mali (GA)]]
+  * [[mauritania|Mauritania (GQ)]]
+  * [[mauritius|Mauritius (FI)]]
+  * [[mayotte|Mayotte (FM)]]
+  * [[mozambique|Mozambique (FQ)]]
+  * [[namibia|Namibia (FY)]]
+  * [[nigeria|Nigeria (DN)]]
+  * [[rwanda|Rwanda (HR)]]
+  * [[sao_tome_principe|Sao Tome and Principe (FP)]]
+  * [[senegal|Senegal (GO)]]
+  * [[seychelles|Seychelles (FS)]]
+  * [[sierra_leone|Sierra Leone (GF)]]
+  * [[south_africa|South Africa (FA)]]
+  * [[st_helena|St Helena (FH)]]
+  * [[tanzania|Tanzania (HT)]]
+  * [[togo|Togo (DX)]]
+  * [[country:uganda|Uganda (HU)]]
+  * [[zambia|Zambia (FL)]]
+  * [[zimbabwe|Zimbabwe (FV)]]
+
+
+====== Part 4 Others @four.svg ======
+
+  * [[glossary|Glossary]]
