@@ -1,7 +1,7 @@
 ===== VATSSA Flight Information Regions =====
 
-^ ICAO                        ^ FIR Name             ^ Countries ^ Remarks ^
-| [[DGAC]]                    | Accra                | [[benin|Benin]], [[ghana|Ghana]] & [[togo|Togo]] | - |
+^ ICAO                          ^ FIR Name             ^ Countries ^ Remarks ^
+| [[DGAC]]                      | Accra                | [[benin|Benin]], [[ghana|Ghana]] & [[togo|Togo]] | - |
 | [[DNKK]] | Kano                 | [[nigeria|Nigeria]] | - |
 | [[FACA]] | Cape Town            | [[south_africa|South Africa]] | - |
 | [[FAJA]] | Johannesburg         | [[south_africa|South Africa]] | - |
@@ -18,10 +18,10 @@
 | [[FWLL]] | Lilongwe             | [[malawi|Malawi]] | - |
 | [[FYWF]] | Windhoek             | [[namibia|Namibia]] | - |
 | [[FZZA]] | Kinshasa             | [[congo_democratic_republic|Congo, Democratic Republic of]] | - |
-| [[GLRB]] | Roberts              | [[guinea|Guinea]], [[liberia|Liberia]] & [[sierra_leone|Sierra Leone]] | - |
-| [[GOOC]]                    | Dakar Oceanic        | - | - |
-| [[GOOO]] | Dakar                | [[guinea_bissau|Guinea-Bissau]], [[mali|Mali]], [[mauritania|Mauritania]] & [[senegal|Senegal]] | - |
+| [[airspace:glrb:home|GLRB]]   | Roberts              | [[country:guinea:home|Guinea]], [[country:liberia:home|Liberia]] & [[country:sierra-leone:home|Sierra Leone]] | - |
+| [[airspace:goooo:home|GOOC]]  | Dakar Oceanic        | - | - |
+| [[airspace:gooo:home|GOOO]]   | Dakar                | [[country:gambia:home|Gambia]], [[country:guinea-bissau:home|Guinea-Bissau]], [[country:mali:home|Mali]], [[country:mauritania:home|Mauritania]] & [[country:senegal:home|Senegal]] | - |
 | [[GVSC]] | Sal                  | [[cape_verde|Cape Verde]] | - |
 | [[HKNA]] | Nairobi              | [[kenya|Kenya]] | - |
 | [[HTDC]]                    | Dar es Salaam        | [[burundi|Burundi]], [[rwanda|Rwanda]] & [[tanzania|Tanzania]] | - |
-| [[airspace:huec:home|HUEC]] | Entebbe              | [[country:uganda:home|Uganda]] | - |
+| [[airspace:huec:home|HUEC]]   | Entebbe              | [[country:uganda:home|Uganda]] | - |

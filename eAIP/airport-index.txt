@@ -40,6 +40,10 @@
 
 {{page>gabon-airports#Gabon Airports}}
 
+==== Gambia =====
+
+{{page>country:gambia:airports#Gabon Airports}}
+
 ==== Kenya =====
 
 {{page>kenya-airports#Kenya Airports}}
@@ -50,7 +54,7 @@
 
 ==== Liberia =====
 
-{{page>liberia-airports#Liberia Airports}}
+{{page>country:liberia:airports#Liberia Airports}}
 
 ==== Madagascar =====
 
@@ -62,7 +66,7 @@
 
 ==== Senegal =====
 
-{{page>senegal-airports#Senegal Airports}}
+{{page>country:senegal:airports#Senegal Airports}}
 
 ==== Seychelles =====
 
