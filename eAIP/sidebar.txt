@@ -8,7 +8,7 @@
 
 ====== Part 1 General @one.svg ======
 
-  * [[airport-index|Airport Index]]
+  * [[airport:home|Airports]]
   * [[pilot-briefings|Pilot Briefings]]
   * [[cpdlc|CPDLC]]
   * [[procedural|Procedural Airspace]]
@@ -64,7 +64,7 @@
   * [[st_helena|St Helena (FH)]]
   * [[tanzania|Tanzania (HT)]]
   * [[togo|Togo (DX)]]
-  * [[country:uganda|Uganda (HU)]]
+  * [[country:uganda:home|Uganda (HU)]]
   * [[zambia|Zambia (FL)]]
   * [[zimbabwe|Zimbabwe (FV)]]
 
