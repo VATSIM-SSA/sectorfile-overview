@@ -41,7 +41,7 @@
   * [[country:gambia:home|Gambia (GB)]]
   * [[ghana|Ghana (DG)]]
   * [[country:guinea:home|Guinea Republic (GU)]]
-  * [[country:guinea-bissau_home|Guinea-Bissau (GG)]]
+  * [[country:guinea-bissau:home|Guinea-Bissau (GG)]]
   * [[country:ivory-coast:home|Ivory Coast (DI)]]
   * [[kenya|Kenya (HK)]]
   * [[reunion|La Reunion (FM)]]
