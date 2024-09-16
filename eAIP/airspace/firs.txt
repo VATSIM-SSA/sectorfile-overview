@@ -1,0 +1,27 @@
+===== VATSSA Flight Information Regions =====
+
+^ ICAO                          ^ FIR Name             ^ Countries                                        ^ Remarks ^
+| [[airspace:dgac:home|DGAC]]   | Accra                | [[country:benin:home|Benin]], [[country:ghana:home|Ghana]] & [[country:togo:home|Togo]] | - |
+| [[airspace:dnkk:home|DNKK]]   | Kano                 | [[country:nigeria:home|Nigeria]] | - |
+| [[airspace:faca:home|FACA]]   | Cape Town            | [[country:south-africa:home|South Africa]] | - |
+| [[airspace:faja:home|FAJA]]   | Johannesburg         | [[country:south-africa:home|South Africa]] | - |
+| [[airspace:fajo:home|FAJO]]   | Johannesburg Oceanic | - | - |
+| [[airspace:fbgr:home|FBGR]]   | Gaborone             | [[country:botswana:home|Botswana]] | - |
+| [[airspace:fccc:home|FCCC]]   | Brazzaville          | [[country:cameroon:home|Cameroon]], [[country:car:home|Central African Republic]], [[country:congo:home|Congo Republic of]], [[country:equatorial-guinea:home|Equatorial Guinea]], [[country:gabon:home|Gabon]] & [[country:sao-tome:home:home|Sao Tome & Principe]] | - |
+| [[airspace:fimm:home|FIMM]]   | Mauritius            | [[country:biot:home|BIOT]] & [[country:mauritius:home|Mauritius]] | - |
+| [[airspace:flfi:home|FLFI]]   | Lusaka               | [[country:zambia:home|Zambia]] | - |
+| [[airspace:fmmm:home|FMMM]]   | Antananarivo         | [[country:comoros:home|Comoros]], [[country:reunion:home|La Reunion]], [[country:madagascar:home|Madagascar]] & [[country:mayotte|:homeMayotte]] | - |
+| [[airspace:fnan:home|FNAN]]   | Luanda               | [[country:angola:home|Angola]] & [[country:st-helena:home|Saint Helena]] | - |
+| [[airspace:fqbe:home|FQBE]]   | Beira                | [[country:mozambique:home|Mozambique]] | - |
+| [[airspace:fsss:home|FSSS]]   | Seychelles           | [[country:seychelles:home|Seychelles]] | - |
+| [[airspace:fvhf:home|FVHF]]   | Harare               | [[country:zimbabwe:home|Zimbabwe]] | - |
+| [[airspace:fwll:home|FWLL]]   | Lilongwe             | [[country:malawi:home|Malawi]] | - |
+| [[airspace:fywf:home|FYWF]]   | Windhoek             | [[country:namibia:home|Namibia]] | - |
+| [[airspace:fzza:home|FZZA]]   | Kinshasa             | [[country:congo-dr:home|Congo, Democratic Republic of]] | - |
+| [[airspace:glrb:home|GLRB]]   | Roberts              | [[country:guinea:home|Guinea]], [[country:liberia:home|Liberia]] & [[country:sierra-leone:home|Sierra Leone]] | - |
+| [[airspace:goooo:home|GOOOO]] | Dakar Oceanic        | - | - |
+| [[airspace:gooo:home|GOOO]]   | Dakar                | [[country:gambia:home|Gambia]], [[country:guinea-bissau:home|Guinea-Bissau]], [[country:mali:home|Mali]], [[country:mauritania:home|Mauritania]] & [[country:senegal:home|Senegal]] | - |
+| [[airspace:gvsc:home|GVSC]]   | Sal                  | [[country:cape-verde:home|Cape Verde]] | - |
+| [[airspace:hkna:home|HKNA]]   | Nairobi              | [[country:kenya:home|Kenya]] | - |
+| [[airspace:htdc:home|HTDC]]   | Dar es Salaam        | [[country:burundi:home|Burundi]], [[country:rwanda:home|Rwanda]] & [[country:tanzania:home|Tanzania]] | - |
+| [[airspace:huec:home|HUEC]]   | Entebbe              | [[country:uganda:home|Uganda]] | - |

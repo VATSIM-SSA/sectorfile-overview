@@ -16,13 +16,13 @@
 
 ====== Part 2 FSS & Oceanic @two.svg ======
 
-  * [[oceanic|Oceanic]]
-  * [[fss|Flight Service Station]]
+  * [[oceanic:home|Oceanic]]
+  * [[fss:home|Flight Service Station]]
 
 
 ====== Part 3 Airspace & Aerodromes @airports.svg ======
 
-  * [[firs|VATSSA FIRs]]
+  * [[airspace:firs|VATSSA FIRs]]
 
   * [[country:angola:home|Angola (FN)]]
   * [[country:benin:home|Benin (DB)]]
