@@ -2,92 +2,88 @@
 
 ==== Angola =====
 
-{{page>country:angola:airports#Angola Airports}}
+{{page>angola-airports#Angola Airports}}
 
 ==== Benin =====
 
-{{page>country:benin:airports#Benin Airports}}
+{{page>benin-airports#Benin Airports}}
 
 ==== Botswana =====
 
-{{page>country:botswana:airports#Botswana Airports}}
+{{page>botswana-airports#Botswana Airports}}
 
 ==== Burundi =====
 
-{{page>country:burundi:airports#Burundi Airports}}
+{{page>burundi-airports#Burundi Airports}}
 
 ==== Cameroon =====
 
-{{page>country:cameroon:airports#Cameroon Airports}}
+{{page>cameroon-airports#Cameroon Airports}}
 
 ==== Cape Verde =====
 
-{{page>country:cape-verde:airports#Cape Verde Airports}}
+{{page>cape_verde-airports#Cape Verde Airports}}
 
 ==== Central African Republic =====
 
-{{page>country:car:airports#Central African Republic Airports}}
+{{page>central_african_republic-airports#Central African Republic Airports}}
 
 ==== Comoros =====
 
-{{page>country:comoros:airports#Comoros Airports}}
+{{page>comoros-airports#Comoros Airports}}
 
 ==== Eswatini =====
 
-{{page>country:eswatini:airports#Eswatini Airports}}
+{{page>eswatini-airports#Eswatini Airports}}
 
 ==== Gabon =====
 
-{{page>country:gabon:airports#Gabon Airports}}
-
-==== Gambia =====
-
-{{page>country:gambia:airports#Gabon Airports}}
+{{page>gabon-airports#Gabon Airports}}
 
 ==== Kenya =====
 
-{{page>country:kenya:airports#Kenya Airports}}
+{{page>kenya-airports#Kenya Airports}}
 
 ==== Lesotho =====
 
-{{page>country:lesotho:airports#Lesotho Airports}}
+{{page>lesotho-airports#Lesotho Airports}}
 
 ==== Liberia =====
 
-{{page>country:liberia:airports#Liberia Airports}}
+{{page>liberia-airports#Liberia Airports}}
 
 ==== Madagascar =====
 
-{{page>country:madagascar:airports#Madagascar Airports}}
+{{page>madagascar-airports#Madagascar Airports}}
 
 ==== Nigeria =====
 
-{{page>country:nigeria:airports#Nigeria Airports}}
+{{page>nigeria-airports#Nigeria Airports}}
 
 ==== Senegal =====
 
-{{page>country:senegal:airports#Senegal Airports}}
+{{page>senegal-airports#Senegal Airports}}
 
 ==== Seychelles =====
 
-{{page>country:seychelles:airports#Seychelles Airports}}
+{{page>seychelles-airports#Seychelles Airports}}
 
 ==== South Africa =====
 
-{{page>country:south-africa:airports#South Africa Airports}}
+{{page>south_africa-airports#South Africa Airports}}
 
 ==== Tanzania =====
 
-{{page>country:tanzania:airports#Tanzania Airports}}
+{{page>tanzania-airports#Tanzania Airports}}
 
 ==== Uganda =====
 
-{{page>country:uganda:airports#Uganda Airports}}
+{{page>uganda-airports#Uganda Airports}}
 
 ==== Zambia =====
 
-{{page>country:zambia:airports#Zambia Airports}}
+{{page>zambia-airports#Zambia Airports}}
 
 ==== Zimbabwe =====
 
-{{page>country:zimbabwe:airports#Zimbabwe Airports}}
+{{page>zimbabwe-airports#Zimbabwe Airports}}

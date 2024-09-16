@@ -1,0 +1,90 @@
+===== 24 Hours of VATSIM - GOBD/GOOY to SBRF/SBFZ =====
+
+<code>This is an ATC Controller Briefing for the VATSIM 2 Hours of VATSIM (GOBD/GOOY to SBRF/SBFZ) Event that will take place on Mar. 4th 2023.</code>
+
+==== Operational Plan (Visual) ====
+
+  * //Link Available on the Discord Thread//
+  * VATCAN Event Code - JG6LE
+
+==== Pre Approved Routes ====
+
+  * GOBD/GOOY - SBRF | BLUE | ANITI UA302 TURUP DCT 11N020W DCT SEROD DCT ASOBU DCT KODOS  UL206 BUGAT UZ59 AMBET
+  * GOBD/GOOY - SBFZ | RED  | NARAT DCT MOGSA UW31 SNT DCT AMDOL UN866 DEKON
+
+==== Departure Clearances ====
+
+^ Runway Configuration ^ Airport ^ Destination ^ Departure Clearance ^ Alias ^ Remarks ^
+| Departing North      | GOBD    | SBRF | BLUE | Runway Heading, Initial Climb FL070 | .gobd | - |
+| :::                  | GOBD    | SBFZ | RED  | Runway Heading, Initial Climb FL080 | .gobd | - |
+| :::                  | GOOY    | SBRF | BLUE | Runway Heading, After 1000 ft, LEFT turn Heading 200, Initial Climb FL040 | .oynrf | - |
+| :::                  | GOOY    | SBFZ | RED  | Runway Heading, After 1000 ft, Direct NARAT, Initial Climb FL030 | .oynfz | - |
+| |||||
+| Departing South      | GOBD    | SBRF | BLUE | Runway Heading, Initial Climb FL070 | .gobd | - |
+| :::                  | GOBD    | SBFZ | RED  | Runway Heading, Initial Climb FL080 | .gobd | - |
+| :::                  | GOOY    | SBRF | BLUE | Runway Heading, After 1000 ft, RIGHT turn Heading 210, Initial Climb FL040 | .oysrf | - |
+| :::                  | GOOY    | SBFZ | RED  | Runway Heading, After 1000 ft, RIGHT turn Heading 270, Initial Climb FL030 | .oysfz | - |
+
+The following aliases are available
+
+^ Alias ^ Message ^ Remarks ^
+| .pdc1 | .msg $aircraft PDC - $aircraft $type - Approved Route: $route - Approved Flight Level: $cruise - CTOT: | DEL must fill CTOT |
+| .pdc2 | DO NOT USE, refer to the ALIAS available above | - |
+| .pdc3 | .msg $aircraft This message is your departure clearance. No need to reply. 10 minutes before your assigned CTOT, contact DEL by voice for release. | - |
+
+==== Approach Intermediate ====
+^ Runway Configuration ^ Airport ^ Destination ^ Follow Up Instruction ^ Climb ^ Remarks ^
+| Departing North      | GOBD    | SBRF | BLUE | When able, LEFT DIRECT ANITI | FL240 | - |
+| :::                  | GOBD    | SBFZ | RED  | When able, LEFT DIRECT NARAT | FL240 | - |
+| :::                  | GOOY    | SBRF | BLUE | When able, RIGHT DIRECT PIVSA | FL260  | - |
+| :::                  | GOOY    | SBFZ | RED  | - | FL260 | - |
+| |||||
+| Departing South      | GOBD    | SBRF | BLUE | When able, RIGHT DIRECT PIVSA | FL240 | - |
+| :::                  | GOBD    | SBFZ | RED  | When able, RIGHT DIRECT NARAT | FL240 | - |
+| :::                  | GOOY    | SBRF | BLUE | When able, RIGHT DIRECT PIVSA | FL260 | - |
+| :::                  | GOOY    | SBFZ | RED  | When able, RIGHT DIRECT NARAT | FL260 | - |
+
+
+==== Oceanic Clearances ====
+
+  * Sal Oceanic and Dakar Oceanic both require Oceanic Clearances. However, we won't be doing them today (we're working on building a proper backend for these).
+
+==== Separation ====
+
+  *     Longitudinal Separation:
+
+a) Between aircraft on the same track and same cruising level: 10 minutes or 20 NM (whichever is less).
+b) Between aircraft on reciprocal tracks and at the same cruising level: 30 NM.
+c) Between aircraft on non-reciprocal tracks and at the same cruising level: 15 NM.
+
+  *     Lateral Separation:
+
+a) Between aircraft on the same track and same cruising level: no minimum lateral separation required.
+b) Between aircraft on reciprocal tracks and at different cruising levels: 2,000 feet vertical separation or radar separation.
+c) Between aircraft on non-reciprocal tracks and at different cruising levels: 2,000 feet vertical separation or radar separation.
+
+  *     Horizontal Separation:
+
+a) Between aircraft at the same cruising level: 10 NM.
+b) Between aircraft at different cruising levels: 1,000 feet vertical separation or radar separation.
+
+==== Position Reporting ====
+
+=== Sal Oceanic ===
+
+  * The designated reporting points are:
+
+    MOGSA
+    AMDOL
+
+=== Dakar Oceanic ===
+
+  * The designated reporting points are::
+
+    TURUP
+    SEROD
+    KODOS
+    -
+    NELTO
+    DEKON
+

@@ -1,0 +1,32 @@
+===== Flight Service Stations (FSS) =====
+
+  * Within VATSSA Airspace, there are three Designated FSS Airspaces, namely Africa Control West, Africa Control Central and Africa Control South.
+  * These FSS airspaces cover specific FIR regions above FL245, except if there is local ATC coverage.
+
+==== FSS Stations ====
+
+^ Station  ^ FIR      ^ ATC Type    ^ Remarks ^
+| [[AFRC]] | [[FLFI]] | -           | - |
+| :::      | [[FNAN]] | Procedural  | - |
+| :::      | [[FSSS]] | Procedural (FIR)  | - |
+| :::      | [[FWLL]] | Procedural (FIR) | - |
+| :::      | [[FZZA]] | -           | - |
+| :::      | [[HBBA]] | -           | - |
+| :::      | [[HKNA]] | Radar (FIR) | - |
+| :::      | [[HRYR]] | -           | - |
+| :::      | [[HTDC]] | Procedural  | - |
+| :::      | [[HUEC]] | -           | - |
+| [[AFRS]] | [[FACA]] | Radar (FIR) | //does NOT includes FAJO// |
+| :::      | [[FAJA]] | Radar (FIR) | ::: |
+| :::      | [[FBGR]] | Procedural (FIR)  | - |
+| :::      | [[FIMM]] | ADS-B Satellite (FIR), Radar (Ivato TMA) | - |
+| :::      | [[FMMM]] | Procedural (FIR)  | - |
+| :::      | [[FQBE]] | Procedural (FIR)  | - |
+| :::      | [[FVHF]] | Radar (FIR), Radar (TMA FVRG) | - |
+| :::      | [[FYWH]] | Radar (FIR) | - |
+| [[AFRW]] | [[DGAC]] | -           | - |
+| :::      | [[DNKK]] | Radar (FIR) | - |
+| :::      | [[FCCC]] | -           | - |
+| :::      | [[GLRB]] | -           | - |
+| :::      | [[GOOO]] | -           | //includes GOOO Oceanic// |
+| :::      | [[GVSC]] | Procedural (Oceanic), Radar (TMA) | - |

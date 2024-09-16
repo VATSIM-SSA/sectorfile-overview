@@ -1,0 +1,58 @@
+===== First Wings - GV* to LPLA/LPLD =====
+
+<code>This is an ATC Controller Briefing for the VATSIM First Wings - Cape Verde to the Azores Event that will take place on March 26th.</code>
+
+==== Pre Approved Routes ====
+
+  * GVSV to LPLA | EVKAS DCT OBOMO DCT 26N028W 31N029W 36N029W DCT LM
+  * GVSV to LPPD | EVKAS DCT BAMUX DCT 28N026W 33N025W DCT VSM
+
+  * GVNP to LPLA | SVT UW47 EVKAS DCT OBOMO DCT 26N028W 31N029W 36N029W DCT LM
+  * GVNP to LPPD | SVT UW47 EVKAS DCT BAMUX DCT 28N026W 33N025W DCT VSM
+
+  * GVBA to LPLA | CVS W15 KESIK DCT OBOMO DCT 26N028W 31N029W 36N029W DCT LM
+  * GVBA to LPPD | CVS W15 KESIK DCT BAMUX DCT 28N026W 33N025W DCT VSM
+
+  * GVAC to LPLA | KESIK DCT OBOMO DCT 26N028W 31N029W 36N029W DCT LM
+  * GVAC to LPPD | KESIK DCT BAMUX DCT 28N026W 33N025W DCT VSM
+
+==== Departure Clearances ====
+
+  * GVSC_DEL will operate as a combined Delivery Position for GVAC, GVBA, GVNP and GVSV.
+
+^ Runway Configuration ^ Airport ^ Destination ^ SID     ^ Initial Climb ^ Remarks ^
+| Departing North      | GVAC    | LPLA        | KESI1A  | FL050         | - |
+| :::                  | :::     | LPPD        | :::     | :::           | - | 
+| :::                  | GVBA    | LPLA        | CVS1J   | FL090         | - |
+| :::                  | :::     | LPPD        | :::     | :::           | - |
+| :::                  | GVNP    | LPLA        | SVT1E   | FL090         | - |
+| :::                  | :::     | LPPD        | :::     | :::           | - |
+| :::                  | GVSV    | LPLA        | EVKAS1U | FL090         | - |
+| :::                  | :::     | LPPD        | :::     | :::::         | - |
+| Departing South      | GVAC    | LPLA        | KESI1B  | FL050         | - |
+| :::                  | :::     | LPPD        | :::     | :::           | - |
+| :::                  | GVBA    | LPLA        | CVS1L   | FL090         | - |
+| :::                  | :::     | LPPD        | :::     | :::           | - |
+| :::                  | GVNP    | LPLA        | SVT1F   | FL090         | - |
+| :::                  | :::     | LPPD        | :::     | :::           | - |
+| :::                  | GVSV    | LPLA        | EVKAS1X | FL090         | - |
+| :::                  | :::     | LPPD        | :::     | :::           | - |
+
+==== Oceanic Clearances ====
+
+  * Not Required by GVSC. Pilots will be asked to contact LPPO (Santa Maria) 30 mins before entering their airspace.
+
+==== Separation ====
+
+  * 10 minutes using MNT in GVSC, 30 nm at LPPO.
+  * RVSM airspace at GVSC, free for all at LPPO.
+
+==== Position Reporting ====
+
+  * Not Required, ADS-B Satellite simulated.
+
+==== SELCAL & CPDLC ====
+
+  * SELCAL is available at GVSC_CTR
+  * CPDLC is available at GVSC_CTR (GVSC)
+  * PDC/DCL is available at GVSC_DEL (GVDL)

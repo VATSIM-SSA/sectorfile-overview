@@ -1,0 +1,36 @@
+===== Glossary =====
+
+==== A =====
+
+^ Term ^ Definition ^ More Info ^ Remarks ^
+| ASDA | Accelerate-Stop Distance Available | [[https://www.skybrary.aero/articles/accelerate-stop-distance-available-asda|SKYbrary]] | - |
+
+==== F =====
+
+^ Term ^ Definition ^ More Info ^ Remarks ^
+| FATO | Final Approach and Takeoff | - | - |
+
+==== I =====
+
+^ Term ^ Definition ^ More Info ^ Remarks ^
+| IF | Intermediate Fix | [[https://www.skybrary.aero/articles/instrument-approach-procedure-iap|SKYbrary]] | - |
+| IAF | Initial Approach Fix | [[https://www.skybrary.aero/articles/instrument-approach-procedure-iap|SKYbrary]] | - |
+| - | - | - |
+
+==== L =====
+
+^ Term ^ Definition ^ More Info ^ Remarks ^
+| LDA | Landing Distance Available | [[https://www.skybrary.aero/articles/landing-distances|SKYbrary]] | - |
+
+==== M =====
+
+^ Term ^ Definition ^ More Info ^ Remarks ^
+| MSA | Minimum Sector Altitude | [[https://skybrary.aero/articles/minimum-sector-altitude-msa|SKYbrary]] | - |
+| MRVA | Minimum Radar Vectoring Altitude | [[https://www.skybrary.aero/articles/minimum-radar-vectoring-altitude|SKYbrary]] | - |
+
+==== T =====
+
+^ Term ^ Definition ^ More Info ^ Remarks ^
+| TLOF | Touch-down and Lift-off | - |
+| TODA | Takeoff Distance Available | [[https://www.skybrary.aero/articles/take-distance-available-toda|SKYbrary]] | - |
+| TORA | Takeoff Run Available | [[https://www.skybrary.aero/articles/takeoff-run-available-tora|SKYbrary]] | - |

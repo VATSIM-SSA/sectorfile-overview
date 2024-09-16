@@ -1,9 +1,9 @@
 ====== About the eAIP ======
 
-  * [[vatssa|About VATSSA]]
-  * [[eaip|About the eAIP]]
-  * [[faq|FAQs]]
-  * [[contribute|How to Contribute]]
+  * [[about:vatssa|About VATSSA]]
+  * [[about:eaip|About the eAIP]]
+  * [[about:faq|FAQs]]
+  * [[about:contribute|How to Contribute]]
 
 
 ====== Part 1 General @one.svg ======
