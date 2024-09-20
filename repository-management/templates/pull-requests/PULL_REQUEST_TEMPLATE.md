@@ -1,7 +1,8 @@
 ## PR Type
 
 What kind of change does this PR introduce?
-(Write inside all the backets an "x" to indicate which one you choose, like this: [x] )
+
+_write inside all the appropriate backets an "x" to indicate you agree (ie: [x]_
 
 - [ ] Bug Fix
 - [ ] Feature / Enhancement
@@ -11,15 +12,20 @@ What kind of change does this PR introduce?
 
 
 ## Issue Number and Link
-closes (Insert linnk to your issue you are fixing here)
+
+closes: _insert link to the issue you are closing or type #id_
+
+contributes: _insert link to the issue you are contributing to or type #id_
 
 
 ## Describe Your Changes
 
+-
+-
 
+## Checklist
 
-# Checklist 
-(Write inside all the backets an "x" to indicate you agree, like this: [x] )
+_write inside all the backets an "x" to indicate you agree (ie: [x]_
 
 - [ ] My code follows the style guidelines of this project
 - [ ] I have performed a self-review of my code
