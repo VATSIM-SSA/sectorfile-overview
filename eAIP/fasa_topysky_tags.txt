@@ -1,0 +1,126 @@
+==== TopSky Track Labels for FASA ====
+The track labels have been set to replicate the IRL track labels used by ATNS in South African airspace. Please **do not** edit them as they have been specifically set up to allow certain coordination procedures to work. The track labels will display Mode S data based on the aircraft's equipment code. 
+
+=== Colors ===
+
+=== Tagged Mode C ===
+{{:media:fasa_mode_c_tagged_label_11.png?400|}}
+
+^ Item      ^ Name       ^ Notes         ^ 
+| Warnings    | Warnings                       | See Warnings table |
+| Callsign    | Callsign                       |            
+| SI          | Sector Identifier              | If assumed will show downstream station ID (5 minutes before COPX  shows next frequency). All other states will show the current station ID. |
+| ATYP        | Aircraft Type                  |         
+| WTC         | Wake Turbulence Category       | H/J types are highlighted yellow.|      
+| AFL         | Actual Flight Level            |       
+| CRC         | Computed Rate of Climb/Descent |       
+| CFL         | Cleared Flight Level           |       
+| GS          | Ground Speed                   |
+| ASP         | Assigned Speed                 | Will only display if the track is assigned a speed. |        
+
+=== Detailed Mode C ===
+The detailed state is accessed by mousing over the track label.
+
+{{:media:fasa_mode_c_detailed_label.png?400|}}
+
+^ Item      ^ Name       ^ Notes         ^ Left Click      ^ Right Click     ^
+| C           | Inbound Clearance Flag      | Indicates that aircraft require STAR/Approach Clearance            | Toggles flag.              | |
+| COP         | Coordination Point          | If assumed will show exit COP. Any other state will show entry COP | Open waypoint menu         | Toggles Route Draw (With autohide)|
+| XFL         | Exit Flight Level           |                                                                    | Opens COP ALT list         | Toggles Route Draw (With autohide)|
+| TXT         | Scratch Pad                 | See coordination practices below.                                  | Edit scratch pad           | |
+| AHDG        | Assigned Heading            | Left Click and drag to draw out the heading.                       | Opens Assigned Heading Menu| Opens Route Point List|
+| RWY         | Arrival Runway              |                                                                    | Opens Runway List          | |
+| ASP         | Assigned Speed              |                                                                    | Open ASP menu              | Clear ASP value|
+| ARC         | Assigned Rate               |                                                                    | Open ARC menu              | |
+
+=== Extended Mode C ===
+The extended state is accessed by right-clicking on the callsign when the track label is in the detailed state.  
+
+{{:media:fasa_mode_c_extended_label.png?600|}}
+^ Item      ^ Name       ^ Left Click      ^ Right Click ^
+| TSSR    | Transmitted SSR                 | |
+| ASSR    | Assigned SSR                    | |
+| ADEP    | Departure Aerodrome             | |
+| ADES    | Arrival Aerodrome               | |
+| ALT1    | First Alternate Aerodrome       | |
+| RFL     | Requested Flight Level          | Open RFL menu| |
+| COMP_CS | Radiotelephony Callsign         | |
+| SID     | Standard Instrument Departure   | Open SID menu| |
+| STAR    | Standard Terminal Arrival Route | Open STAR menu| |
+
+=== Tagged Mode S ===
+{{:media:fasa_mode_s_tagged_label.png?400|}}
+^ Item      ^ Name       ^ Notes         ^ 
+| Warnings    | Warnings                       | See Warnings table |
+| Callsign    | Callsign                       |            
+| SI          | Sector Identifier              | If assumed will show downstream station ID (5 minutes before COPX  shows next frequency). All other states will show the current station ID. |
+| ATYP        | Aircraft Type                  |         
+| WTC         | Wake Turbulence Category       | H/J types are highlighted yellow.|      
+| AFL         | Actual Flight Level            |       
+| CRC         | Computed Rate of Climb/Descent |       
+| CFL         | Cleared Flight Level           |       
+| GS          | Ground Speed                   |
+| ASP         | Assigned Speed                 | Will only display if the track is assigned a speed. | 
+
+=== Detailed Mode S ===
+The detailed state is accessed by mousing over the track label.
+
+{{:media:fasa_mode_s_detailed_label.png?400|}}
+^ Item      ^ Name       ^ Notes         ^ Left Click      ^ Right Click     ^
+| COP         | Coordination Point          | If assumed will show exit COP. Any other state will show entry COP | Open waypoint menu         | Toggles Route Draw (With autohide)|
+| XFL         | Exit Flight Level           |                                                                    | Opens COP ALT list         | Toggles Route Draw (With autohide)|
+| TXT         | Scratch Pad                 | See coordination practices below.                                  | Edit scratch pad           | |
+| AHDG        | Assigned Heading            | Left Click and drag to draw out the heading.                       | Opens Assigned Heading Menu| Opens Route Point List|
+| RWY         | Arrival Runway              |                                                                    | Opens Runway List          | |
+| ASP         | Assigned Speed              |                                                                    | Open ASP menu              | Clear ASP value|
+| @DSFL       | Mode S Selected Flight Level| Not yet implemented.                                               |                            | |
+| @IAS        | Calculated IAS              | Simulates Mode S IAS readout (IASsure-plugin)                      | Open reported IAS menu     | |
+| @MACH       | Calculated MACH             | Simulates Mode S MACH readout (IASsure-plugin)                     | Open reported MACH menu    | |
+| @DHDG       | Mode S Heading              | Shows heading aircraft is flying                                   |                            | |
+
+=== Extended Mode S ===
+The extended state is accessed by right-clicking on the callsign when the track label is in the detailed state. 
+
+{{:media:fasa_mode_s_extended_label_1_.png?400|}}
+^ Item      ^ Name       ^ Left Click      ^ Right Click ^
+| TSSR    | Transmitted SSR                 | |
+| ASSR    | Assigned SSR                    |Open ASSR menu |
+| ADEP    | Departure Aerodrome             | |
+| ADES    | Arrival Aerodrome               | |
+| ALT1    | First Alternate Aerodrome       | |
+| RFL     | Requested Flight Level          | Open RFL menu| |
+| COMP_CS | Radiotelephony Callsign         | |
+| SID     | Standard Instrument Departure   | Open SID menu| |
+| STAR    | Standard Terminal Arrival Route | Open STAR menu| |
+
+
+=== Warnings ===
+^Item    ^Name    ^Details     ^
+| COM   |Communcation Type             | Only shown if not full voice communication. "r" if voice receive only. "t" if text only. |
+| V     | Flight Rule Indicator        | Only shown if not IFR. "V" if VFR. "Y" if firdt IFR and later VFR. "Z" if first VFR and later IFR|
+| R     | No B-RNAV/RNAV5 capability   | Checks equipment code|
+| P     | No P-RNAV/RNAV1 capability   | Checks equipment code|
+| Y     | No 8.33kHzcapability         | |
+| W     | No RVSM capability           | |
+| M     | Military coordination        | Left click to toggle. Indicates aircraft will enter active military TSA|
+| •     | Mark                         | Set from Callsign menu |
+| •     | Frequency                    | Set from Callsign menu |
+| A     | Manual alerts                | "A” if Manual alert(s) active  |
+| +     | Field 18 information         |“¤” if defined text (by default “RMK/” or “STS/”) found in FPL remarks field|
+| C     | Inbound clearance            | Left click to toggle. Indicates that aircraft require STAR/Approach Clearance.|
+| EMRG  | Emergency                    | “HI” for squawk 7500, “CF” for squawk 7600, “EM” for squawk 7700 |
+| ALRT  | Alert message                | “MSAW”, “APW”, “AIW”, “CLAM”, “RAM”, “MTCD” or “DUPE” (in this priority order)|
+| COORD | Coordination message         | ROF message received: ROF/ Transfer with release: “F” fully released, “C” released for climb, “D” released for descent, “T” released for turns/ The last changed tactical coordination parameter value (AHDG, ASP or ARC)|
+
+=== CPDLC Warnings ===
+^Item    ^Name    ^Details     ^
+| CPDLC_E | CPDLC Emergency            | CPDLC emergency messages:“SQ7500”, “[MAYDAY]”, or “[PAN]”|
+| CPDLC_W | CPDLC Warning              | |
+|:::      | CONN FAIL | network failure |
+|:::      | CPDLC P ABT | Pilot logoff |
+|:::      | <type> CDA | No current data (type = AHDG, CFL, COF, DCT, SQI, SSR, VCI) |
+|:::      | <type> P LATE | Pilot timeout (type = AHDG, CFL, COF, DCT, SQI, SSR, VCI) |
+|:::      | <type> SBY | STANDBY response (type = AHDG, CFL, COF, DCT, SQI, SSR, VCI)|
+|:::      | <type> UNA | UNABLE response  (type = AHDG, CFL, COF, DCT, SQI, SSR, VCI)|
+
+ 

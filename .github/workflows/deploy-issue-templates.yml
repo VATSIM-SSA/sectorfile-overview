@@ -1,0 +1,560 @@
+name: Deploy Issue Templates
+
+on:
+  push:
+    paths:
+      - "repository-management/templates/issues/**"
+    branches:
+      - main
+
+jobs:
+  deploy_tpl_issue_afrc:
+    name: "Deploy Issue Templates to AFRC"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-afrc"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_afrs:
+    name: "Deploy Issue Templates to AFRS"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-afrs"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_afrw:
+    name: "Deploy Issue Templates to AFRW"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-afrw"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_dgac:
+    name: "Deploy Issue Templates to DGAC"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-dgac"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_dnkk:
+    name: "Deploy Issue Templates to DNKK"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-dnkk"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fajo:
+    name: "Deploy Issue Templates to FAJO"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fajo"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fasa:
+    name: "Deploy Issue Templates to FASA"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fasa"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fbgr:
+    name: "Deploy Issue Templates to FBGR"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fbgr"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fccc:
+    name: "Deploy Issue Templates to FCCC"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fccc"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fimm:
+    name: "Deploy Issue Templates to FIMM"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fimm"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_flfi:
+    name: "Deploy Issue Templates to FLFI"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-flfi"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fmmm:
+    name: "Deploy Issue Templates to FMMM"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fmmm"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fnan:
+    name: "Deploy Issue Templates to FNAN"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fnan"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fqbe:
+    name: "Deploy Issue Templates to FQBE"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fqbe"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fsss:
+    name: "Deploy Issue Templates to FSSS"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fsss"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fvhf:
+    name: "Deploy Issue Templates to FVHF"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fvhf"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fwll:
+    name: "Deploy Issue Templates to FWLL"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fwll"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fywf:
+    name: "Deploy Issue Templates to FYWF"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fywf"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_fzza:
+    name: "Deploy Issue Templates to FZZA"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fzza"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_gooo:
+    name: "Deploy Issue Templates to GOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-gooo"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_goooo:
+    name: "Deploy Issue Templates to GOOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-goooo"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_gvsc:
+    name: "Deploy Issue Templates to GVSC"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-gvsc"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_hkna:
+    name: "Deploy Issue Templates to HKNA"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-hkna"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_htdc:
+    name: "Deploy Issue Templates to HTDC"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-htdc"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"
+  deploy_tpl_issue_huec:
+    name: "Deploy Issue Templates to HUEC"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: repository-management/templates/issues
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-huec"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: ".github/ISSUE_TEMPLATE"
+          create-target-branch-if-needed: false
+          commit-message: "update: issue templates"

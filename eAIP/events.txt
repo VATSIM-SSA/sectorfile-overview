@@ -1,0 +1,11 @@
+===== VATSSA Events =====
+
+^ Event Name                    ^ Date      ^ Airports              ^ Pilot Briefing ^ Remarks ^
+| C1 Exam at DNKK_CTR           | 08/12/22  | [[DNKK]]              | - | - |
+| S2 CPT at HKJK_TWR            | 17/12/22  | [[HKJK]]              | - | - |
+| Nairobi Nights                | 05/01/23  | [[HKJK]]              | - | - |
+| Light Twin Hops               | 07/01/23  | [[FSIA]]              | - | - |
+| S3 Exam at DNMM_APP           | 14/01/23  | [[DNMM]]              | - | - |
+| Discover Africa - Zimbabwe    | 14/01/23  | [[FVRG]], [[FVFA]]    | - | - |
+| Lagos Wednesdays              | 18/01/23  | [[DNMM]]              | No | - |
+| Southern African Airbridge    | 21/01/23  | [[FBSK]], [[FDSK]]    | No | - |

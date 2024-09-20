@@ -1,0 +1,11 @@
+===== Welcome to the First Wings Pilot Briefing ======
+
+  * The following resources are available for pilots.
+
+^ Airport ^ Pilot Briefing ^ Scenery ^ Charts ^ Notes ^
+| [[gvac|GVAC]]     | [[gvac-briefing|Briefing]] | [[gvac-scenery|Scenery]] | [[gvac-charts|Charts]] | - |
+| [[gvba|GVBA]]     | [[gvba-briefing|Briefing]] | [[gvba-scenery|Scenery]] | [[gvba-charts|Charts]] | - |
+| [[gvnp|GVNP]]     | [[gvnp-briefing|Briefing]] | [[gvnp-scenery|Scenery]] | [[gvnp-charts|Charts]] | - |
+| [[gvsv|GVSV]]     | [[gvsv-briefing|Briefing]] | [[gvsv-scenery|Scenery]] | [[gvsv-charts|Charts]] | - |
+
+Should you have any specific questions regarding any of these airports, feel free to join the VATSSA Discord via the [[https://community.vatsim.net/|VATSIM Community Hub]].

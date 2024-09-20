@@ -1,0 +1,17 @@
+===== Long Haul - Cape Town to Dubai =====
+
+<code>This is an ATC Controller Briefing for the VATSSA Long Haul - Cape Town to Dubai Event that will take place on Feb. 25th.</code>
+
+==== Pre Approved Route ====
+
+  * FACT - OMDB | TETAN UZ2 NIBEX DCT EGMEN UQ2 EPSEK UM307 VBR UM310 BONAP DCT ELAVA UL437 ITMAR UL437G VEDET B400 DAXAM P316 DEDSO R401 PEDOG P308 KIPOK L568 IMPED
+
+==== Departure Clearances ====
+
+^ Runway Configuration ^ Airport ^ Destination ^ Departure Clearance ^ Remarks ^
+| 01                   | FACT    | OMDB        | KODES1A, Initial Climb FL090 | - |
+| 19                   | FACT    | OMDB        | TETAN1B, Initial Climb FL090 | - |
+
+==== Separation ====
+
+==== Position Reporting ====

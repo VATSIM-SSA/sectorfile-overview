@@ -1,0 +1,192 @@
+===== Cross the Pond 2023 Westbound =====
+
+<code>This is an ATC Controller Briefing for the Cross the Pond 2023 Westbound Event that will take place on April 1st.</code>
+
+==== Our Flights ====
+
+^ Departure ^ Arrival ^ Route Code     ^ Group ^ Remarks ^
+| DNMM      | SAEZ    | RED ONE (R1)   | DNMM  | - |
+| :::       | SBGR    | RED TWO (R2)   | DNMM  | - | 
+| :::       | SKBO    | RED THREE (R3) | DNMM  | - | 
+| FACT      | SAEZ    | BLUE ONE (B1)  | FACT  | - | 
+| :::       | SBGR    | BLUE TWO (B2)  | FACT  | - | 
+| LEMD      | SBGR    | GREEN ONE (G1) | EUR-SAM | - | 
+| :::       | SKBO    | GREEN TWO (G2) | EUR-SAM | - | 
+
+{{:screenshot_2023-03-27_112401.jpg|}}
+
+==== DNMM (Lagos, Nigeria) ====
+
+  * For DNMM, you have access to a large number of pages at the [[dnmm|DNMM]] eAIP pages.
+  * We will keep specific Cross the Pond information (aerodrome operations, departures) in this page.
+
+=== Overview ===
+
+  * Both runways will be operational. Runway 18R will be operating exclusively for departures with the exception of any arriving cargo flight. Runway 18L will be used for arrivals.
+  * Taxiway F will be operating exclusively toward runway 18R. Departures will have priority over arrivals.
+
+=== Delivery ===
+
+  * There is a Release Management sheet available to manage RFL and slot assignment.
+  * Aircraft on Main Apron to depart runway 18R.
+  * Aircraft East of runway 18L or at the FBO to depart runway 18L.
+  * Use of the [[alias-std|Alias]] (.pdc1 and .pdc2) is recommended.
+
+=== Ground ===
+
+  * If required, we may open DNMM_E_GND to cover the apron east of runway 18L.
+  * Traffic on F will have priority on traffic in the Aprons.
+  * Hand over traffic to Tower with the Monitor Frequency phraseology.
+
+=== Departures ===
+
+^ Departure ^ Destination ^ Runway ^ SID ^ Initial Climb ^ Approach Notes ^ Remarks ^
+| DNMM      | SAEZ        | 18R    | PISB1Q | FL070 | - | - |
+| :::       | :::         | 18L    | BOTB1S | FL070 | //After BOTBO, DCT PISBA// | - |
+| :::       | SBGR        | 18R    | POLT1Q | FL070 | //Do NOT CLIMB above FL140 until TYE// | - |
+| :::       | :::         | 18L    | BUDS1S | FL070 | //After MM812, DCT TYE, FL160 or ABOVE at TYE// | - |
+| :::       | SKBO        | 18R    | POLT1Q | FL070 | //Do NOT CLIMB above FL140 until TYE// | - |
+| :::       | :::         | 18L    | BUDS1S | FL070 | //After MM812, DCT TYE, FL160 or ABOVE at TYE//  | - |
+
+  * Pilots will see some discontinuities on their departures. That is ok, they will be given DIRECTS by APPROACH.
+
+
+==== FACT (Cape Town, South Africa) ====
+
+  * For FACT, you have access to a large number of pages at the [[fact|FACT]] eAIP pages.
+  * We will keep specific Cross the Pond information (aerodrome operations, departures) in this page.
+
+=== Overview ===
+
+=== Delivery ===
+
+  * There is a Release Management sheet available to manage RFL and slot assignment.
+  * Initial Climb will be FL090 and everyone will be departing via the IMSOM fix.
+  * Use of the [[alias-std|Alias]] (.pdc1 and .pdc2) is recommended. Be aware that the alias file for FASA differs fromt the standard (STD) but those two are available.
+
+=== Ground ===
+
+  * If required, we may open FACT_E_GND to cover the apron east of runway 01/19.
+  * Traffic on A will have priority on traffic pushing back.
+  * Hand over traffic to Tower with the Monitor Frequency phraseology.
+  * Runway 16/34 will remain closed during the event.
+
+=== Departures ===
+
+  * The Initial Climb should appear automatically on all Flight Plans for SAEZ and SBGR via IMSOM, but remember to check.
+
+^ Departure ^ Destination ^ Runway ^ SID ^ Initial Climb ^ Remarks ^
+| FACT      | SAEZ        | 01    | IMSO1A | FL090 | - |
+| :::       | :::         | 19    | IMSO1B | FL090 | - |
+| :::       | SBGR        | 01    | IMSO1A | FL090 | - |
+| :::       | :::         | 19    | IMSO1B | FL090 | - |
+
+  * FACT_TWR shall coordinate with FACT_APP the release of aircraft. Slots have been scheduled for 3 minute separation. Avoid pushing the Wake Turbulence separation to the minimum.
+
+==== Enroute Operations ====
+
+  * SELCAL should be checked once as soon as they reach Cruise Level.
+  * Away From Cockpit is not an issue on Cruise Level, after SELCAL check. Report AFK return time via RMK (see Remarks tips at the bottom).
+
+=== Johannesburg Oceanic ===
+
+== Separation ==
+
+  * 10 NM at all Routes.
+  * RVSM Westbound Horizontal between FL290 and FL410.
+
+== SELCAL, CPDLC and SLOP ==
+
+  * SELCAL should be made available at DGAC, GLRB and GOOO.
+  * CPDLC is not controller mandatory, but we highly recommend it at DGAC, GLRB and GOOO.
+  * SLOP should be made available to pilots at 1 NM RIGHT or 2 NM RIGHT should they request.
+
+== Procedures ==
+
+  * FAJO Oceanic begins at ITLIK (B1) / ITMEK (B2) but we might have aircraft contact FAJO_FSS after ASPIK.
+  * Aircraft should establish Mach Number Cruise at Cruise Level.
+  * Assigned Cruise Levels will be determined by Delivery to establish separation.
+  * Position Reporting not required.
+  * Handover to SAEF (B1) at MUNES and to SBAO (B2) at ITGIV.
+
+=== Accra, Roberts and Dakar Enroute ===
+
+== Separation ==
+
+  * 10 Min MNT (Mach Number Technique) at all Routes (we're simulating RNP 10 routes).
+  * RVSM Westbound Horizontal between FL290 and FL410.
+
+== SELCAL, CPDLC and SLOP ==
+
+  * SELCAL should be made available at DGAC, GLRB and GOOO.
+  * CPDLC is not controller mandatory, but we highly recommend it at DGAC, GLRB and GOOO.
+  * SLOP should be made available to pilots at 1 NM RIGHT or 2 NM RIGHT should they request.
+
+== Procedures ==
+
+=== Accra, Dakar and Sal Oceanic ===
+
+== Separation ==
+
+  * 10 Min MNT (Mach Number Technique) at all Routes (we're simulating RNP 10 routes).
+  * RVSM Westbound Horizontal between FL290 and FL410.
+
+== SELCAL, CPDLC and SLOP ==
+
+  * SELCAL should be made available at DGAC, GLRB and GOOO.
+  * CPDLC is not controller mandatory, but we highly recommend it at DGAC, GLRB and GOOO.
+  * SLOP should be made available to pilots at 1 NM RIGHT or 2 NM RIGHT should they request.
+
+== Procedures ==
+
+== Crossroads ==
+
+  * Traffic on Route Red Three (R3) from DNMM to SKBO Westbound on Even Flight Levels will be moved down or up to an Odd Flight Level for the Crossroads Crossing.
+  * Traffic on Route Green One (G1) from LEMD to SBGR will be kept on Even Flight Levels.
+
+{{:crossroads.jpg?400|}}
+
+==== Non Event Traffic ====
+
+=== Departures ===
+
+  * Event Traffic has priority.
+  * Non Event Traffic from DNMM or FACT flying to airports North, East or South may be given clearance and released for departure as appropriate. Use your best judgement.
+  * Flights departing from FACT to any airport in South America require approval from the TMU Coordinator.
+  * Flights departing from DNMM to any airport in West Africa or South America require approval from the TMU Coordinator.
+
+=== Enroute ===
+
+  * Non Event Traffic shall be maintained at FL300 or below if in conflict with any Event Traffic.
+  * If Controllers unable to coordinate Non Event Traffic (to be reviewed case per case), feel free to drop them below FL250 and send them to UNICOM.
+  * Report all instances to the TMU Coordinator.
+
+==== Other Information ====
+
+  * Have fun!
+  * Do not disconnect from your position until relieved. If the next controller is late, notify VATSSA1 and we'll sort something out.
+
+=== RMK Field Best Practice ===
+
+  * AFL360 confirms the Approved Flight Level from Delivery. In case the pilot disconnects and FP hasn't been ammended.
+  * SLCL confirms the SELCAL Code has been checked and pilot is on SELCAL watch.
+  * CPDLC confirms the pilot is connect via CPDLC (and the Controller is using CPDLC external to EuroScope or TopSky)
+  * AFK1445 confirms the pilot is away from the keyboard and expected to return by 1445z.
+
+  * If you need to add a callsign, please modify the flight plan and add the CALLSIGN/AIRLINEX field to the Other field.
+==== Resources ====
+
+=== Sector Files ===
+
+^ FIR  ^ URL                                 ^ Status ^ Remarks ^
+| DGAC | [[https://files.aero-nav.com/dgac]] | Updated to AIRAC 2303 | - |
+| DNKK | [[https://files.aero-nav.com/dnkk]] | Updated to AIRAC 2303 | - |
+| FAJO | [[https://files.aero-nav.com/fajo]] | Updated to AIRAC 2303 | - |
+| FASA | [[https://files.aero-nav.com/fasa]] | Updated to AIRAC 2303 | - |
+| GOOO | [[https://files.aero-nav.com/gooo]] | Updated to AIRAC 2303 | - |
+| GVSC | [[https://files.aero-nav.com/gvsc]] | Updated to AIRAC 2303 | - |
+
+=== Documents ===
+
+  * ACARS CPDLC Quick Starter [[https://files.flying-fox.de/forum/vatsim/VATGER_permanent/CPDLC/CPDLC_quickstart.pdf|PDF]] by Andreas Fuchs
+

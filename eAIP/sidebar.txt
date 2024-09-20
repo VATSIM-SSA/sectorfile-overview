@@ -1,0 +1,75 @@
+====== About the eAIP ======
+
+  * [[about:vatssa|About VATSSA]]
+  * [[about:eaip|About the eAIP]]
+  * [[about:faq|FAQs]]
+  * [[about:contribute|How to Contribute]]
+
+
+====== Part 1 General @one.svg ======
+
+  * [[airport:home|Airports]]
+  * [[pilot-briefings|Pilot Briefings]]
+  * [[cpdlc|CPDLC]]
+  * [[procedural|Procedural Airspace]]
+
+
+====== Part 2 FSS & Oceanic @two.svg ======
+
+  * [[oceanic:home|Oceanic]]
+  * [[fss:home|Flight Service Station]]
+
+
+====== Part 3 Airspace & Aerodromes @airports.svg ======
+
+  * [[airspace:firs|VATSSA FIRs]]
+
+  * [[country:angola:home|Angola (FN)]]
+  * [[country:benin:home|Benin (DB)]]
+  * [[country:botswana:home|Botswana (FB)]]
+  * [[country:burundi:home|Burundi (HB)]]
+  * [[country:cameroon:home|Cameroon (FK)]]
+  * [[country:cape-verde:home|Cape Verde (GV)]]
+  * [[country:car:home|Central African Republic (FE)]]
+  * [[country:comoros:home|Comoros (FM)]]
+  * [[country:congo-dr:home|Congo, Democratic Republic of (FZ)]]
+  * [[country:congo:home|Congo, Republic of (FC)]]
+  * [[country:biot:home|British Indian Ocean Territories (FJ)]]
+  * [[country:equatorial-guinea:home|Equatorial Guinea (FG)]]
+  * [[country:eswatini:home|Eswatini (FD)]]
+  * [[country:gabon:home|Gabon (FO)]]
+  * [[country:gambia:home|Gambia (GB)]]
+  * [[country:ghana:home|Ghana (DG)]]
+  * [[country:guinea:home|Guinea Republic (GU)]]
+  * [[country:guinea-bissau:home|Guinea-Bissau (GG)]]
+  * [[country:ivory-coast:home|Ivory Coast (DI)]]
+  * [[country:kenya:home|Kenya (HK)]]
+  * [[country:reunion:home|La Reunion (FM)]]
+  * [[country:lesotho:home|Lesotho (FX)]]
+  * [[country:liberia:home|Liberia (GL)]]
+  * [[country:madagascar:home|Madagascar (FM)]]
+  * [[country:malawi:home|Malawi (FW)]]
+  * [[country:mali:home|Mali (GA)]]
+  * [[country:mauritania:home|Mauritania (GQ)]]
+  * [[country:mauritius:home|Mauritius (FI)]]
+  * [[country:mayotte:home|Mayotte (FM)]]
+  * [[country:mozambique:home|Mozambique (FQ)]]
+  * [[country:namibia:home|Namibia (FY)]]
+  * [[country:nigeria:home|Nigeria (DN)]]
+  * [[country:rwanda:home|Rwanda (HR)]]
+  * [[country:sao-tome:home|Sao Tome and Principe (FP)]]
+  * [[country:senegal:home|Senegal (GO)]]
+  * [[country:seychelles:home|Seychelles (FS)]]
+  * [[country:sierra-leone:home|Sierra Leone (GF)]]
+  * [[country:south-africa:home|South Africa (FA)]]
+  * [[country:st-helena:home|St Helena (FH)]]
+  * [[country:tanzania:home|Tanzania (HT)]]
+  * [[country:togo:home|Togo (DX)]]
+  * [[country:uganda:home|Uganda (HU)]]
+  * [[country:zambia:home|Zambia (FL)]]
+  * [[country:zimbabwe:home|Zimbabwe (FV)]]
+
+
+====== Part 4 Others @four.svg ======
+
+  * [[glossary|Glossary]]

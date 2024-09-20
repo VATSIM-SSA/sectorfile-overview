@@ -1,0 +1,32 @@
+===== Flight Service Stations (FSS) =====
+
+  * Within VATSSA Airspace, there are three Designated FSS Airspaces, namely Africa Control West, Africa Control Central and Africa Control South.
+  * These FSS airspaces cover specific FIR regions above FL245, except if there is local ATC coverage.
+
+==== FSS Stations ====
+
+^ Station                     ^ FIR                         ^ ATC Type    ^ Remarks ^
+| [[airspace:afrc:home|AFRC]] | [[airspace:flfi:home|FLFI]] | -           | - |
+| :::                         | [[airspace:fnan:home|FNAN]] | Procedural  | - |
+| :::                         | [[airspace:fsss:home|FSSS]] | Procedural (FIR)  | - |
+| :::                         | [[airspace:fwll:home|FWLL]] | Procedural (FIR) | - |
+| :::                         | [[airspace:fzza:home|FZZA]] | -           | - |
+| :::                         | [[airspace:hbba:home|HBBA]] | -           | - |
+| :::                         | [[airspace:hkna:home|HKNA]] | Radar (FIR) | - |
+| :::                         | [[airspace:hryr:home|HRYR]] | -           | - |
+| :::                         | [[airspace:htdc:home|HTDC]] | Procedural  | - |
+| :::                         | [[airspace:huec:home|HUEC]] | -           | - |
+| [[airspace:afrs:home|AFRS]] | [[airspace:faca:home|FACA]] | Radar (FIR) | //does NOT includes FAJO// |
+| :::                         | [[airspace:faja:home|FAJA]] | Radar (FIR) | ::: |
+| :::                         | [[airspace:fbgr:home|FBGR]] | Procedural (FIR)  | - |
+| :::                         | [[airspace:fimm:home|FIMM]] | ADS-B Satellite (FIR), Radar (Ivato TMA) | - |
+| :::                         | [[airspace:fmmm:home|FMMM]] | Procedural (FIR)  | - |
+| :::                         | [[airspace:fqbe:home|FQBE]] | Procedural (FIR)  | - |
+| :::                         | [[airspace:fvhf:home|FVHF]] | Radar (FIR), Radar (TMA FVRG) | - |
+| :::                         | [[airspace:fywf:home|FYWF]] | Radar (FIR) | - |
+| [[airspace:afrw:home|AFRW]] | [[airspace:dgac:home|DGAC]] | -           | - |
+| :::                         | [[airspace:dnkk:home|DNKK]] | Radar (FIR) | - |
+| :::                         | [[airspace:fccc:home|FCCC]] | -           | - |
+| :::                         | [[airspace:glrb:home|GLRB]] | -           | - |
+| :::                         | [[airspace:gooo:home|GOOO]] | -           | //includes GOOO Oceanic// |
+| :::                         | [[airspace:gvsc:home|GVSC]] | Procedural (Oceanic), Radar (TMA) | - |

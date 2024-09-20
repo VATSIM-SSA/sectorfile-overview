@@ -1,0 +1,10 @@
+===== Welcome to the Cross the Pond 2023 Westbound Pilot Briefing ======
+
+  * The following resources are available for pilots.
+
+^ Airport ^ Pilot Briefing ^ Scenery ^ Charts ^ Notes ^
+| [[dnmm-about|DNMM]]     | [[dnmm-briefing|Briefing]] | [[dnmm-scenery|Scenery]] | [[dnmm-charts|Charts]] | - |
+| [[fact-about|FACT]]     | [[fact-briefing|Briefing]] | [[fact-scenery|Scenery]] | [[fact-charts|Charts]] | - |
+
+
+Should you have any specific questions regarding any of these airports, feel free to join the VATSSA Discord via the [[https://community.vatsim.net/|VATSIM Community Hub]].
