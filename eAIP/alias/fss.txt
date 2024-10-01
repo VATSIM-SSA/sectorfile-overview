@@ -20,10 +20,10 @@
 | .co       | Contact $radioname($1) $freq($1), good bye. | - |
 | .rst      | Radar service terminated. | - |
 | .noatc    | You are leaving my airspace, no further ATC service available, radar service terminated. Frequency change is approved, enjoy your flight, good bye. | - |
-| .noatcb   | $radioname is closing, no further ATC service available, radar service terminated. Make blind transmissions on UNICOM 122.800 and have a good flight, good bye. | - |
+| .noatcb   | $radioname is closing, no further ATC service available, radar service terminated. Make blind transmissions on Advisory Frequency 122.800 and have a good flight, good bye. | - |
 | .noatcc   | $radioname is closing, for further ATC service contact $radioname($1) $freq($1), good bye. | - |
-| .noatco   | You are outside of my airspace, continue own discretion and make blind transmissions on UNICOM 122.800, good bye. | - |
-| .blt      | Please use UNICOM 122.800 for blind transmissions. Thank you. | - |
+| .noatco   | You are outside of my airspace, continue own discretion and make blind transmissions on Advisory Frequency 122.800, good bye. | - |
+| .blt      | Please use Advisory Frequency 122.800 for blind transmissions. Thank you. | - |
 | **04 Transponder** |||
 | .sq       | Set squawk $squawk. | - |
 | .sqs      | Set squawk STANDBY. | - |

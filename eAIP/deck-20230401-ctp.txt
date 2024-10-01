@@ -158,7 +158,7 @@
 === Enroute ===
 
   * Non Event Traffic shall be maintained at FL300 or below if in conflict with any Event Traffic.
-  * If Controllers unable to coordinate Non Event Traffic (to be reviewed case per case), feel free to drop them below FL250 and send them to UNICOM.
+  * If Controllers unable to coordinate Non Event Traffic (to be reviewed case per case), feel free to drop them below FL250 and send them to Advisory Frequency.
   * Report all instances to the TMU Coordinator.
 
 ==== Other Information ====
