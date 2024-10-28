@@ -7,7 +7,7 @@
   * [[..:airport/fact/briefing]]
   * [[..:airport/faor/briefing]]
   * [[..:airport/fawb/briefing]]
-  * [[..:airport/fsia/briefing|FSIA Pilot Briefing]]
+  * [[..:airport/fsia/briefing]]
   * [[..:airport/gobd/briefing]]
   * [[..:airport/gooy/briefing]]
   * [[..:airport/gvac/briefing]]
@@ -15,17 +15,17 @@
   * [[..:airport/gvnp/briefing]]
   * [[..:airport/gvsv/briefing]]
   * [[..:airport/hkjk/briefing]]
-  * [[..:airport/hkmo/briefing|HKMO Pilot Briefing]]
-  * [[..:airport/htda/briefing|HTDA Pilot Briefing]]
+  * [[..:airport/hkmo/briefing]]
+  * [[..:airport/htda/briefing]]
   * [[..:airport/huen/briefing]]
 </pagelist>
 
 === The following airports have eAIP pages, but not complete pilot briefings: ===
 
   * [[..:airport/diap/briefing]]
-  * [[..:airport/fbsk/briefing|FBSK Pilot Briefing]]
+  * [[..:airport/fbsk/briefing]]
   * [[..:airport/fdsk/briefing]]
   * [[..:airport/flkk/briefing]]
-  * [[..:airport/fnlu/briefing|FNLU Pilot Briefing]]
-  * [[..:airport/fvfa/briefing|FVFA Pilot Briefing]]
-  * [[..:airport/fvrg/briefing|FVRG Pilot Briefing]]
+  * [[..:airport/fnlu/briefing]]
+  * [[..:airport/fvfa/briefing]]
+  * [[..:airport/fvrg/briefing]]
