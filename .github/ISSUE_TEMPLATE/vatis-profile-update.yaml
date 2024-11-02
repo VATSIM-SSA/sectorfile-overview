@@ -1,0 +1,28 @@
+name: vATIS Profile Update
+description: Request an update to a vATIS profile
+title: "[vATS]: "
+labels: ["enhancement"]
+
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: What type of vATIS Update are you requesting?
+      description: Please select the appropriate type of vATIS update.
+      multiple: false
+      options:
+        - New Runway Configuration
+        - New NOTAM
+        - New Airport
+        - Other
+    validations:
+      required: true
+- type: textarea
+  attributes:
+    label: Any additional context?
+    description:
+      Links? References? Anything that will help us implement this would be appriciated!
+
+      Thanks!
+  validations:
+    required: false
