@@ -51,7 +51,7 @@
                 "state" : "Controlling ({current_tracked} of {total_inrange})",
                 "details" : "{rcallsign} on {frequency}MHz",
                 "presence_small_image_text" : "{callsign}",
-                "presence_large_image_text" : "Visit us at vatssa.com | Come fly!"
+                "presence_large_image_text" : "Visit us at vatssa.com"
             },
             
             "if_supervisor": {
