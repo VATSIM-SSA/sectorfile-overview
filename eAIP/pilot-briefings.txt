@@ -1,18 +1,13 @@
+=== The following airports have pilot briefings: ===
+
 <pagelist&header&nouser>
   * [[..:airport/dgaa/briefing]]
-  * [[..:airport/diap/briefing]]
   * [[..:airport/dnaa/briefing]]
   * [[..:airport/dnmm/briefing]]
   * [[..:airport/fact/briefing]]
   * [[..:airport/faor/briefing]]
   * [[..:airport/fawb/briefing]]
-  * [[..:airport/fbsk/briefing]]
-  * [[..:airport/fdsk/briefing]]
-  * [[..:airport/flkk/briefing]]
-  * [[..:airport/fnlu/briefing]]
   * [[..:airport/fsia/briefing]]
-  * [[..:airport/fvfa/briefing]]
-  * [[..:airport/fvrg/briefing]]
   * [[..:airport/gobd/briefing]]
   * [[..:airport/gooy/briefing]]
   * [[..:airport/gvac/briefing]]
@@ -24,3 +19,13 @@
   * [[..:airport/htda/briefing]]
   * [[..:airport/huen/briefing]]
 </pagelist>
+
+=== The following airports have eAIP pages, but not complete pilot briefings: ===
+
+  * [[..:airport/diap/briefing]]
+  * [[..:airport/fbsk/briefing]]
+  * [[..:airport/fdsk/briefing]]
+  * [[..:airport/flkk/briefing]]
+  * [[..:airport/fnlu/briefing]]
+  * [[..:airport/fvfa/briefing]]
+  * [[..:airport/fvrg/briefing]]

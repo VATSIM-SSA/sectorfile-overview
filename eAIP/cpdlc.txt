@@ -1,0 +1,9 @@
+====== CPDLC ======
+
+==== Overview =====
+
+  * VATSSA encourages controllers to use CPDLC wherever possible (see https://www.hoppie.nl/acars/). For suitably equipped airports, this includes Pre-Departure Clearances (PDC), and the CPDLC log on will be the airport ICAO code. It is expected from controllers to put their CPDLC logon code into their controller remarks if they are using it.
+
+  * For enroute CPDLC use, this is offered over much of VATSSA, and the table below shows the position, together with the CPDLC logon code. 
+
+  * Please visit the [[https://vatssa.com/hq/welcome.php|VATSSA]] website for more information under the //Pilots -> CPDLC// tab.

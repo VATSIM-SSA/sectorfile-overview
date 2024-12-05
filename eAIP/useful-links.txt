@@ -1,0 +1,12 @@
+====== Useful links: ======
+
+  * [[https://eaip.vatssa.com/pilot-briefings|Pilots briefing]]
+  * [[https://eaip.vatssa.com/airport-index|Airport Index]] or [[https://eaip.vatssa.com/airport/home|airports home]]
+  * [[https://eaip.vatssa.com/airport/home|Airpspace]] Index
+  * [[https://eaip.vatssa.com/phraseology-icao|ICAO]] Phraseology
+  * [[https://eaip.vatssa.com/icao-cruiselevels|ICAO]] Cruislevels
+  * [[https://eaip.vatssa.com/ssa-transition-table|SSA]] Transition Table
+  * [[https://eaip.vatssa.com/glossary|Glossary]]
+  * [[https://eaip.vatssa.com/alias/std|Alias for STD]] or [[https://eaip.vatssa.com/alias/fss|alias for STD]]
+  * [[https://eaip.vatssa.com/fasa_topysky_tags|FASA]] TopSky Tags
+  * [[https://eaip.vatssa.com/cheatsheet-topsky|TopSky]] Cheatsheet
