@@ -6,14 +6,14 @@
 ==== Oceanic Stations ====
 
 ^ Station   ^ FIR       ^ Name                  ^ Remarks ^
-| Atlantic  | [[GVSC]]  | Sal Oceanic           | (1) |
-| :::       | [[GOOOO]] | Dakar Oceanic         | (2) |
-| :::       | [[DGAO]]  | Accra Oceanic         | (2) |
-| :::       | [[FNAN]]  | Luanda Oceanic        | (3) |
-| :::       | [[FAJO]]  | Johannesburg Oceanic  | (2) |
+| Atlantic  | [[airspace:gvsc:home|GVSC]]  | Sal Oceanic           | (1) |
+| :::       | [[airspace:gooo:home|GOOO]] | Dakar Oceanic         | (2) |
+| :::       | [[airspace:dgao:home|DGAO]]  | Accra Oceanic         | (2) |
+| :::       | [[airspace:fnan:home|FNAN]]  | Luanda Oceanic        | (3) |
+| :::       | [[airspace:fajo:home|FAJO]]  | Johannesburg Oceanic  | (2) |
 | Indian    | :::       | :::                   | ::: |
-| :::       | [[FIMM]]  | Mauritius             | (4) |
-| :::       | [[FSSS]]  | Seychelles            | (5) |
+| :::       | [[airspace:fimm:home|FIMM]]  | Mauritius             | (4) |
+| :::       | [[airspace:fsss:home|FSSS]]  | Seychelles            | (5) |
 | ||||
 | (1) The Oceanic airspace covers the whole of the FIR with the exception of the Sal Approach TMA airspace. ||||
 | (2) Fully Oceanic Airspace. ||||
