@@ -12,16 +12,13 @@ jobs:
     name: "Deploy TopSky Plugins to AFRC"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Pushes test file
-        uses: timthedev07/copy_file_to_another_repo_action@v2.0.0
+      - name: Push generated webpage to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source_file: "Plugins/TopSky/TopSky.dll"
-          destination_repo: "VATSIM-SSA/sectorfile-afrc"
-          destination_folder: "Plugins/TopSky"
-          user_email: "30835922+miguelalbano@users.noreply.github.com"
-          user_name: "miguelalbano"
-          commit_message: "update: topsky plugin"
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "miguelalbano"
+          destination-repository: "VATSIM-SSA/sectorfile-afrc"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
