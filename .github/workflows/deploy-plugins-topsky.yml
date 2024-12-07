@@ -20,5 +20,7 @@ jobs:
           source-files: "Plugins/TopSky/TopSky.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-afrc"
+          destination-branch: "main"
           destination-directory: "Plugins/TopSky"
           commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
