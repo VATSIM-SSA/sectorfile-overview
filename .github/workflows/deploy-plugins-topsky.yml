@@ -18,7 +18,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
           source-files: "Plugins/TopSky/TopSky.dll"
-          destination-username: "miguelalbano"
-          destination-repository: "VATSIM-SSA/sectorfile-afrc"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrc"
           destination-directory: "Plugins/TopSky"
           commit-email: "30835922+miguelalbano@users.noreply.github.com"
