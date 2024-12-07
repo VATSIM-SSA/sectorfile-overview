@@ -15,13 +15,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Pushes test file
-        uses: uses: timthedev07/copy_file_to_another_repo_action@v2.0.0
+        uses: timthedev07/copy_file_to_another_repo_action@v2.0.0
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
           with:
-            source_file: 'Plugins/TopSky/TopSky.dll'
-            destination_repo: 'VATSIM-SSA/sectorfile-afrc'
-            destination_folder: 'Plugins/TopSky'
-            user_email: '30835922+miguelalbano@users.noreply.github.com'
-            user_name: 'miguelalbano'
-            commit_message: 'update: topsky plugin'
+            source_file: "Plugins/TopSky/TopSky.dll"
+            destination_repo: "VATSIM-SSA/sectorfile-afrc"
+            destination_folder: "Plugins/TopSky"
+            user_email: "30835922+miguelalbano@users.noreply.github.com"
+            user_name: "miguelalbano"
+            commit_message: "update: topsky plugin"
