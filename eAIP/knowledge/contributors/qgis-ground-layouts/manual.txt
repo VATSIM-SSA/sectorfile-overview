@@ -1,0 +1,238 @@
+===== QGIS Ground Layout development (Manuel): =====
+
+=== This guide explains how to get QGIS up and running for Ground Layout developments: ===
+
+Here is a general overview of what we are going to do, with some abbreviations that is present throughout the guide.
+  * We will get data from OpenStreetMaps (OSM), and then convert it into a format that the Euroscope (ES) plugins, TopSky (TS) and GroundRadar (GR) can read so that, that plugins can then display it on EuroScope (ES).
+  * Through out the guide I will be referring to "objects". That is the individual layers (polygons, linestrings, points) in QGIS.
+
+To find airports to work on, you can refer to the issue section of the individual sectors' GitHub page. More information on how to find and use issues can be found here.
+
+=== Step 1: Get the necessary software ===
+
+Download the following:
+  * QGIS from the [[https://qgis.org/download/|QGIS website]]
+  * [[https://www.neolink.si/files/QGis2TopSky.exe|App]] to convert the data exported from QGIS (in GeoJSON format) to GR / TS coordinates format
+  * [[https://plugins.qgis.org/plugins/QuickOSM/|Quick OSM]] plugin from within QGIS plugin manager
+  * [[https://plugins.qgis.org/plugins/BulkVectorExport/|bulkvectorexport]] plugin from QGIS plugin manager. Make sure you have the correct one installed.
+  * [[https://plugins.qgis.org/plugins/widen-line-qgis-plugin/|Aerodrome Utilities]] plugin from QGIS plugin manager. You can also download it from [[https://github.com/BrakingChanges/widen-line-qgis-plugin|GitHub]], and import the plugin via a manual import process.
+
+=== Step 2: Get QGIS ready: ===
+
+== Create a new project ==
+
+* Firstly, open a new project by clicking <code>Project -> New Project</code>
+
+* Then, save the a project file by doing <code>CTR+S</code>. I suggest creating a project folder, called for example the airports ICAO code, in which you can save all of the different objects and layers.
+
+* Drag the OpenStreetMaps object from under XYZ tiles (In the "Browser" tab), to your project "Layers" tab, and you should see a world map appear if done correctly. This is what you want:
+
+{{wiki:qgis-OSM-map.png}}
+
+* You can also right click the XYZ tiles button, and click on <code>New Connection</code> . In the name field, you can name anything, like "Google Satelliet", and then add the following URL to the URL field, https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z} . This allows you to get Google Satelliet Imagery into QGIS. You can then click "OK". It would look sothing like this:
+
+{{wiki:google-earth-layer.png}}
+
+<note>To draw the groundlayouts in QGIS, there are a manual process, or you could make use of the plugin. The legacy (manuel) guide, can be found here. Just note, it still 100% works, it is just much harder and tedious.</note>
+ 
+## Step 3: Get the data from OSM.
+> ### Some info about step 3:
+> OSM works with an tag system, basically there is the data is saved in two parts:
+> * There is the tag. This is the general thing / general about section under which all the data is stores. It it called the "Tag", for example, _highway_, _aeroway_ etc. All airport data is stored under the general tag "aeroway"
+> * And then there are the key. The "Key" is the specific thing under which the data is saved. For example, keys for the tag _aeroway_ is, _taxiway_, _runway_, _hangar_, _apron_ etc..
+>
+> This means that all queries (Query in this case basically means to "get" data from OSM) to OSM, in the QuickOSM plugin, will be with a tag of _aeroway_ and a key of _something_ else, that differs for every piece of the data that you will get. Generally, it is written as _aeroway=taxiway_ , with _aeroway_ being the tag, and _taxiway_ the key. Every single airport has got different components keys, as not everything (not all keys) is included in every airport. Some airports has extra data, some airports has less data. So the first step that we need to do, is to figure out what data / tags are present in your airport that you are doing a Ground Layout for.
+>
+> **Please note:** Even if you save your work as .qkz, nothing is made "permanent" until the end of step 4, meaning if you close the app between step 2 and 4, nothing will be saved, and you will have to start from scratch. So proceed with caution.
+>
+***
+### The step 3 process:
+* Open the QuickOSM plugin from VECTORS->Quick OSM. Every time you request data (polygons, lines, points etc.) from OSM, it should be done from here.
+> QuickOSM uses a different naming scheme than the rest of OSM. _key_ here refers to _tag_ in the explanations above, and _value_ to _key_ as explained above.
+* In the left hand "Key" coloum, write _aeroway_, and  leave the right hand coloum empty. That query will be treated as a wildcard, because the "Value" coloum is empty. (It will generate and return everything under the _aeroway_ tag, meaning it will include everything of airport). 
+> This is done to see which data (What different _Keys_ or _Values_ is all in the OSM database), but this format that the data is returned is not ideal, as everting will be in one “object”, rather than every object being returned individually. (Just note, there will technically be more than one object, as the lines is split from the polygons and from the dots, but it wont be individually (Every _Keys_ or _Values_ split into its own object) as we want it.) 
+> So now, after we query this, we will have to “add” every layer from OSM again, but we will now the names, of the right hand tags, of what data / objects is in OSM for the airport, by looking at the object generated from that wildcard. (Explained later how to do this)
+* Also, from the “In” dropdown section,, select “on canvas”.
+* Then click “run query”, and that will generate the object / objects from that wildcard.
+* After you got that component from the wildcard, return to the main QGIS window, and for every component generated, right click it, and select “Show Attributes Table”
+ 
+* For every different name in the "aeroway" coloum, (for example, you are looking for different words such as: terminal, apron, helipad, runway, hangar_ ect.), you have to put that in the second coloum (The _value_ coloum) of QuickOSM, and hit "run" for every single thing. Only do this once per different name. So don't for example, do it two times for the _value_ of _taxiway_ , even though that word appear more than one time in the attributes table. But you should do it for every different word. This will generate all the OSM data as individual objects. You should look in every object (that was generated from the query with the wildcard) attributes table, not just in one of the attributes table.
+* After that's done, delete the data you got from the wildcard’s initial search, as it is now redundant and duplicated. (Everything which name is only “aeroway”, and not “aeroway_xxxxx”). This can be done with a Right click -> Remove Object, and then hitting "Yes" in the popup.
+
+## Step 4: Format the data:
+* You should move everything into one group, (create a group with one of the buttons om the top, as seen on the image) in order to make the export process much easier. You can name it the airport ICAO. Now is also a good time to save, CTR+S (You will save the project as a _.qgz_ , named with the ICAO. 
+
+![image](https://github.com/user-attachments/assets/f4bb31a5-2c16-47db-a19c-b48c4271fce2)
+
+ * Move all the objects into that group
+
+* Please also delete the OpenStreetMaps tile / object from your map now. (Right click, remove object). The OpenStreetMaps tile should be deleted because if not, it will be problematic in the last exporting step. 
+
+* You should change the order of layers, so that its gets displayed correctly in your window. What is on the top, is what going to be on top in Euroscope. For example, the polygons should be under the taxilines, or else you wouldn't see the taxilines in ES. 
+> The colours or width of the objects doesn't really matter, as it will be replaced in the converting tool. (The aeroway_aerodrome should always be on the bottom for example)
+* After that is done, rename all of objects (Layer name) (by Right clicking on the object -> Rename ), starting from the bottom. The most bottom object's should be name should start with 001_ and end with the type of object it is going to be, ( either _POLIGON , or _LINE , or _TEXT for all points). For example, 001_aeroway_aerodrome_POLIGON. You should do that for every single object, with the number just increasing, and the end that will differ for every different type. This is done so that the converting tool will be able to automatically assign the layers in the correct order, and to make it get the correct type (polygon, linestring, point) automatically.
+
+The result will look something like:
+
+![image](https://github.com/user-attachments/assets/9379c5fe-f745-4c57-a5ee-994d5700f9e6)
+
+### Saving and exporting of the objects:
+> This step is the most tedious part. 
+* There is 3 steps, so I recommend making a folder for every step. (Named something like _Save Step 1_, _Save Step 2_, and _Save Step 3_.
+* Now, before moving on, deselect everything to hide everything. Nothing should be displayed on your map screen area. Every time you convert something, a duplicate of that object will appear, with the same name, but it will never be unselected. This means that you will know what your old objects is, and what your new object is (by looking at what is selected / deselected), in order for you to be able to know what the old ones were, so that you can delete the correct ones.
+ 
+>**Right so here's some info:**
+>
+> **First bit of info:** The converter can't read polygons. It can only read LineStrings, which is basically the outline of the polygon without it being filled. In QGIS, there's also a difference between a Multipoligon, and a polygon, as well as between a MultiLineString and a LineString. (I think there is a difference in how the data is stored behind the scenes, but I'm not sure.) The converter can also only read normal LineStrings, not MultiLineStrings, not MultiPolygons, nor normal polygons. The data from OSM gives you MulitPolygons and not normal "Polygons".
+> This means that every polygon we need to convert as follows:
+> 1. Get Mulipolygon from OSM (Step 3)
+> 2. Convert Multipolygon to MultiLinestring (Save Step 1)
+> 3. Covert MultiLinestring to normal Linestring (Save Step 2)
+> It is also possible to convert from MultiPolygon to normal Polygon, but from normal Polygon you can only go to MultiLineString, not normal Linestring, that's why we do it in the order as explained above.
+>
+> **Second bit of info:** When you get data from OSM via the QuickOSM plugin, it gives you it in a "temporary" format. This means that if you don't "Make it permanent" or export it to a GeoPackage format, and you close QGIS, you won't be able to see the objects again, meaning that you will have to start over. (This is what the warning in the beginning was about.) And this is what Save Step 3 is for. (This step is not necessary for the polygons, as you have already saved / exported it in Save Step 1 and 2.)
+
+### SAVE STEP 1: 
+> This step must be done for all polygons, but not for any lines or points.
+* Make sure all the polygons is unselected.  
+
+**Repeat this for every polygon:**
+* Click on the object: Right click -> Rename, CTR+C that, and then click out of the renaming box. 
+* Go to the top bar, Vector -> Geometry Tools -> Polygons to Lines. Under the "Line" section, click the "file explorer" button, and create a folder somewhere called anything, but I recommend calling it "Step 1", and just hit CTR+V for the file name, and hit "Run". 
+
+**When you are done repeating that for every polygon:**
+* Delete the original objects (Right click -> Remove Object)
+* Then drag the objects that was generated, into the group in the right order / place. 
+
+> (You have now converted the MultiPolygons to MultiLineStrings)
+
+### SAVE STEP 2: 
+
+> This step must be done for all origan polygons object, that is now LineStrings, but not for any lines or points.
+* Make sure all the polygons is unselected again.  
+
+**Repeat this for every polygon:**
+* Click on the object: Right click -> Rename, CTR+C that, and then click out of the renaming box. 
+* Go to the top bar, Vector -> Geometry Tools -> Multipart... to Singlepart... Under the "Line" section, click the "file explorer" button, and create a folder somewhere called anything, but I recommend calling it "Step 2", and just hit CTR+V for the file name, and hit "Run". 
+
+**When you are done repeating that for every polygon:**
+* Delete the original objects (Right click -> Remove Object)
+* Then drag the objects that was generated, into the group in the right order / place. 
+
+> (You have now converted the MultiLinesStrings to normal LineStrings.) You are now also done with the originally polygons objects.
+
+### SAVE STEP 3: 
+
+> This step is for all the objects that wasn't polygons in the beginning, meaning all the original points and lines.
+* Make sure all objects (The original original points and lines, for example taxiways and runways) are all unselected.  
+
+**Repeat this for every polygon:**
+* Right click on the objects -> Export -> Save Feature As... 
+  1. The format should be GeoPackage, 
+  2. The "Layername" should be auto generated. Click into that, CTR+A and the CTR+C
+  3. Then the next to the file name, click button to open a pop-up file explorer window. Create a folder (I recommend calling it "Step 3")
+  4. CTR+V the Layername as the filename in that pop-up file explorer, within the folder you made, to paste the name. Hit Save, to close the pop-up file explorer.
+  5. Then under the Geometry type, click either LineString (for taxiways / runways etc.) or Points (for text, points etc.), and NOT Automatic. Then hit 
+     OK at the bottom.
+
+**When you are done repeating that for every polygon:**
+* Delete the original objects (Right click -> Remove Object)
+* Then drag the objects that was generated, into the group in the right order / place. 
+
+> (You have now saved all the objects, and made it permanent.)
+## Further editing:
+
+### How to make a new layer / object for text:
+* Layer -> Create Layer -> New GeoPackage Layer
+* The following fields should be filled out
+1. Database: Click on the file explorer button. Create a new folder, I suggest calling the folder "Step 4", then name it with the following convention: 000_something_TEXT with the number and "something" obviously being replaced.
+2. Table name: This should be auto filled after you added the "Database field"
+3. Geometry Type: Point
+4. The dropdown must be left at EPSG:4326 - WGS 84
+5. Under the Field tab, add "TEXT" under the name, and then click "Add to field list".
+* Then hit "OK".
+>Sidenote, the converter lets you apply Zoom Levels. Meaning that it might help you to put the taxilabels in a different "Layer", than from the parking stand text, and than then text with says which building / apron is which. If you for example, want to give each of them a different colour / zoom level. Everything in one "Layer" will have the same TS /GR settings if that makes sense (due to how the converter works). You can create a layer, by just repeating the steps I mentioned here, as many times as necessary.
+
+### How to make a new layer / object for linestrings (for lines and polygons):
+* Layer -> Create Layer -> New GeoPackage Layer
+* The following fields should be filled out
+1. Database: Click on the file explorer button. Create a new folder, I suggest calling the folder "Step 4", then name it with the following convention: 000_something_POLYGONS or 000_something_LINE with the number and "something" obviously being replaced. The ending should change depending if you want to make a line or polygon for ES.
+2. Table name: This should be auto filled after you added the "Database field"
+3. Geometry Type: Linestring
+4. The dropdown must be left at EPSG:4326 - WGS 84
+* Then hit "OK".
+
+### How to enter into the editing mode of objects:
+* Right click on the object, and hit "Toggle Editing"
+
+To only **add** to a object, or to add a new "part" of an object, hit the blue button. This is for example used, is you want add text labels for the Ground Layout, or is you want to draw something new. Click on the screen on the place you want to add the object / point to. When you then click on the screen to draw, it will ask you for certain fields. For text labels specifically, leave the fid as autogenerated. and the TEXT field, the text you want displayed in ES. For the fields of anything else, you your common sense. 
+
+To **edit** part of an object, for example a part of a taxiway, or the aerodrome etc, hit the green button. Then hover over the part you want to edit, and left / right click in order to add / remove parts. Then hover with your mouse of the part of the object, and you will see it turn red. Left click / Right click / Drag to manipulate it as you wish.
+
+![image](https://github.com/user-attachments/assets/dc03e70f-a2f7-43de-b366-f4e58cd1a5e9)
+
+### How to exit the editing mode of objects:
+* When you are done with all your changes, just "Right Click" the object -> and hit "Toggle editing".
+* It will ask you if you want to save it, and obviously hit "Yes".
+
+### Exporting such changes:
+* Everything should be saved / in the right format already, so there is no need for Save Step 1-3 anymore. To confirm that it is in the right format, just Right click on the object -> Properties -. Information Tab.
+
+* You will se it here. Make sure its NOT a Polygon, MulitPolygon or MultiLineString.
+
+![image](https://github.com/user-attachments/assets/25917f4f-d12c-4b8b-835a-29f07e82c8f2)
+
+* Now export normally again, as per step 5 and 6. 
+
+> ### Changing how things look:
+> This won't affect how things are converted in the converter, and none of the things mentioned below will be in ES.
+>
+> * Right click on the object -> Properties -> Symbology
+> * Here you can change how objects get displayed in QGIS, if you want to make it look prettier. 
+> * Just remember that the colour or width of objects in QGIS, is transferred over to ES...
+
+Widening Taxiways on QGis
+Step 1 - Reprojection
+Open the toolbox by pressing on the green button, then select the taxiway line you got from OSM, then search for Reproject Layer under the Processing Toolbox search. then copy the name of your existing layer. Open the reproject layer dialog by double-clicking on it. Under Target CRS, select a CRS based on a UTM zone. For UTM zones, the numbers dictate longitude and the letters dictate latitude.
+Green Button
+
+In order to select this CRS, open the Select CRS dialog by pressing the (globe with a pencil) button. Search for UTM Zone your_utm_zone_here and under Predefined Coordinate Systems, a projected dropdown should show up. Open that dropdown and other dropdowns, till you see a list of names of Coordinate systems. Scroll through the names until you see WGS 84/UTM zone your_utm_zone_here..., then you can start scrolling through them with down and up arrow keys once one is selected. The world map to the right will cover what areas that CRS is valid for. Select the one appropriate for your airport.
+
+Next, under the reprojection field, choose a location to save the file for the reprojected layer so that everything is saved. I recommend to rename the file to the layer name to keep things simple.
+
+After that, you can run the tool which should return a reprojected layer. You can now delete the original layer and move the reprojeted layer as needed. You are now done with Step 1 -- the most difficult and perhaps annoying step
+Universal_Transverse_Mercator_zones
+
+Step 2 - Buffering
+With your newly reprojected layer, such for the Buffer tool on Processing toolbox, you can also find it via Vector -> Geoprocessing Tools -> Buffer. If you have done everything right and have the correct layer selected, it will now show in meters. You can change that according to your desired taxiway width. I recommend you leave all the settings as default except enabling Dissolve result, which will prevent end caps from showing up all over the taxiways 🙂
+
+As always, I recommend saving the layer to a file. I recommend creating new folders for each step to keep track of everything. Now you can run the tool and you should have a polygon. You can now delete the original and replace with the polygon -- but you're not out of the woods yet
+
+Step 3 - Reprojection(again)
+Lastly, get that same reprojection tool from Step 1 and Select ESPG:4326 - WGS84 and then convert it back. You may save the file(reccommended) and again delete original layer and replace with new layer after running the tool
+You can now run the polygon-multilinestring-linestring method mentioned by @RoboFun01
+
+Why Reproject?
+The default WGS84 standard -- the one the converter accepts is limited to degrees in terms of measurements. Likewise, the Buffer tool will ask for a distance in degrees which is not really useful in widening taxiways. Because of this, we have to convert the WGS84 default CRS to UTM zone CRS system which works best for me
+
+## Step 5: Export
+**Right so now the data is ready for export:**
+* Firstly, select everything again to make it visible again, if you have not yet done so.
+* Now make a new folder, in which you can export everything to in file explorer. (For example /FACT-Export-V1/ ) 
+* Go to Plugins -> "bulkvectorexport"(If yours says "Bulk Vector Export", and not like this mentioned, you have installed the wrong plugin. This is very important, make sure you have the correct plugin! 
+* The pop up will open. The format must be GeoJSON, and select an folder in which you can export to. Just note, it wont export to a ZIP, but everything as files. It can get messy if you don't make a dedicated folder…. 
+* Hit "Ok".
+
+> The plugin wont give conformation, but just check in a file explorer that the files got converted. There should ONLY be GeoJSON files, not other files, and the names of the files should be the "Layername". If not, you have the wrong plugin, so make sure you have the correct one installed. You are now done in QGIS.
+
+## Step 6: Convert
+* Open the converting app.
+* Click on import GeoJSON file. Select the entire folder that contains the exported data that you exported last out of QGIS.
+* Select “Import TS maps”, and either select the GR maps, or TS maps in the /ICAO/Plugins/TopSky/TSMaps.txt or /ICAO/Plugins/GroundRadar/GRMaps.txt folder of the sector file you are testing on. It can import both TS and GR just fine. Just note, if you import the GRMaps file, make sure all the colours you used are defined in TSMaps, and vice versa.
+* Add the airport ICAO, and the output folder / file name
+* Add colours to every single “line” / “object” by selecting from the dropdown. The available colours is from what is in the TS / GR maps folder, and is visualized on the right hand side.
+* Add more fields if you want for example the zoom level.
+(The layers and name field should be filled in automatically)
+* Then it export / "Convert & save", and it will generate and convert it!
+* It will make a .txt doc, which can be added to TS Maps / GR Maps. (Copy and paste)
+

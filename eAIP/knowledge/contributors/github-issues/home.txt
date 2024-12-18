@@ -1,0 +1,33 @@
+===== How to Share Knowledges / Updates to Procedures via GitHub Issues =====
+
+  * First, go to [[https://github.com/|GitHub]] and create an account. If you already have an account, simply sign in.
+
+  * Next, head over to [[https://github.com/VATSIM-SSA|VATSSA's GitHub organization profile]] by visiting the link, or searching in the search bar.
+
+  * After you opened VATSSA's profile, in the top navigation bar, click on the <code>Repositories</code> button. Each of VATSSA's FIRs or sectors has its own repository. Find the relevant repository for your area, such as [[https://github.com/VATSIM-SSA/sectorfile-fasa|"sectorfile-fasa"]] , under the <code>Repositories</code> tab .
+
+  * Alternatively, you can access any sector by following this [[https://github.com/VATSIM-SSA/sectorfile-ICAO|URL]], replacing <code>ICAO</code> with the appropriate ICAO code: https://github.com/VATSIM-SSA/sectorfile-ICAO .
+
+  * When inside a repository page, you will see several tabs at the top (e.g., <code>Code</code>, <code>Issues</code>, <code>Pull Requests</code>). Click on the <code>Issue`s tab</code> , or go directly to the sector's issues page by visiting: https://github.com/VATSIM-SSA/sectorfile-ICAO/issues (replacing <code>ICAO</code> with the sector's ICAO code).
+
+  * You now found the issue section of the VATSSA Sector Files. This is where we keep track of all things we can work on. If you are looking for something to help with, issues is the right place to start. You can also create issues on the issue page for bugs, or suggestion, or to share knowledge with us. If you are working on something, we appropriate it if you can create a issue, or comment on a issue, to tell all the other contributors your working on it. This ensures that two people do not do the same stuff / work. 
+
+  * On the issue page, you will find a lot of different information about it. Below is a list explaining what each part means:
+    * Yellow: The type is present in the name. It can be:
+      * [GLYT]: A suggestion for a Ground Layout Enhancement to this Sector File
+      * [eAIP]:A request an update to the eAIP
+      * [GNG]: A request to update a new GNG Change Requirement for this Sector File. More information about GNG can be found here.
+      * [BUG]: A report of a Bug with this Sector File
+      * [PSTN]: A request a new or a change to an ATC Position
+      * [FEAT]: A  suggestion for an Enhancement to this Sector File
+      * [NOTAM]: A suggestion for a NOTAM Implementation to this Sector File 
+      * [vATS]: A request for an update to a vATIS profile
+    * Green: GitHub tags which was added to this issue to categorise it.
+    * Red: This is the issue number. This number can be used to reference the issue in pull request, other issues, etc.
+    * Pink: This is the date when the issue was created.
+    * Orange: This shows which GitHub user created the issue. 
+    * Purple: This is the GitHub milestone which this issue was assigned to. In VATSSA this is normally AIRAC dates, and its approximations when the issue would be fixed / closed / completed.
+
+{{wiki:github-issues.png}}
+
+  * So, to create a new issue, when you are on the issues page, look for the <code>New Issue</code> button in the top right. Click it, select the appropriate issue type, and fill in all the applicable fields in the form to submit the new issue. In these issues you can suggest updates / provide additional information / share any other relevant changes you think we should make. Thanks so much! Your contributions are greatly appreciated!

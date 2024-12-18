@@ -1,0 +1,158 @@
+===== Guide to contributing to the VATSIM AIP pages =====
+
+The VATSIM AIP contains information about airports and frequencies, and is used by pilots as well as various other services. Third-party services, such as VATSIM-Radar, also utilize this information. (You can click [[https://vatsim-radar.com/?airport=KJFK|here]] and go to the //info// tab, to get an example of how the data is used.)
+
+------
+
+===== Introduction =====
+
+=== Where to edit? ===
+After gaining access to edit the VATSIM AIP, you can head to [[https://my.vatsim.net/|my.vatsim.net]], and you should see an option to manage the AIP in the left hand sidebar under the //ADMIN AREA//, as shown below.
+
+{{wiki:admin_panel.png}}
+
+=== What edit options are there? ===
+
+  * The **Manage AIP Airports** tab is used to add new airports to the AIP, modify already added airports, as well as assigning positions or //stations// to certain airports. Note, you can only create or modify airports in a FIR you got assigned permissions for.
+  * The **Manage AIP Station** tab is used to create new positions (or //"stations//") for the AIP, as well as modifying already added positions (or //"stations"//). Note, you cannot assign these positions to airports here, as that can only be done through the **Manage AIP Airports** tab. You will find that you don't use this tab very frequently, as positions (or //"stations"//) can also be created in the **Manage AIP Airports** after an airport was added.
+
+=== How to see which FIRs you got access too? ===
+In order to confirm which FIRs you got access to, click on **Manage AIP Airport** -> **Add Airport** , and the scroll down until you see **FIR/vACC** . The options in that dropdown, are the FIRs you have access to. In the example below, the individual have access to the //DAKAR// and //SAL OCEANIC// FIRs.
+
+{{wiki:fir_vacc.png}}
+
+------
+
+===== Creating AIP airports =====
+
+===== Step 1: Finding an airport =====
+
+Firstly, you need to identify an airport in a FIR you got access too, which is missing. Currently, we are trying to focus solely on controlled, large international airport. 
+
+=== Method 1: ===
+You can see all airports in a FIR, by using [[https://vatspy.rosscarlson.dev/|VATSPY]], and changing the view / settings on the top bar to only show airport, as shown below.
+
+{{wiki:vatspy-option.png}}
+
+=== Method 2 (Strongly recommended): ===
+Alternatively, you can download the FIR's sector file from GnG AeroNav [[https://files.aero-nav.com/|here]], and then extract it. Inside the root folder, there should be a .SCT file, called something like <code></code>FASA-Package_20241130200629-241201-0002.sct</code>
+
+Open the .SCT file up in a normal text editor, (such as Notepad, Visual Studio Code, Notepad++), and scroll down, or search for the section called: **[AIRPORTS]**
+
+Here you would find a list of airports within the sector that has been added into the sector file. **Note, this list included most airports, including small, domestic / regional airports, some of which in uncontrolled.** You your own judgment. 
+
+You can also look at the ASRs included in the sector file, (With F1+Num key numbers) as that gives a good indication of which airports are popular, and worth adding.
+
+------
+
+==== Step 2: Adding the airport ====
+
+Once you have identifies an airport to work on, open the **Add Airport** page by clicking [[https://my.vatsim.net/admin/aip/airports/create|here]], or going to **Manage AIP Airport** -> **Add Airport** on [[https://my.vatsim.net/|my.vatsim.net]]
+
+=== Now, here is a quite guide on where to find information: ===
+
+------
+
+=== IATA, ICAO and airport Name: ===
+Firstly, google the ICAO code with airport, like [[https://www.google.com/search?q=FACT+airport|"FACT airport"]], and click on the Wikipedia page. You should easily be able to also get the airport name, and IATA code from there, as shown below. After this step, don't close this page, as you will be coming back to it!
+
+{{wiki:wikipedia-top.png}}
+
+> Note, the naming convention does not include the work "Airport" if possible. So "Cape Town International Airport", would be written only as "Cape Town International", and "O.R. Thambo International Airport", would be written only as "O.R. Thambo International". The name can also be obtained from Naviphragh.
+
+**So you know have the name, IATA and ICAO codes, and that can be written in the first 3 fields.** 
+
+{{wiki:first-part.png}}
+
+=== Longitude and Latitude ===
+
+Download the FIR's sector file from GnG AeroNav [[https://files.aero-nav.com/|here]], and then extract it. Inside the root folder, there should be a .SCT file, called something like `FASA-Package_20241130200629-241201-0002.sct`
+
+Open the .SCT file up in a normal text editor, (such as Notepad, Visual Studio Code, Notepad++), and scroll down, or search for the section called: **[AIRPORTS]**
+
+Under this section is all the airports withing that FIR. Search for the ICAO code of the airport you are working on under this section.
+
+It should be formatted like this:
+
+<code>FACT 000.000 S033.58.16.928 E018.36.15.451 D</code>
+
+We are interested only in the coordinates part of the line, so in the above example it would only be: <code>S033.58.16.928 E018.36.15.451</code>
+
+Copy the coordinates, and head over to this [[https://kilojuliett.ch/webtools/geo/coordinatesconverter|coordinates converter site]]. In the left hand side paste the coordinates, and then in the right hand side select "Decimal" as the output. It should look something like this (with different numbers of course):
+
+{{wiki:converter.png}}
+
+Copy the right hand side output to your clipboard. The first number is the Latitude, and the second is the Longitude. So in this case the Latitude would be -33.971368888889 and the longitude would be 18.604291944444 .
+
+So you now know where to find the latitude and longitude
+
+{{wiki:latlong.png}}
+
+=== Altitude, Transition Altitude and Transition Level [TO BE EDITED] ===
+
+All three of these data points can be found on Navigraph, or the FIR's AIP. A list of AIP's across the division can be found [[https://github.com/VATSIM-SSA/sectorfile-overview/wiki/Operational-Data-Sources|here]]. If the airport has an [[https://eaip.vatssa.com/|eAIP page]], it can also be found there.
+
+=== FIR/vACC, Country, City and General Information. ===
+
+The FIR/vACC should be easy to find, its most likely the name of the sector file, or you can find it by looking on VATSPY under which airport it is. For example, GVAC is the airport, and it under Sal Oceanic, so Sal Oceanis is the FIR/vACC.
+
+{{wiki:vatspy-firs.png}}
+
+The country and city, should be in the first few paragraphs of the Wikipedia page you opened earlier. For FACT, it is Cape Town and South Africa.
+
+{{wiki:wikipedia-second.png}}
+
+And lastly, the "General Information" should be the first paraph of Wikipedia summarized, so for FACT it could be something like:
+
+"Cape Town International Airport is the primary airport for Cape Town, South Africa, and the second busiest in the country. Located 20 km from the city centre, it opened in 1954, replacing Wingfield Aerodrome. It is the only airport in the area with scheduled passenger flights, both domestic and international."
+
+Note, please DO NOT write the ICAO / IATA codes again in the "General Information" field, as that would be a repetition.
+
+{{wiki:enrite-wiki.png}}
+
+------
+
+=== To summarise: ===
+
+**Name:** Wikipedia / Navigraph
+**ICAO:** Sector files / VATSPY
+**IATA:** Wikipedia
+**Latitude:** EuroScope .SCT file converted with online tool
+**Longitude:** EuroScope .SCT file converted with online too
+**Altitude (ft):** AIP, Navigraph or eAIP
+**Transition Altitude:** AIP, Navigraph or eAIP
+**Transition Level:** AIP, Navigraph or eAIP
+**FIR/vACC:** VATSPY / Common Sense
+**Country:** Wikipedia
+**City:** Wikipedia
+**General Information:** Wikipedia
+
+After you filled all these data fields in, and verified everything is correct, press "Submit", and the airport will be added!
+
+------
+
+==== Step 3: Adding the positions / stations: ====
+
+After the airport was created, you can head over to the **Manage AIP Airport** section again, and under "Actions", press "Edit".
+
+{{wiki:edit_button.png}}
+
+Then click "Add a station". 
+
+On this page you will have the ability to assign other positions created already from the  **Manage AIP Station** or from the **Manage AIP Airport** previously , so that for top down coverage for example, you will only have to create CTR positions once.... Another action you can preform here, is if the position you want to add has not yet been created, you can also create that new position here.
+
+When adding a position, the fields are simple: Name, Callsign and Frequency. 
+
+In VATSSA, the CTAF field should always be "No".
+
+You can use Navigraph / AIP for frequencies, or the sector file (Recommended) itself.
+
+To get it from the sector file, inside the root folder, there should be a .ESE file, called something like <code>FASA-Package_20241130200629-241201-0002.ese</code>
+
+Open the .ESE file up in a normal text editor, (such as Notepad, Visual Studio Code, Notepad++), and scroll down, or search for the section called: **[POSITIONS]**
+
+Here you will find a list of positions, with names, callsigns and frequencies. Repeat this for all the required positions, to add all the required frequencies. (Keeping the top down control, in the back of your mind. All positions that control that airport top down, should be added. Do not add FSS positions.)
+
+------
+
+And that's it, congrats, you added your first airport!
