@@ -1,0 +1,15 @@
+===== How to Share Knowledges / Updates to Procedures via GitHub Issues =====
+
+* First, go to [[https://github.com/|GitHub]] and create an account. If you already have an account, simply sign in.
+
+* Next, head over to [[https://github.com/VATSIM-SSA|VATSSA's GitHub organization profile]] by visiting the link, or searching in the search bar.
+
+* After you opened VATSSA's profile, in the top navigation bar, click on the <code>Repositories</code> button. Each of VATSSA's FIRs or sectors has its own repository. Find the relevant repository for your area, such as [[https://github.com/VATSIM-SSA/sectorfile-fasa|"sectorfile-fasa"]] , under the <code>Repositories</code> tab .
+
+* Alternatively, you can access any sector by following this [[https://github.com/VATSIM-SSA/sectorfile-ICAO|URL]], replacing <code>ICAO</code> with the appropriate ICAO code: https://github.com/VATSIM-SSA/sectorfile-ICAO .
+
+* When inside a repository page, you will see several tabs at the top (e.g., <code>Code</code>, <code>Issues</code>, <code>Pull Requests</code>). Click on the <code>Issue`s tab</code> , or go directly to the sector's issues page by visiting: https://github.com/VATSIM-SSA/sectorfile-ICAO/issues (replacing <code>ICAO</code> with the sector's ICAO code).
+
+* Lastly, when you are on the issues page, look for the <code>New Issue</code> button in the top right. Click it, select the appropriate issue type, and fill in all the applicable fields in the form to submit the new issue. In these issues you can suggest updates / provide additional information / share any other relevant changes you think we should make. 
+
+Thanks so much! Your contributions are greatly appreciated!

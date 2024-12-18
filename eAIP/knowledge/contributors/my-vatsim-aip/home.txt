@@ -1,4 +1,4 @@
-c===== Guide to contributing to the VATSIM AIP pages =====
+===== Guide to contributing to the VATSIM AIP pages =====
 
 The VATSIM AIP contains information about airports and frequencies, and is used by pilots as well as various other services. Third-party services, such as VATSIM-Radar, also utilize this information. (You can click [[https://vatsim-radar.com/?airport=KJFK|here]] and go to the //info// tab, to get an example of how the data is used.)
 
