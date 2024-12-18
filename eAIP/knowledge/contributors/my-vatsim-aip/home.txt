@@ -13,8 +13,8 @@ After gaining access to edit the VATSIM AIP, you can head to [[https://my.vatsim
 
 === What edit options are there? ===
 
-* The **Manage AIP Airports** tab is used to add new airports to the AIP, modify already added airports, as well as assigning positions or //stations// to certain airports. Note, you can only create or modify airports in a FIR you got assigned permissions for.
-* The **Manage AIP Station** tab is used to create new positions (or //"stations//") for the AIP, as well as modifying already added positions (or //"stations"//). Note, you cannot assign these positions to airports here, as that can only be done through the **Manage AIP Airports** tab. You will find that you don't use this tab very frequently, as positions (or //"stations"//) can also be created in the **Manage AIP Airports** after an airport was added.
+  * The **Manage AIP Airports** tab is used to add new airports to the AIP, modify already added airports, as well as assigning positions or //stations// to certain airports. Note, you can only create or modify airports in a FIR you got assigned permissions for.
+  * The **Manage AIP Station** tab is used to create new positions (or //"stations//") for the AIP, as well as modifying already added positions (or //"stations"//). Note, you cannot assign these positions to airports here, as that can only be done through the **Manage AIP Airports** tab. You will find that you don't use this tab very frequently, as positions (or //"stations"//) can also be created in the **Manage AIP Airports** after an airport was added.
 
 === How to see which FIRs you got access too? ===
 In order to confirm which FIRs you got access to, click on **Manage AIP Airport** -> **Add Airport** , and the scroll down until you see **FIR/vACC** . The options in that dropdown, are the FIRs you have access to. In the example below, the individual have access to the //DAKAR// and //SAL OCEANIC// FIRs.
