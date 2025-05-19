@@ -1,4 +1,4 @@
-===== How to Share Knowledges / Updates to Procedures via GitHub Issues =====
+===== How to Share Knowledge / Updates to Procedures via GitHub Issues =====
 
   * First, go to [[https://github.com/|GitHub]] and create an account. If you already have an account, simply sign in.
 
