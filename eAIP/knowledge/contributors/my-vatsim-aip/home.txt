@@ -39,7 +39,7 @@ Alternatively, you can download the FIR's sector file from GnG AeroNav [[https:/
 
 Open the .SCT file up in a normal text editor, (such as Notepad, Visual Studio Code, Notepad++), and scroll down, or search for the section called: **[AIRPORTS]**
 
-Here you would find a list of airports within the sector that has been added into the sector file. **Note, this list included most airports, including small, domestic / regional airports, some of which in uncontrolled.** You your own judgment. 
+Here you would find a list of airports within the sector that has been added into the sector file. **Note, this list included most airports, including small, domestic / regional airports, some of which in uncontrolled.** Use your own judgment. 
 
 You can also look at the ASRs included in the sector file, (With F1+Num key numbers) as that gives a good indication of which airports are popular, and worth adding.
 
