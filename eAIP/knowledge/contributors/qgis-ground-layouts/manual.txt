@@ -235,4 +235,5 @@ The default WGS84 standard -- the one the converter accepts is limited to degree
 (The layers and name field should be filled in automatically)
 * Then it export / "Convert & save", and it will generate and convert it!
 * It will make a .txt doc, which can be added to TS Maps / GR Maps. (Copy and paste)
+* You can now paste this file into the GRMaps file, or the TSMaps file respectively, and configure the rest of the TS / GR files.
 
