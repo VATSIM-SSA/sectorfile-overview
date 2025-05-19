@@ -29,7 +29,7 @@ Download the following:
 
 {{wiki:qgis-OSM-map.png}}
 
-* You can also right click the XYZ tiles button, and click on <code>New Connection</code> . In the name field, you can name anything, like "Google Satelliet", and then add the following URL to the URL field, https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z} . This allows you to get Google Satelliet Imagery into QGIS. You can then click "OK". It would look sothing like this:
+* You can also right click the XYZ tiles button, and click on <code>New Connection</code> . In the name field, you can name anything, like "Google Satelliet", and then add the following URL to the URL field, https://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z} . This allows you to get Google Satelliet Imagery into QGIS. You can then click "OK". It would look something like this:
 
 {{wiki:google-earth-layer.png}}
 
