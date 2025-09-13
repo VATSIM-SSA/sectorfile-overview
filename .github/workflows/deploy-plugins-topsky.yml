@@ -1,0 +1,26 @@
+name: Deploy Plugins TopSky
+
+on:
+  push:
+    paths:
+      - "Plugins/TopSky/**"
+    branches:
+      - main
+
+jobs:
+  deploy_plugin_topsky_afrc:
+    name: "Deploy TopSky Plugins to AFRC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push generated webpage to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrc"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"

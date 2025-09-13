@@ -1,0 +1,50 @@
+Registered TAG Item Types
+- Airline Callsign
+- Airline Code
+- Airline Country1
+- Airline Country2
+- Airline FltNum
+- Airline Name1
+- Airline Name2
+- Clearance Check
+- Ground Speed (with G)
+- Ground Speed (with G) (Always)
+- Ground Speed (without G)
+- Ground Speed (without G) (Always)
+- NewbieAlert
+- NewbieAlertIndicator
+- SID
+- SID short
+- SID short (Always)
+- STAR
+- STAR short
+- STAR short (Always)
+- Temporary Altitude Departures
+- Time to destinations
+- Trackmiles to destinations
+- Vertical Speed (00)
+- Vertical Speed (00) (Always)
+- Vertical Speed (0000)
+- Vertical Speed (0000) (Always)
+- Vertical Speed Indicator
+- Vertical Speed Indicator (Always)
+- Wake Turbulence Category
+- XPlaneAlert
+- XPlaneAlertIndicator
+
+Registered TAG Item Functions
+- AssignedHeading Clear
+- AssignedRate Clear
+- AssignedSpeed Clear
+- CommType Receive
+- CommType Text
+- CommType Voice
+- Open Communication Type Menu
+- Open Flight Rule Menu
+- ScratchPad Clear
+- Set Flight Rule IFR
+- Set Flight Rule VFR
+- TempAltitude Approach
+- TempAltitude Clear
+- TempAltitude Vosiaç
+- Toggle Flight Rule
