@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       airac_cycle:
-        description: "AIRAC cycle (YYNNN format, e.g. 2502). Leave empty to auto-detect from today's date."
+        description: "AIRAC cycle (YYNNN format, e.g. 2603). Leave empty to auto-detect from today's date."
         required: false
         type: string
   schedule:
@@ -19,75 +19,63 @@ jobs:
     outputs:
       airac_cycle: ${{ steps.airac.outputs.airac_cycle }}
       airac_date: ${{ steps.airac.outputs.airac_date }}
+      release_tag: ${{ steps.airac.outputs.release_tag }}
       should_run: ${{ steps.airac.outputs.should_run }}
     steps:
-      - name: Calculate AIRAC Cycle
+      - uses: actions/checkout@v4
+
+      - name: Resolve AIRAC Cycle from dates file
         id: airac
         env:
           AIRAC_INPUT: ${{ inputs.airac_cycle }}
         run: |
           python3 << 'PYEOF'
+          import csv
           import os
-          from datetime import date, timedelta
-
-          # AIRAC epoch: January 29, 1998 (start of AIRAC 9801)
-          # Verified: epoch + 352 * 28 days = January 23, 2025 = AIRAC 2501
-          EPOCH = date(1998, 1, 29)
-
-          def first_cycle_of_year(year):
-              """Return the absolute cycle index of the first AIRAC cycle that starts in the given year."""
-              year_start = date(year, 1, 1)
-              days_to_year = (year_start - EPOCH).days
-              # Add 27 before integer division to perform ceiling division for positive values
-              idx = (days_to_year + 27) // 28
-              cycle_start = EPOCH + timedelta(days=idx * 28)
-              while cycle_start.year < year:
-                  idx += 1
-                  cycle_start = EPOCH + timedelta(days=idx * 28)
-              return idx
-
-          def date_to_airac(d):
-              """Convert a date to an (airac_id, cycle_start) tuple."""
-              days_from_epoch = (d - EPOCH).days
-              total_cycles = days_from_epoch // 28
-              cycle_start = EPOCH + timedelta(days=total_cycles * 28)
-              year = cycle_start.year
-              first_idx = first_cycle_of_year(year)
-              cycle_in_year = (total_cycles - first_idx) + 1
-              yy = year % 100
-              airac_id = f"{yy:02d}{cycle_in_year:02d}"
-              return airac_id, cycle_start
-
-          def airac_to_date(airac_id):
-              """Convert an AIRAC cycle ID (YYNNN) to its start date."""
-              yy = int(airac_id[:2])
-              nn = int(airac_id[2:])
-              # Handle two-digit years: 98-99 map to 1998-1999; 00-97 map to 2000-2097
-              year = 1900 + yy if yy >= 98 else 2000 + yy
-              first_idx = first_cycle_of_year(year)
-              # nn is 1-indexed (first cycle = 1), so subtract 1 for zero-based offset
-              cycle_start = EPOCH + timedelta(days=(first_idx + nn - 1) * 28)
-              return cycle_start
+          from datetime import date
 
           airac_input = os.environ.get("AIRAC_INPUT", "").strip()
 
+          # Load AIRAC dates from the repository's reference file
+          dates = {}
+          with open("repository-management/airac-dates.csv") as f:
+              for row in csv.DictReader(f):
+                  dates[row["cycle"]] = row["date"]
+
           if airac_input:
-              cycle_start = airac_to_date(airac_input)
+              if airac_input not in dates:
+                  raise SystemExit(f"Cycle '{airac_input}' not found in airac-dates.csv")
               airac_id = airac_input
+              cycle_date = dates[airac_id]
               should_run = "true"
           else:
-              today = date.today()
-              airac_id, cycle_start = date_to_airac(today)
-              should_run = "true" if today == cycle_start else "false"
+              today = date.today().isoformat()
+              airac_id = next((c for c, d in dates.items() if d == today), None)
+              if airac_id:
+                  cycle_date = today
+                  should_run = "true"
+              else:
+                  # Not an AIRAC date today — report for logging but skip the create job
+                  airac_id = "none"
+                  cycle_date = today
+                  should_run = "false"
+
+          # Release tag: v.YY.NN.1  (e.g. 2603 → v.26.03.1)
+          if airac_id != "none":
+              release_tag = f"v.{airac_id[:2]}.{airac_id[2:]}.1"
+          else:
+              release_tag = "none"
 
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
               f.write(f"airac_cycle={airac_id}\n")
-              f.write(f"airac_date={cycle_start.isoformat()}\n")
+              f.write(f"airac_date={cycle_date}\n")
+              f.write(f"release_tag={release_tag}\n")
               f.write(f"should_run={should_run}\n")
 
-          print(f"AIRAC Cycle : {airac_id}")
-          print(f"AIRAC Date  : {cycle_start}")
-          print(f"Should Run  : {should_run}")
+          print(f"AIRAC Cycle  : {airac_id}")
+          print(f"AIRAC Date   : {cycle_date}")
+          print(f"Release Tag  : {release_tag}")
+          print(f"Should Run   : {should_run}")
           PYEOF
 
   create:
@@ -127,6 +115,7 @@ jobs:
     env:
       AIRAC_CYCLE: ${{ needs.prepare.outputs.airac_cycle }}
       AIRAC_DATE: ${{ needs.prepare.outputs.airac_date }}
+      RELEASE_TAG: ${{ needs.prepare.outputs.release_tag }}
       GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
     steps:
       - name: Create Milestone
@@ -146,16 +135,19 @@ jobs:
 
       - name: Create Release
         run: |
-          if ! gh api repos/VATSIM-SSA/${{ matrix.repo }}/releases/tags/$AIRAC_CYCLE &>/dev/null; then
+          # Release tag: v.YY.NN.1  (e.g. AIRAC 2603 → v.26.03.1)
+          # Release name: AIRAC YYNNN #1
+          RELEASE_NAME="AIRAC $AIRAC_CYCLE #1"
+          if ! gh api repos/VATSIM-SSA/${{ matrix.repo }}/releases/tags/$RELEASE_TAG &>/dev/null; then
             gh api repos/VATSIM-SSA/${{ matrix.repo }}/releases \
               --method POST \
-              -f tag_name="$AIRAC_CYCLE" \
+              -f tag_name="$RELEASE_TAG" \
               -f target_commitish="main" \
-              -f name="AIRAC $AIRAC_CYCLE" \
-              -f body="AIRAC $AIRAC_CYCLE" \
+              -f name="$RELEASE_NAME" \
+              -f body="$RELEASE_NAME" \
               -f draft=false \
               -f prerelease=false
-            echo "Release 'AIRAC $AIRAC_CYCLE' created in ${{ matrix.repo }}"
+            echo "Release '$RELEASE_NAME' ($RELEASE_TAG) created in ${{ matrix.repo }}"
           else
-            echo "Release 'AIRAC $AIRAC_CYCLE' already exists in ${{ matrix.repo }}, skipping"
+            echo "Release '$RELEASE_TAG' already exists in ${{ matrix.repo }}, skipping"
           fi
