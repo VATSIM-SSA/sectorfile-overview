@@ -19,7 +19,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-afrc"
           destination-branch: "main"
@@ -36,7 +36,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-afrs"
           destination-branch: "main"
@@ -53,7 +53,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-afrw"
           destination-branch: "main"
@@ -70,7 +70,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-dgac"
           destination-branch: "main"
@@ -87,7 +87,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-dnkk"
           destination-branch: "main"
@@ -104,7 +104,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fajo"
           destination-branch: "main"
@@ -121,7 +121,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fasa"
           destination-branch: "main"
@@ -138,7 +138,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fbgr"
           destination-branch: "main"
@@ -155,7 +155,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fccc"
           destination-branch: "main"
@@ -172,7 +172,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fimm"
           destination-branch: "main"
@@ -189,7 +189,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-flfi"
           destination-branch: "main"
@@ -206,7 +206,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fmmm"
           destination-branch: "main"
@@ -223,7 +223,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fnan"
           destination-branch: "main"
@@ -240,7 +240,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fqbe"
           destination-branch: "main"
@@ -257,7 +257,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fsss"
           destination-branch: "main"
@@ -274,7 +274,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fvhf"
           destination-branch: "main"
@@ -291,7 +291,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fwll"
           destination-branch: "main"
@@ -308,7 +308,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fywf"
           destination-branch: "main"
@@ -325,7 +325,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-fzza"
           destination-branch: "main"
@@ -342,7 +342,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-gooo"
           destination-branch: "main"
@@ -359,7 +359,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-goooo"
           destination-branch: "main"
@@ -376,7 +376,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-gvsc"
           destination-branch: "main"
@@ -393,7 +393,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-hkna"
           destination-branch: "main"
@@ -410,7 +410,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-htdc"
           destination-branch: "main"
@@ -427,7 +427,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
         with:
-          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          source-files: "Plugins/vFPC/VFPC.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-huec"
           destination-branch: "main"
