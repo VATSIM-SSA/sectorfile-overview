@@ -1,0 +1,436 @@
+name: Deploy Plugins vFPC
+
+on:
+  push:
+    paths:
+      - "Plugins/vFPC/**"
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  deploy_plugin_vfpc_afrc:
+    name: "Deploy vFPC to AFRC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrc"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_afrs:
+    name: "Deploy vFPC to AFRS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrs"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_afrw:
+    name: "Deploy vFPC to AFRW"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrw"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_dgac:
+    name: "Deploy vFPC to DGAC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dgac"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_dnkk:
+    name: "Deploy vFPC to DNKK"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dnkk"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fajo:
+    name: "Deploy vFPC to FAJO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fajo"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fasa:
+    name: "Deploy vFPC to FASA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fasa"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fbgr:
+    name: "Deploy vFPC to FBGR"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fbgr"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fccc:
+    name: "Deploy vFPC to FCCC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fccc"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fimm:
+    name: "Deploy vFPC to FIMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fimm"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_flfi:
+    name: "Deploy vFPC to FLFI"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-flfi"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fmmm:
+    name: "Deploy vFPC to FMMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fmmm"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fnan:
+    name: "Deploy vFPC to FNAN"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fnan"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fqbe:
+    name: "Deploy vFPC to FQBE"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fqbe"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fsss:
+    name: "Deploy vFPC to FSSS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fsss"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fvhf:
+    name: "Deploy vFPC to FVHF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fvhf"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fwll:
+    name: "Deploy vFPC to FWLL"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fwll"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fywf:
+    name: "Deploy vFPC to FYWF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fywf"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_fzza:
+    name: "Deploy vFPC to FZZA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fzza"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_gooo:
+    name: "Deploy vFPC to GOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_goooo:
+    name: "Deploy vFPC to GOOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-goooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_gvsc:
+    name: "Deploy vFPC to GVSC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gvsc"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_hkna:
+    name: "Deploy vFPC to HKNA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-hkna"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_htdc:
+    name: "Deploy vFPC to HTDC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-htdc"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"
+
+  deploy_plugin_vfpc_huec:
+    name: "Deploy vFPC to HUEC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/vFPC/VFPC.dll Plugins/vFPC/Sid.json"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-huec"
+          destination-branch: "main"
+          destination-directory: "Plugins/vFPC"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vfpc dll"

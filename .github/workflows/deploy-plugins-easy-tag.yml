@@ -1,0 +1,436 @@
+name: Deploy Plugins EasyTag
+
+on:
+  push:
+    paths:
+      - "Plugins/EasyTag/**"
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  deploy_plugin_easy_tag_afrc:
+    name: "Deploy EasyTag to AFRC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrc"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_afrs:
+    name: "Deploy EasyTag to AFRS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrs"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_afrw:
+    name: "Deploy EasyTag to AFRW"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrw"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_dgac:
+    name: "Deploy EasyTag to DGAC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dgac"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_dnkk:
+    name: "Deploy EasyTag to DNKK"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dnkk"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fajo:
+    name: "Deploy EasyTag to FAJO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fajo"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fasa:
+    name: "Deploy EasyTag to FASA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fasa"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fbgr:
+    name: "Deploy EasyTag to FBGR"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fbgr"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fccc:
+    name: "Deploy EasyTag to FCCC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fccc"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fimm:
+    name: "Deploy EasyTag to FIMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fimm"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_flfi:
+    name: "Deploy EasyTag to FLFI"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-flfi"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fmmm:
+    name: "Deploy EasyTag to FMMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fmmm"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fnan:
+    name: "Deploy EasyTag to FNAN"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fnan"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fqbe:
+    name: "Deploy EasyTag to FQBE"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fqbe"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fsss:
+    name: "Deploy EasyTag to FSSS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fsss"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fvhf:
+    name: "Deploy EasyTag to FVHF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fvhf"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fwll:
+    name: "Deploy EasyTag to FWLL"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fwll"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fywf:
+    name: "Deploy EasyTag to FYWF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fywf"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_fzza:
+    name: "Deploy EasyTag to FZZA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fzza"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_gooo:
+    name: "Deploy EasyTag to GOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_goooo:
+    name: "Deploy EasyTag to GOOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-goooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_gvsc:
+    name: "Deploy EasyTag to GVSC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gvsc"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_hkna:
+    name: "Deploy EasyTag to HKNA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-hkna"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_htdc:
+    name: "Deploy EasyTag to HTDC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-htdc"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"
+
+  deploy_plugin_easy_tag_huec:
+    name: "Deploy EasyTag to HUEC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/EasyTag/EasyTag.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-huec"
+          destination-branch: "main"
+          destination-directory: "Plugins/EasyTag"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: easytag dll"

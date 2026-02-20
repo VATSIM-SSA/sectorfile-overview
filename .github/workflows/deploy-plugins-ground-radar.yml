@@ -1,0 +1,436 @@
+name: Deploy Plugins GroundRadar
+
+on:
+  push:
+    paths:
+      - "Plugins/GroundRadar/**"
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  deploy_plugin_ground_radar_afrc:
+    name: "Deploy GroundRadar to AFRC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrc"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_afrs:
+    name: "Deploy GroundRadar to AFRS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrs"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_afrw:
+    name: "Deploy GroundRadar to AFRW"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrw"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_dgac:
+    name: "Deploy GroundRadar to DGAC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dgac"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_dnkk:
+    name: "Deploy GroundRadar to DNKK"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dnkk"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fajo:
+    name: "Deploy GroundRadar to FAJO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fajo"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fasa:
+    name: "Deploy GroundRadar to FASA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fasa"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fbgr:
+    name: "Deploy GroundRadar to FBGR"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fbgr"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fccc:
+    name: "Deploy GroundRadar to FCCC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fccc"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fimm:
+    name: "Deploy GroundRadar to FIMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fimm"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_flfi:
+    name: "Deploy GroundRadar to FLFI"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-flfi"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fmmm:
+    name: "Deploy GroundRadar to FMMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fmmm"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fnan:
+    name: "Deploy GroundRadar to FNAN"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fnan"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fqbe:
+    name: "Deploy GroundRadar to FQBE"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fqbe"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fsss:
+    name: "Deploy GroundRadar to FSSS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fsss"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fvhf:
+    name: "Deploy GroundRadar to FVHF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fvhf"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fwll:
+    name: "Deploy GroundRadar to FWLL"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fwll"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fywf:
+    name: "Deploy GroundRadar to FYWF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fywf"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_fzza:
+    name: "Deploy GroundRadar to FZZA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fzza"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_gooo:
+    name: "Deploy GroundRadar to GOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_goooo:
+    name: "Deploy GroundRadar to GOOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-goooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_gvsc:
+    name: "Deploy GroundRadar to GVSC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gvsc"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_hkna:
+    name: "Deploy GroundRadar to HKNA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-hkna"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_htdc:
+    name: "Deploy GroundRadar to HTDC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-htdc"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"
+
+  deploy_plugin_ground_radar_huec:
+    name: "Deploy GroundRadar to HUEC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/GroundRadar/GRplugin.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-huec"
+          destination-branch: "main"
+          destination-directory: "Plugins/GroundRadar"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: groundradar dll"

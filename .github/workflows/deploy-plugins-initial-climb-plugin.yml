@@ -1,0 +1,436 @@
+name: Deploy Plugins InitialClimbPlugin
+
+on:
+  push:
+    paths:
+      - "Plugins/InitialClimbPlugin/**"
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  deploy_plugin_initial_climb_plugin_afrc:
+    name: "Deploy InitialClimbPlugin to AFRC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrc"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_afrs:
+    name: "Deploy InitialClimbPlugin to AFRS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrs"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_afrw:
+    name: "Deploy InitialClimbPlugin to AFRW"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrw"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_dgac:
+    name: "Deploy InitialClimbPlugin to DGAC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dgac"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_dnkk:
+    name: "Deploy InitialClimbPlugin to DNKK"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dnkk"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fajo:
+    name: "Deploy InitialClimbPlugin to FAJO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fajo"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fasa:
+    name: "Deploy InitialClimbPlugin to FASA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fasa"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fbgr:
+    name: "Deploy InitialClimbPlugin to FBGR"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fbgr"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fccc:
+    name: "Deploy InitialClimbPlugin to FCCC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fccc"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fimm:
+    name: "Deploy InitialClimbPlugin to FIMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fimm"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_flfi:
+    name: "Deploy InitialClimbPlugin to FLFI"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-flfi"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fmmm:
+    name: "Deploy InitialClimbPlugin to FMMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fmmm"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fnan:
+    name: "Deploy InitialClimbPlugin to FNAN"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fnan"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fqbe:
+    name: "Deploy InitialClimbPlugin to FQBE"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fqbe"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fsss:
+    name: "Deploy InitialClimbPlugin to FSSS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fsss"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fvhf:
+    name: "Deploy InitialClimbPlugin to FVHF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fvhf"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fwll:
+    name: "Deploy InitialClimbPlugin to FWLL"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fwll"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fywf:
+    name: "Deploy InitialClimbPlugin to FYWF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fywf"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_fzza:
+    name: "Deploy InitialClimbPlugin to FZZA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fzza"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_gooo:
+    name: "Deploy InitialClimbPlugin to GOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_goooo:
+    name: "Deploy InitialClimbPlugin to GOOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-goooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_gvsc:
+    name: "Deploy InitialClimbPlugin to GVSC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gvsc"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_hkna:
+    name: "Deploy InitialClimbPlugin to HKNA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-hkna"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_htdc:
+    name: "Deploy InitialClimbPlugin to HTDC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-htdc"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"
+
+  deploy_plugin_initial_climb_plugin_huec:
+    name: "Deploy InitialClimbPlugin to HUEC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/InitialClimbPlugin/InitialClimbPlugin.dll Plugins/InitialClimbPlugin/initialClimb.xml"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-huec"
+          destination-branch: "main"
+          destination-directory: "Plugins/InitialClimbPlugin"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: initialclimbplugin dll"

@@ -1,0 +1,436 @@
+name: Deploy Plugins VATCANBookings
+
+on:
+  push:
+    paths:
+      - "Plugins/VATCANBookings/**"
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  deploy_plugin_vatcan_bookings_afrc:
+    name: "Deploy VATCANBookings to AFRC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrc"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_afrs:
+    name: "Deploy VATCANBookings to AFRS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrs"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_afrw:
+    name: "Deploy VATCANBookings to AFRW"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrw"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_dgac:
+    name: "Deploy VATCANBookings to DGAC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dgac"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_dnkk:
+    name: "Deploy VATCANBookings to DNKK"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dnkk"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fajo:
+    name: "Deploy VATCANBookings to FAJO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fajo"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fasa:
+    name: "Deploy VATCANBookings to FASA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fasa"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fbgr:
+    name: "Deploy VATCANBookings to FBGR"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fbgr"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fccc:
+    name: "Deploy VATCANBookings to FCCC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fccc"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fimm:
+    name: "Deploy VATCANBookings to FIMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fimm"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_flfi:
+    name: "Deploy VATCANBookings to FLFI"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-flfi"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fmmm:
+    name: "Deploy VATCANBookings to FMMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fmmm"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fnan:
+    name: "Deploy VATCANBookings to FNAN"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fnan"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fqbe:
+    name: "Deploy VATCANBookings to FQBE"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fqbe"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fsss:
+    name: "Deploy VATCANBookings to FSSS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fsss"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fvhf:
+    name: "Deploy VATCANBookings to FVHF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fvhf"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fwll:
+    name: "Deploy VATCANBookings to FWLL"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fwll"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fywf:
+    name: "Deploy VATCANBookings to FYWF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fywf"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_fzza:
+    name: "Deploy VATCANBookings to FZZA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fzza"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_gooo:
+    name: "Deploy VATCANBookings to GOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_goooo:
+    name: "Deploy VATCANBookings to GOOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-goooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_gvsc:
+    name: "Deploy VATCANBookings to GVSC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gvsc"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_hkna:
+    name: "Deploy VATCANBookings to HKNA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-hkna"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_htdc:
+    name: "Deploy VATCANBookings to HTDC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-htdc"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"
+
+  deploy_plugin_vatcan_bookings_huec:
+    name: "Deploy VATCANBookings to HUEC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/VATCANBookings/VATCANBookings.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-huec"
+          destination-branch: "main"
+          destination-directory: "Plugins/VATCANBookings"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: vatcanbookings dll"

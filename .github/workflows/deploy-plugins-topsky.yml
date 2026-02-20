@@ -7,12 +7,14 @@ on:
     branches:
       - main
 
+permissions: {}
+
 jobs:
   deploy_plugin_topsky_afrc:
-    name: "Deploy TopSky Plugins to AFRC"
+    name: "Deploy TopSky to AFRC"
     runs-on: ubuntu-latest
     steps:
-      - name: Push generated webpage to another repository
+      - name: Push files to another repository
         uses: nkoppel/push-files-to-another-repository@v1.1.3
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
@@ -20,6 +22,414 @@ jobs:
           source-files: "Plugins/TopSky/TopSky.dll"
           destination-username: "VATSIM-SSA"
           destination-repository: "sectorfile-afrc"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_afrs:
+    name: "Deploy TopSky to AFRS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrs"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_afrw:
+    name: "Deploy TopSky to AFRW"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrw"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_dgac:
+    name: "Deploy TopSky to DGAC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dgac"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_dnkk:
+    name: "Deploy TopSky to DNKK"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dnkk"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fajo:
+    name: "Deploy TopSky to FAJO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fajo"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fasa:
+    name: "Deploy TopSky to FASA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fasa"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fbgr:
+    name: "Deploy TopSky to FBGR"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fbgr"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fccc:
+    name: "Deploy TopSky to FCCC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fccc"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fimm:
+    name: "Deploy TopSky to FIMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fimm"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_flfi:
+    name: "Deploy TopSky to FLFI"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-flfi"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fmmm:
+    name: "Deploy TopSky to FMMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fmmm"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fnan:
+    name: "Deploy TopSky to FNAN"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fnan"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fqbe:
+    name: "Deploy TopSky to FQBE"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fqbe"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fsss:
+    name: "Deploy TopSky to FSSS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fsss"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fvhf:
+    name: "Deploy TopSky to FVHF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fvhf"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fwll:
+    name: "Deploy TopSky to FWLL"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fwll"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fywf:
+    name: "Deploy TopSky to FYWF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fywf"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_fzza:
+    name: "Deploy TopSky to FZZA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fzza"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_gooo:
+    name: "Deploy TopSky to GOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_goooo:
+    name: "Deploy TopSky to GOOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-goooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_gvsc:
+    name: "Deploy TopSky to GVSC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gvsc"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_hkna:
+    name: "Deploy TopSky to HKNA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-hkna"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_htdc:
+    name: "Deploy TopSky to HTDC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-htdc"
+          destination-branch: "main"
+          destination-directory: "Plugins/TopSky"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: topsky dll"
+
+  deploy_plugin_topsky_huec:
+    name: "Deploy TopSky to HUEC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/TopSky/TopSky.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-huec"
           destination-branch: "main"
           destination-directory: "Plugins/TopSky"
           commit-email: "30835922+miguelalbano@users.noreply.github.com"

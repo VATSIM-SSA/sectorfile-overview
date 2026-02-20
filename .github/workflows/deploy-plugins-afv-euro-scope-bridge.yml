@@ -1,0 +1,436 @@
+name: Deploy Plugins AfvEuroScopeBridge
+
+on:
+  push:
+    paths:
+      - "Plugins/AfvEuroScopeBridge/**"
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  deploy_plugin_afv_euro_scope_bridge_afrc:
+    name: "Deploy AfvEuroScopeBridge to AFRC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrc"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_afrs:
+    name: "Deploy AfvEuroScopeBridge to AFRS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrs"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_afrw:
+    name: "Deploy AfvEuroScopeBridge to AFRW"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrw"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_dgac:
+    name: "Deploy AfvEuroScopeBridge to DGAC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dgac"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_dnkk:
+    name: "Deploy AfvEuroScopeBridge to DNKK"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dnkk"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fajo:
+    name: "Deploy AfvEuroScopeBridge to FAJO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fajo"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fasa:
+    name: "Deploy AfvEuroScopeBridge to FASA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fasa"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fbgr:
+    name: "Deploy AfvEuroScopeBridge to FBGR"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fbgr"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fccc:
+    name: "Deploy AfvEuroScopeBridge to FCCC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fccc"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fimm:
+    name: "Deploy AfvEuroScopeBridge to FIMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fimm"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_flfi:
+    name: "Deploy AfvEuroScopeBridge to FLFI"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-flfi"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fmmm:
+    name: "Deploy AfvEuroScopeBridge to FMMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fmmm"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fnan:
+    name: "Deploy AfvEuroScopeBridge to FNAN"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fnan"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fqbe:
+    name: "Deploy AfvEuroScopeBridge to FQBE"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fqbe"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fsss:
+    name: "Deploy AfvEuroScopeBridge to FSSS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fsss"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fvhf:
+    name: "Deploy AfvEuroScopeBridge to FVHF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fvhf"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fwll:
+    name: "Deploy AfvEuroScopeBridge to FWLL"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fwll"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fywf:
+    name: "Deploy AfvEuroScopeBridge to FYWF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fywf"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_fzza:
+    name: "Deploy AfvEuroScopeBridge to FZZA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fzza"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_gooo:
+    name: "Deploy AfvEuroScopeBridge to GOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_goooo:
+    name: "Deploy AfvEuroScopeBridge to GOOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-goooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_gvsc:
+    name: "Deploy AfvEuroScopeBridge to GVSC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gvsc"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_hkna:
+    name: "Deploy AfvEuroScopeBridge to HKNA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-hkna"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_htdc:
+    name: "Deploy AfvEuroScopeBridge to HTDC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-htdc"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"
+
+  deploy_plugin_afv_euro_scope_bridge_huec:
+    name: "Deploy AfvEuroScopeBridge to HUEC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/AfvEuroScopeBridge/AfvEuroScopeBridge.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-huec"
+          destination-branch: "main"
+          destination-directory: "Plugins/AfvEuroScopeBridge"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: afveuroscopebridge dll"

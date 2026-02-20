@@ -1,0 +1,436 @@
+name: Deploy Plugins PushbackFlorian
+
+on:
+  push:
+    paths:
+      - "Plugins/PushbackFlorian/**"
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  deploy_plugin_pushback_florian_afrc:
+    name: "Deploy PushbackFlorian to AFRC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrc"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_afrs:
+    name: "Deploy PushbackFlorian to AFRS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrs"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_afrw:
+    name: "Deploy PushbackFlorian to AFRW"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-afrw"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_dgac:
+    name: "Deploy PushbackFlorian to DGAC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dgac"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_dnkk:
+    name: "Deploy PushbackFlorian to DNKK"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-dnkk"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fajo:
+    name: "Deploy PushbackFlorian to FAJO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fajo"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fasa:
+    name: "Deploy PushbackFlorian to FASA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fasa"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fbgr:
+    name: "Deploy PushbackFlorian to FBGR"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fbgr"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fccc:
+    name: "Deploy PushbackFlorian to FCCC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fccc"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fimm:
+    name: "Deploy PushbackFlorian to FIMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fimm"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_flfi:
+    name: "Deploy PushbackFlorian to FLFI"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-flfi"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fmmm:
+    name: "Deploy PushbackFlorian to FMMM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fmmm"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fnan:
+    name: "Deploy PushbackFlorian to FNAN"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fnan"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fqbe:
+    name: "Deploy PushbackFlorian to FQBE"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fqbe"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fsss:
+    name: "Deploy PushbackFlorian to FSSS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fsss"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fvhf:
+    name: "Deploy PushbackFlorian to FVHF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fvhf"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fwll:
+    name: "Deploy PushbackFlorian to FWLL"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fwll"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fywf:
+    name: "Deploy PushbackFlorian to FYWF"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fywf"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_fzza:
+    name: "Deploy PushbackFlorian to FZZA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-fzza"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_gooo:
+    name: "Deploy PushbackFlorian to GOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_goooo:
+    name: "Deploy PushbackFlorian to GOOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-goooo"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_gvsc:
+    name: "Deploy PushbackFlorian to GVSC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-gvsc"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_hkna:
+    name: "Deploy PushbackFlorian to HKNA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-hkna"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_htdc:
+    name: "Deploy PushbackFlorian to HTDC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-htdc"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
+
+  deploy_plugin_pushback_florian_huec:
+    name: "Deploy PushbackFlorian to HUEC"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push files to another repository
+        uses: nkoppel/push-files-to-another-repository@v1.1.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-files: "Plugins/PushbackFlorian/PushbackFlorian.dll"
+          destination-username: "VATSIM-SSA"
+          destination-repository: "sectorfile-huec"
+          destination-branch: "main"
+          destination-directory: "Plugins/PushbackFlorian"
+          commit-email: "30835922+miguelalbano@users.noreply.github.com"
+          commit-message: "update: pushbackflorian dll"
