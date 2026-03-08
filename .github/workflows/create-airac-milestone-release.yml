@@ -1,0 +1,153 @@
+name: Create AIRAC Milestones and Releases
+
+on:
+  workflow_dispatch:
+    inputs:
+      airac_cycle:
+        description: "AIRAC cycle (YYNNN format, e.g. 2603). Leave empty to auto-detect from today's date."
+        required: false
+        type: string
+  schedule:
+    - cron: "0 1 * * 4" # Every Thursday at 01:00 UTC (AIRAC cycles always start on Thursdays)
+
+permissions: {}
+
+jobs:
+  prepare:
+    name: Determine AIRAC Cycle
+    runs-on: ubuntu-latest
+    outputs:
+      airac_cycle: ${{ steps.airac.outputs.airac_cycle }}
+      airac_date: ${{ steps.airac.outputs.airac_date }}
+      release_tag: ${{ steps.airac.outputs.release_tag }}
+      should_run: ${{ steps.airac.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve AIRAC Cycle from dates file
+        id: airac
+        env:
+          AIRAC_INPUT: ${{ inputs.airac_cycle }}
+        run: |
+          python3 << 'PYEOF'
+          import csv
+          import os
+          from datetime import date
+
+          airac_input = os.environ.get("AIRAC_INPUT", "").strip()
+
+          # Load AIRAC dates from the repository's reference file
+          dates = {}
+          with open("repository-management/airac-dates.csv") as f:
+              for row in csv.DictReader(f):
+                  dates[row["cycle"]] = row["date"]
+
+          if airac_input:
+              if airac_input not in dates:
+                  raise SystemExit(f"Cycle '{airac_input}' not found in airac-dates.csv")
+              airac_id = airac_input
+              cycle_date = dates[airac_id]
+              should_run = "true"
+          else:
+              today = date.today().isoformat()
+              airac_id = next((c for c, d in dates.items() if d == today), None)
+              if airac_id:
+                  cycle_date = today
+                  should_run = "true"
+              else:
+                  # Not an AIRAC date today — report for logging but skip the create job
+                  airac_id = "none"
+                  cycle_date = today
+                  should_run = "false"
+
+          # Release tag: v.YY.NN.1  (e.g. 2603 → v.26.03.1)
+          if airac_id != "none":
+              release_tag = f"v.{airac_id[:2]}.{airac_id[2:]}.1"
+          else:
+              release_tag = "none"
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"airac_cycle={airac_id}\n")
+              f.write(f"airac_date={cycle_date}\n")
+              f.write(f"release_tag={release_tag}\n")
+              f.write(f"should_run={should_run}\n")
+
+          print(f"AIRAC Cycle  : {airac_id}")
+          print(f"AIRAC Date   : {cycle_date}")
+          print(f"Release Tag  : {release_tag}")
+          print(f"Should Run   : {should_run}")
+          PYEOF
+
+  create:
+    name: "Create Milestone and Release - ${{ matrix.repo }}"
+    needs: prepare
+    if: needs.prepare.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repo:
+          - sectorfile-afrc
+          - sectorfile-afrs
+          - sectorfile-afrw
+          - sectorfile-dgac
+          - sectorfile-dnkk
+          - sectorfile-fajo
+          - sectorfile-fasa
+          - sectorfile-fbgr
+          - sectorfile-fccc
+          - sectorfile-fimm
+          - sectorfile-flfi
+          - sectorfile-fmmm
+          - sectorfile-fnan
+          - sectorfile-fqbe
+          - sectorfile-fsss
+          - sectorfile-fvhf
+          - sectorfile-fwll
+          - sectorfile-fywf
+          - sectorfile-fzza
+          - sectorfile-gooo
+          - sectorfile-goooo
+          - sectorfile-gvsc
+          - sectorfile-hkna
+          - sectorfile-htdc
+          - sectorfile-huec
+      fail-fast: false
+    env:
+      AIRAC_CYCLE: ${{ needs.prepare.outputs.airac_cycle }}
+      AIRAC_DATE: ${{ needs.prepare.outputs.airac_date }}
+      RELEASE_TAG: ${{ needs.prepare.outputs.release_tag }}
+      GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+    steps:
+      - name: Create Milestone
+        run: |
+          EXISTING=$(gh api repos/VATSIM-SSA/${{ matrix.repo }}/milestones \
+            --jq ".[] | select(.title == \"AIRAC $AIRAC_CYCLE\") | .number" 2>/dev/null || true)
+          if [ -z "$EXISTING" ]; then
+            gh api repos/VATSIM-SSA/${{ matrix.repo }}/milestones \
+              --method POST \
+              -f title="AIRAC $AIRAC_CYCLE" \
+              -f due_on="${AIRAC_DATE}T00:00:00Z" \
+              -f state="open"
+            echo "Milestone 'AIRAC $AIRAC_CYCLE' created in ${{ matrix.repo }}"
+          else
+            echo "Milestone 'AIRAC $AIRAC_CYCLE' already exists in ${{ matrix.repo }} (#$EXISTING), skipping"
+          fi
+
+      - name: Create Release
+        run: |
+          # Release tag: v.YY.NN.1  (e.g. AIRAC 2603 → v.26.03.1)
+          # Release name: AIRAC YYNNN #1
+          RELEASE_NAME="AIRAC $AIRAC_CYCLE #1"
+          if ! gh api repos/VATSIM-SSA/${{ matrix.repo }}/releases/tags/$RELEASE_TAG &>/dev/null; then
+            gh api repos/VATSIM-SSA/${{ matrix.repo }}/releases \
+              --method POST \
+              -f tag_name="$RELEASE_TAG" \
+              -f target_commitish="main" \
+              -f name="$RELEASE_NAME" \
+              -f body="$RELEASE_NAME" \
+              -f draft=false \
+              -f prerelease=false
+            echo "Release '$RELEASE_NAME' ($RELEASE_TAG) created in ${{ matrix.repo }}"
+          else
+            echo "Release '$RELEASE_TAG' already exists in ${{ matrix.repo }}, skipping"
+          fi
