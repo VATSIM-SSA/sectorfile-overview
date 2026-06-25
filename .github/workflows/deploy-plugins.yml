@@ -1,0 +1,101 @@
+name: Deploy Plugins
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Plugins/TopSky/TopSky.dll'
+      - 'Plugins/TopSky/TopSky-beta.dll'
+      - 'Plugins/GroundRadar/GRplugin.dll'
+      - 'Plugins/GroundRadar/GRplugin-beta.dll'
+
+jobs:
+  sync-files:
+    runs-on: ubuntu-latest
+    strategy:
+      # fail-fast: false ensures that if one repo fails, the remaining 24 still sync
+      fail-fast: false
+      matrix:
+        target_repo:
+          # FIRs
+          - 'VATSIM-SSA/sectorfile-dgac'
+          - 'VATSIM-SSA/sectorfile-dnkk'
+          - 'VATSIM-SSA/sectorfile-fasa'
+          - 'VATSIM-SSA/sectorfile-fbgr'
+          - 'VATSIM-SSA/sectorfile-fccc'
+          - 'VATSIM-SSA/sectorfile-fimm'
+          - 'VATSIM-SSA/sectorfile-flfi'
+          - 'VATSIM-SSA/sectorfile-fmmm'
+          - 'VATSIM-SSA/sectorfile-fnan'
+          - 'VATSIM-SSA/sectorfile-fqbe'
+          - 'VATSIM-SSA/sectorfile-fsss'
+          - 'VATSIM-SSA/sectorfile-fvhf'
+          - 'VATSIM-SSA/sectorfile-fwll'
+          - 'VATSIM-SSA/sectorfile-fywf'
+          - 'VATSIM-SSA/sectorfile-fzza'
+          - 'VATSIM-SSA/sectorfile-gooo'
+          - 'VATSIM-SSA/sectorfile-gvsc'
+          - 'VATSIM-SSA/sectorfile-hkna'
+          - 'VATSIM-SSA/sectorfile-htdc'
+          - 'VATSIM-SSA/sectorfile-huec'
+          # Oceanic
+          - 'VATSIM-SSA/sectorfile-goooo'
+          - 'VATSIM-SSA/sectorfile-fajo'
+          # Regional
+          - 'VATSIM-SSA/sectorfile-afrc'
+          - 'VATSIM-SSA/sectorfile-afrs'
+          - 'VATSIM-SSA/sectorfile-afrw'
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+        with:
+          path: source-repo
+
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ matrix.target_repo }}
+          token: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+          path: target-repo
+
+      - name: Copy Plugins
+        run: |
+          FILES=(
+            "Plugins/TopSky/TopSky.dll"
+            "Plugins/TopSky/TopSky-beta.dll"
+            "Plugins/GroundRadar/GRplugin.dll"
+            "Plugins/GroundRadar/GRplugin-beta.dll"
+          )
+
+          for file in "${FILES[@]}"; do
+            if [ -f "source-repo/$file" ]; then
+              echo "Copying $file to ${{ matrix.target_repo }}..."
+              mkdir -p "$(dirname "target-repo/$file")"
+              cp "source-repo/$file" "target-repo/$file"
+            else
+              echo "Notice: $file not found in source, skipping."
+            fi
+          done
+
+      - name: Commit and Push Changes
+        working-directory: target-repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Stage only the relevant tracked items
+          git add Plugins/TopSky/TopSky.dll \
+                  Plugins/TopSky/TopSky-beta.dll \
+                  Plugins/GroundRadar/GRplugin.dll \
+                  Plugins/GroundRadar/GRplugin-beta.dll \
+                  vatis/airports-json/airports.json 2>/dev/null || true
+          
+          if ! git diff-index --quiet HEAD; then
+            echo "Changes detected. Updating ${{ matrix.target_repo }}..."
+            git commit -m "chore: automated update of core plugin binaries and vATIS profile data"
+            git push origin main
+          else
+            echo "${{ matrix.target_repo }} plugins are already up to date. Skipping push."
+          fi

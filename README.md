@@ -14,6 +14,16 @@ Branch Naming Conventions
 - <type>([optional scope]): <description> # subject
 - type can be feat:, fix:, style:, doc:
 
+## Current Global Plugins
+### TopSky
+- Stable: 2.5
+- Beta: 2.6 beta 4
+
+### GroundRadar
+- Stable: 1.5
+- Beta: 1.6 beta 6
+
+
 ## Current Sector File Repositories
 
 - [DGAC Accra](https://github.com/VATSIM-SSA/sectorfile-dgac)

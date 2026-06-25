@@ -1,0 +1,362 @@
+name: Deploy vATIS Airports.json
+
+on:
+  push:
+    paths:
+      - "vatis/airports-json/**"
+    branches:
+      - main
+
+jobs:
+  deploy_vatis_dgac:
+    name: "Deploy vATIS Airports.json to DGAC"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-dgac"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_dnkk:
+    name: "Deploy vATIS Airports.json to DNKK"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-dnkk"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_fasa:
+    name: "Deploy vATIS Airports.json to FASA"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fasa"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_fbgr:
+    name: "Deploy vATIS Airports.json to FBGR"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fbgr"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_fimm:
+    name: "Deploy vATIS Airports.json to FIMM"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fimm"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_fmmm:
+    name: "Deploy vATIS Airports.json to FMMM"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fmmm"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_fnan:
+    name: "Deploy vATIS Airports.json to FNAN"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fnan"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_fsss:
+    name: "Deploy vATIS Airports.json to FSSS"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fsss"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_fvhf:
+    name: "Deploy vATIS Airports.json to FVHF"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fvhf"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_fywf:
+    name: "Deploy vATIS Airports.json to FYWF"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fywf"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_fzza:
+    name: "Deploy vATIS Airports.json to FZZA"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-fzza"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_gooo:
+    name: "Deploy vATIS Airports.json to GOOO"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-gooo"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_gvsc:
+    name: "Deploy vATIS Airports.json to GVSC"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-gvsc"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_hkna:
+    name: "Deploy vATIS Airports.json to HKNA"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-hkna"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_htdc:
+    name: "Deploy vATIS Airports.json to HTDC"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-htdc"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
+  deploy_vatis_huec:
+    name: "Deploy vATIS Airports.json to HUEC"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: |
+          mkdir output
+          cp -r vatis/airports-json output
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        with:
+          source-directory: vatis/airports-json
+          destination-github-username: "VATSIM-SSA"
+          destination-repository-name: "sectorfile-huec"
+          user-email: 30835922+miguelalbano@users.noreply.github.com
+          target-branch: main
+          target-directory: "Plugins/vATIS Profile/Airports"
+          create-target-branch-if-needed: false
+          commit-message: "update: vatis airports.json"
