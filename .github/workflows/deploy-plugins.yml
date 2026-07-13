@@ -67,6 +67,8 @@ jobs:
             "Plugins/TopSky/TopSky-beta.dll"
             "Plugins/GroundRadar/GRplugin.dll"
             "Plugins/GroundRadar/GRplugin-beta.dll"
+            "Plugins/DiscordEuroScope/DiscordEurocope.dll"
+            "Plugins/DiscordEuroScope/DiscordEuroscope_config.json"
           )
 
           for file in "${FILES[@]}"; do
@@ -90,6 +92,8 @@ jobs:
                   Plugins/TopSky/TopSky-beta.dll \
                   Plugins/GroundRadar/GRplugin.dll \
                   Plugins/GroundRadar/GRplugin-beta.dll \
+                  Plugins/DiscordEuroScope/DiscordEurocope.dll \
+                  Plugins/DiscordEuroScope/DiscordEuroscope_config.json \
                   vatis/airports-json/airports.json 2>/dev/null || true
           
           if ! git diff-index --quiet HEAD; then
