@@ -1,0 +1,133 @@
+name: Sync files to sector-file repos
+
+# Mirrors the paths listed in .github/sync.yml out to every repo listed there.
+# Replaces the old per-repo, copy-pasted deploy-* workflows.
+#
+# Nothing in this file needs editing to add a file or a repo — edit
+# .github/sync.yml instead.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      # GitHub Actions cannot read these from sync.yml, so they are deliberately
+      # broad: any change under a synced tree triggers a run, and the workflow
+      # then does the precise filtering from sync.yml. Keep these wide rather
+      # than exact — a missed trigger is a silent failure.
+      - 'Plugins/**'
+      - 'vatis/airports-json/**'
+      - 'repository-management/templates/issues/**'
+      - '.github/sync.yml'
+      - '.github/workflows/sync-to-sectorfiles.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  load-config:
+    name: Validate config
+    runs-on: ubuntu-latest
+    outputs:
+      targets: ${{ steps.cfg.outputs.targets }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read and validate sync.yml
+        id: cfg
+        run: |
+          set -euo pipefail
+
+          # Fail loudly on a missing source path. Skipping a missing file with a
+          # "Notice" and still going green is how a typo'd path ships as a
+          # passing build that deploys nothing.
+          missing=0
+          while IFS=$'\t' read -r src dest; do
+            if [ ! -e "$src" ]; then
+              echo "::error::sync.yml lists a source that does not exist: '$src'"
+              missing=1
+            else
+              echo "ok: $src -> $dest"
+            fi
+          done < <(yq -o=json '.' .github/sync.yml | jq -r '.sync[] | [.src, .dest] | @tsv')
+          [ "$missing" -eq 0 ] || exit 1
+
+          targets="$(yq -o=json -I=0 '.targets' .github/sync.yml)"
+          echo "targets=$targets" >> "$GITHUB_OUTPUT"
+          echo "Target repos: $(echo "$targets" | jq 'length')"
+
+  sync:
+    name: ${{ matrix.target }}
+    needs: load-config
+    runs-on: ubuntu-latest
+    strategy:
+      # One failing repo must not stop the rest from syncing.
+      fail-fast: false
+      matrix:
+        target: ${{ fromJSON(needs.load-config.outputs.targets) }}
+    # Two merges in quick succession would otherwise race each other on the
+    # same target repo and lose a push.
+    concurrency:
+      group: sync-${{ matrix.target }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout overview (source)
+        uses: actions/checkout@v4
+        with:
+          path: source
+
+      - name: Checkout ${{ matrix.target }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ matrix.target }}
+          token: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+          path: target
+
+      - name: Mirror configured paths
+        run: |
+          set -euo pipefail
+          while IFS=$'\t' read -r src dest; do
+            echo "::group::$src -> $dest"
+            if [ -d "source/$src" ]; then
+              mkdir -p "target/$dest"
+              # --delete is what propagates removals: a file deleted in the
+              # overview repo is deleted in every target repo too.
+              rsync -a --delete "source/$src/" "target/$dest/"
+            else
+              mkdir -p "$(dirname "target/$dest")"
+              rsync -a "source/$src" "target/$dest"
+            fi
+            echo "::endgroup::"
+          done < <(yq -o=json '.' source/.github/sync.yml | jq -r '.sync[] | [.src, .dest] | @tsv')
+
+      - name: Commit and push
+        working-directory: target
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          while IFS=$'\t' read -r src dest; do
+            # -A stages additions, modifications AND deletions.
+            git add -A -- "$dest"
+          done < <(yq -o=json '.' ../source/.github/sync.yml | jq -r '.sync[] | [.src, .dest] | @tsv')
+
+          if git diff --cached --quiet; then
+            echo "${{ matrix.target }} already up to date — nothing to push."
+            exit 0
+          fi
+
+          echo "Changes for ${{ matrix.target }}:"
+          git diff --cached --stat
+
+          git commit -m "chore: sync shared files from sectorfile-overview
+
+          Automated by sectorfile-overview/.github/workflows/sync-to-sectorfiles.yml
+          Source commit: ${{ github.sha }}"
+
+          # A human (or another run) may have pushed since we checked out.
+          git push origin HEAD:main || {
+            echo "Push rejected — rebasing and retrying once."
+            git pull --rebase origin main
+            git push origin HEAD:main
+          }
