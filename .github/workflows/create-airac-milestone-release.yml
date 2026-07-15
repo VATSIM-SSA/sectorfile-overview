@@ -35,7 +35,9 @@ permissions: {}
 concurrency:
   # A manual dispatch landing on top of the scheduled run would otherwise
   # double-create milestones and race on release revision numbers.
-  group: airac-${{ github.workflow }}
+  # Literal, not ${{ github.workflow }}: a run stuck in GitHub's backend holds
+  # its group forever, and bumping this name is the only way to retire one.
+  group: airac-cycle
   cancel-in-progress: false
 
 jobs:
