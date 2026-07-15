@@ -1,12 +1,12 @@
 name: AIRAC Deployment Tracker
 
 # The publish workflow opens the tracker issue; this one chases it.
-#   * Mondays      — post outstanding sectors to Discord while a tracker is open
+#   * Mondays      — one Discord post: outstanding sectors (only while a cycle is
+#                    live) plus every open PR across the org, busiest repo first
 #   * on any edit  — close the tracker once every sector is ticked
 #
-# Both need the same answer ("how far along is the open tracker?"), so they share
-# one job. The checkbox parsing lives in repository-management/airac.py next to
-# the code that writes the tracker, so the two cannot drift apart.
+# The checkbox parsing lives in repository-management/airac.py next to the code
+# that writes the tracker, so the two cannot drift apart.
 
 on:
   schedule:
@@ -102,19 +102,20 @@ jobs:
           PYEOF
           curl -sS -H "Content-Type: application/json" -X POST "$WEBHOOK" -d @/tmp/payload.json
 
-      - name: Post outstanding sectors
+      - name: Monday report
         # Only on the schedule (or a manual run) — posting on every checkbox tick
-        # would turn Discord into a firehose.
-        if: >-
-          steps.find.outputs.found == 'true'
-          && steps.prog.outputs.complete == 'false'
-          && github.event_name != 'issues'
+        # would turn Discord into a firehose. Deliberately NOT gated on a tracker
+        # existing: the pull-request review goes out every Monday regardless.
+        if: github.event_name != 'issues'
         env:
+          ORG: ${{ github.repository_owner }}
+          FOUND: ${{ steps.find.outputs.found }}
           NUMBER: ${{ steps.find.outputs.number }}
           CYCLE: ${{ steps.prog.outputs.cycle }}
           TOTAL: ${{ steps.prog.outputs.total }}
           DONE: ${{ steps.prog.outputs.done }}
           REMAINING: ${{ steps.prog.outputs.remaining }}
+          COMPLETE: ${{ steps.prog.outputs.complete }}
           OUTSTANDING: ${{ steps.prog.outputs.outstanding }}
         run: |
           set -euo pipefail
@@ -122,22 +123,31 @@ jobs:
             echo "::warning::DISCORD_WEBHOOK not set — no report sent."
             exit 0
           fi
+
+          # `archived:false` is a native search qualifier, so archived repos never
+          # enter the result set — no post-filtering, no extra API calls.
+          gh api -X GET search/issues \
+            -f q="org:${ORG} is:pr is:open archived:false" \
+            -f per_page=100 --paginate \
+            --jq '.items[].repository_url' > /tmp/prs.txt
+
           python3 - > /tmp/payload.json << 'PYEOF'
-          import json, os
+          import collections, json, os
 
-          base = f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
-          tracker = f"{base}/issues/{os.environ['NUMBER']}"
-          names = [n for n in os.environ["OUTSTANDING"].split(", ") if n]
-          # Discord embeds cap at 4096 chars; 25 sector names is nowhere near it,
-          # but cap the list anyway so a registry that grows can never 400.
-          shown = names[:20]
-          listed = "\n".join(f"• {n}" for n in shown)
-          if len(names) > len(shown):
-              listed += f"\n• …and {len(names) - len(shown)} more"
+          org = os.environ["ORG"]
+          embeds = []
 
-          print(json.dumps({
-              "username": "AIRAC Automation",
-              "embeds": [{
+          # Sector deployment — only while a cycle is genuinely outstanding.
+          if os.environ.get("FOUND") == "true" and os.environ.get("COMPLETE") == "false":
+              tracker = f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/issues/{os.environ['NUMBER']}"
+              names = [n for n in os.environ.get("OUTSTANDING", "").split(", ") if n]
+              # Discord embeds cap at 4096 chars; 25 sectors is nowhere near it,
+              # but cap anyway so a registry that grows can never 400.
+              shown = names[:20]
+              listed = "\n".join(f"• {n}" for n in shown)
+              if len(names) > len(shown):
+                  listed += f"\n• …and {len(names) - len(shown)} more"
+              embeds.append({
                   "title": f"AIRAC {os.environ['CYCLE']} — {os.environ['DONE']}/{os.environ['TOTAL']} sectors deployed",
                   "url": tracker,
                   "color": 104368,
@@ -145,7 +155,37 @@ jobs:
                       f"**{os.environ['REMAINING']}** still outstanding:\n{listed}\n\n"
                       f"[Open the tracker]({tracker}) to tick them off."
                   ),
-              }],
-          }))
+              })
+
+          # Open pull requests, whole org, busiest repo first.
+          counts = collections.Counter()
+          with open("/tmp/prs.txt", encoding="utf-8") as f:
+              for line in f:
+                  line = line.strip()
+                  if line:
+                      counts[line.rsplit("/", 1)[1]] += 1
+
+          total = sum(counts.values())
+          if total:
+              rows = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+              shown = rows[:20]
+              listed = "\n".join(
+                  f"• [{repo}](https://github.com/{org}/{repo}/pulls) — **{n}**"
+                  for repo, n in shown
+              )
+              if len(rows) > len(shown):
+                  listed += f"\n• …and {len(rows) - len(shown)} more repos"
+              desc = f"**{total}** open across **{len(rows)}** repositories:\n{listed}"
+          else:
+              desc = "Nothing open."
+
+          embeds.append({
+              "title": f"Open pull requests — {org}",
+              "url": f"https://github.com/pulls?q=is%3Aopen+is%3Apr+org%3A{org}+archived%3Afalse",
+              "color": 8116056 if not total else 104368,
+              "description": desc,
+          })
+
+          print(json.dumps({"username": "VATSSA Automation", "embeds": embeds}))
           PYEOF
           curl -sS -H "Content-Type: application/json" -X POST "$WEBHOOK" -d @/tmp/payload.json
