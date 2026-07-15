@@ -9,10 +9,12 @@ jobs:
   add-to-project:
     name: Add Issues and PRs to Project
     runs-on: ubuntu-latest
+    # The PAT lives in this environment, which is restricted to `main`.
+    environment: sync
     steps:
       - uses: actions/add-to-project@v1.0.2
         with:
           # You can target a project in a different organization
           # to the issue
           project-url: https://github.com/orgs/VATSIM-SSA/projects/14
-          github-token: ${{ secrets.ACT_ADD_TO_PRJCT_PAT }}
+          github-token: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
