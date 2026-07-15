@@ -353,12 +353,27 @@ def status_body(
             label = s.get("label") or s["code"]
             cyc = (state.get(s["name"], {}).get("cycle") or UNKNOWN_CYCLE).strip() or UNKNOWN_CYCLE
             link = state.get(s["name"], {}).get("link") or download_url(s)
-            note = f" (includes {s['includes']})" if s.get("includes") else ""
+            # The marker/label/cycle stay in a code span so the columns line up —
+            # markdown does not render inside backticks, so every link has to sit
+            # outside it.
+            head = f"`{status_marker(cyc, reference)} {label:<{width}} │ AIRAC{cyc}`"
+
+            # A standard aero-nav link is just "Download". Anything else is an
+            # override (e.g. a Discord ticket while a sector is unavailable) and
+            # should not pretend to be a file.
+            if link.startswith(DOWNLOAD_BASE):
+                bits = [f"[Download]({link})"]
+            else:
+                bits = [f"[⚠️ How to get it]({link})"]
+
             v = vatis_url(s)
-            vat = f" · [vATIS]({v})" if v else ""
-            out.append(
-                f"`{status_marker(cyc, reference)} {label:<{width}} | AIRAC{cyc} |` {link}{vat}{note}"
-            )
+            if v:
+                bits.append(f"[vATIS]({v})")
+
+            line = f"{head} {' · '.join(bits)}"
+            if s.get("includes"):
+                line += f" — *incl. {s['includes']}*"
+            out.append(line)
     return "\n".join(out).strip()
 
 
