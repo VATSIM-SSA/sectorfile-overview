@@ -1,0 +1,154 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Sector registry — the SINGLE source of truth for "what sectors exist"
+# ─────────────────────────────────────────────────────────────────────────────
+#  Everything that needs to know about the sector repos reads THIS file:
+#
+#    - .github/workflows/sync-to-sectorfiles.yml       (which repos receive files)
+#    - .github/workflows/create-airac-milestone-release.yml
+#                                    (milestones, releases, the AIRAC tracker)
+#
+#  Adding a sector = one entry here. Nothing else to edit.
+#
+#  FIELDS
+#    repo      GitHub repo name under VATSIM-SSA.
+#    code      The aero-nav code. Used for the download + GNG links.
+#              ⚠️ This is NOT always the repo suffix — see FYWH below, whose
+#              repo is `sectorfile-fywf`. Never derive one from the other.
+#    name      Display name, as it should appear in the AIRAC tracker issue.
+#    category  Standard | Oceanic | FSS — groups the tracker issue.
+#
+#  Links are built as:
+#    Download  https://files.aero-nav.com/<code>
+#    GitHub    https://github.com/VATSIM-SSA/<repo>
+#    GNG       https://gng.aero-nav.com/<code>/
+# ─────────────────────────────────────────────────────────────────────────────
+
+sectors:
+  # ── Standard ──────────────────────────────────────────────────────────────
+  - repo: sectorfile-dgac
+    code: DGAC
+    name: DGAC Accra
+    category: Standard
+
+  - repo: sectorfile-dnkk
+    code: DNKK
+    name: DNKK Kano
+    category: Standard
+
+  - repo: sectorfile-fasa
+    code: FASA
+    name: FASA Cape Town + Johannesburg
+    category: Standard
+
+  - repo: sectorfile-fbgr
+    code: FBGR
+    name: FBGR Gaborone
+    category: Standard
+
+  - repo: sectorfile-fccc
+    code: FCCC
+    name: FCCC Brazzaville
+    category: Standard
+
+  - repo: sectorfile-fimm
+    code: FIMM
+    name: FIMM Mauritius
+    category: Standard
+
+  - repo: sectorfile-flfi
+    code: FLFI
+    name: FLFI Lusaka
+    category: Standard
+
+  - repo: sectorfile-fmmm
+    code: FMMM
+    name: FMMM Antananarivo
+    category: Standard
+
+  - repo: sectorfile-fnan
+    code: FNAN
+    name: FNAN Luanda
+    category: Standard
+
+  - repo: sectorfile-fqbe
+    code: FQBE
+    name: FQBE Beira
+    category: Standard
+
+  - repo: sectorfile-fsss
+    code: FSSS
+    name: FSSS Seychelles
+    category: Standard
+
+  - repo: sectorfile-fvhf
+    code: FVHF
+    name: FVHF Harare
+    category: Standard
+
+  - repo: sectorfile-fwll
+    code: FWLL
+    name: FWLL Lilongwe
+    category: Standard
+
+  # ⚠️ repo suffix (fywf) deliberately differs from the code (FYWH).
+  - repo: sectorfile-fywf
+    code: FYWH
+    name: FYWH Windhoek
+    category: Standard
+
+  - repo: sectorfile-fzza
+    code: FZZA
+    name: FZZA Kinshasa
+    category: Standard
+
+  - repo: sectorfile-gooo
+    code: GOOO
+    name: GOOO Dakar
+    category: Standard
+
+  - repo: sectorfile-gvsc
+    code: GVSC
+    name: GVSC Sal
+    category: Standard
+
+  - repo: sectorfile-hkna
+    code: HKNA
+    name: HKNA Nairobi
+    category: Standard
+
+  - repo: sectorfile-htdc
+    code: HTDC
+    name: HTDC Dar es Salaam
+    category: Standard
+
+  - repo: sectorfile-huec
+    code: HUEC
+    name: HUEC Entebbe
+    category: Standard
+
+  # ── Oceanic ───────────────────────────────────────────────────────────────
+  - repo: sectorfile-fajo
+    code: FAJO
+    name: FAJO Africa Oceanic South (AFOS)
+    category: Oceanic
+
+  - repo: sectorfile-goooo
+    code: GOOOO
+    name: GOOOO Africa Oceanic West (AFOW)
+    category: Oceanic
+
+  # ── FSS ───────────────────────────────────────────────────────────────────
+  - repo: sectorfile-afrc
+    code: AFRC
+    name: AFRC Africa Central FSS
+    category: FSS
+
+  - repo: sectorfile-afrs
+    code: AFRS
+    name: AFRS Africa South FSS
+    category: FSS
+
+  - repo: sectorfile-afrw
+    code: AFRW
+    name: AFRW Africa West FSS
+    category: FSS

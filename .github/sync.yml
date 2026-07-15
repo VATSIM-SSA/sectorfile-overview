@@ -1,14 +1,14 @@
 # ─────────────────────────────────────────────────────────────────────────────
-#  Sync configuration — the SINGLE source of truth
+#  Sync configuration — WHAT gets pushed to the sector-file repos
 # ─────────────────────────────────────────────────────────────────────────────
-#  This file controls what sectorfile-overview pushes out to the sector-file
-#  repos, and which repos receive it. The workflow
-#  (.github/workflows/sync-to-sectorfiles.yml) reads this file and needs no
-#  edits of its own.
+#  This file says WHAT is synced.
+#  repository-management/sectors.yml says WHERE it goes (the sector registry).
 #
 #  To sync a new file or folder:  add one entry under `sync:` below.
-#  To onboard a new repo:         add one line under `targets:` below.
-#  That's it. Nothing else to change anywhere.
+#  To onboard a new sector repo:  add it to repository-management/sectors.yml.
+#
+#  The repo list deliberately lives in ONE place (sectors.yml) so it cannot
+#  drift between the sync workflow, the AIRAC workflow and the README.
 #
 #  HOW IT BEHAVES
 #  - Folders are MIRRORED. Add a file here, it appears there. Change it here,
@@ -19,38 +19,6 @@
 #    than skipping quietly — a sync that silently does nothing is worse than
 #    one that breaks visibly.
 # ─────────────────────────────────────────────────────────────────────────────
-
-# Repos that receive the files below.
-# Adding a repo here is the ONLY step needed to onboard it.
-targets:
-  # ── FIRs ──
-  - VATSIM-SSA/sectorfile-dgac
-  - VATSIM-SSA/sectorfile-dnkk
-  - VATSIM-SSA/sectorfile-fasa
-  - VATSIM-SSA/sectorfile-fbgr
-  - VATSIM-SSA/sectorfile-fccc
-  - VATSIM-SSA/sectorfile-fimm
-  - VATSIM-SSA/sectorfile-flfi
-  - VATSIM-SSA/sectorfile-fmmm
-  - VATSIM-SSA/sectorfile-fnan
-  - VATSIM-SSA/sectorfile-fqbe
-  - VATSIM-SSA/sectorfile-fsss
-  - VATSIM-SSA/sectorfile-fvhf
-  - VATSIM-SSA/sectorfile-fwll
-  - VATSIM-SSA/sectorfile-fywf
-  - VATSIM-SSA/sectorfile-fzza
-  - VATSIM-SSA/sectorfile-gooo
-  - VATSIM-SSA/sectorfile-gvsc
-  - VATSIM-SSA/sectorfile-hkna
-  - VATSIM-SSA/sectorfile-htdc
-  - VATSIM-SSA/sectorfile-huec
-  # ── Oceanic ──
-  - VATSIM-SSA/sectorfile-goooo
-  - VATSIM-SSA/sectorfile-fajo
-  # ── Regional ──
-  - VATSIM-SSA/sectorfile-afrc
-  - VATSIM-SSA/sectorfile-afrs
-  - VATSIM-SSA/sectorfile-afrw
 
 # What gets synced, and where it lands in each target repo.
 sync:
