@@ -348,15 +348,18 @@ def status_body(
         # otherwise inherit the long FSS labels' width and look broken.
         width = max(len(s.get("label") or s["code"]) for s in rows)
         out.append("")
-        out.append(f"**{region}**")
+        # Real markdown headers render larger with proper spacing in Discord
+        # embeds; bold text does not separate the regions strongly enough.
+        out.append(f"### {region}")
         for s in rows:
             label = s.get("label") or s["code"]
             cyc = (state.get(s["name"], {}).get("cycle") or UNKNOWN_CYCLE).strip() or UNKNOWN_CYCLE
             link = state.get(s["name"], {}).get("link") or download_url(s)
             # The marker/label/cycle stay in a code span so the columns line up —
             # markdown does not render inside backticks, so every link has to sit
-            # outside it.
-            head = f"`{status_marker(cyc, reference)} {label:<{width}} │ AIRAC{cyc}`"
+            # outside it. No "AIRAC" prefix: the embed title already says it, and
+            # 25 repetitions is 125 characters of a 4096 budget spent on nothing.
+            head = f"`{status_marker(cyc, reference)} {label:<{width}} │ {cyc}`"
 
             # A standard aero-nav link is just "Download". Anything else is an
             # override (e.g. a Discord ticket while a sector is unavailable) and

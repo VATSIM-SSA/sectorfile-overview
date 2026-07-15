@@ -28,6 +28,9 @@ permissions: {}
 env:
   BOT_NAME: VATSSA Operations Bot
   BOT_ICON: https://palette.vatssa.com/logo_icon.png
+  # Committed to this repo rather than an external host so it is versioned with
+  # the workflow. Discord proxies raw.githubusercontent.com images fine.
+  BANNER_URL: https://raw.githubusercontent.com/VATSIM-SSA/sectorfile-overview/main/repository-management/assets/airac-banner.png
 
 concurrency:
   # Two runs editing the same message would race on creating it.
@@ -93,29 +96,26 @@ jobs:
           effective = human(d) if d else "unknown"
           org = os.environ["GITHUB_REPOSITORY"].split("/")[0]
 
-          # VATSSA brand. Teal for the board, green for the contribute card.
-          TEAL, GREEN = 0x0197B0, 0x7BD758
-          LOGO = "https://palette.vatssa.com/logo.png"
+          # One VATSSA teal across both embeds so they read as a single card.
+          TEAL = 0x0197B0
+          BANNER = os.environ["BANNER_URL"]
 
           # <t:UNIX:R> renders as "2 hours ago" and keeps counting in the client,
           # so it stays honest between runs instead of freezing at the last one.
           stamp = f"<t:{int(time.time())}:R>"
 
           board_embed = {
-              "title": "Sector File Status",
+              "title": "AIRAC Updates — Sector Status",
               "url": "https://files.aero-nav.com",
+              # -# is Discord subtext: small and grey, so the cycle line reads as
+              # context rather than competing with the region headers.
               "description": (
-                  f"Current cycle **AIRAC {cur}**, effective {effective}.\n"
+                  f"-# Current cycle **AIRAC {cur}** · effective {effective}\n"
                   f"{board}"
               ),
               "color": TEAL,
-              # Square logo -> thumbnail. As a full-width `image` a 500x500 block
-              # would shove the board down the screen.
-              "thumbnail": {"url": LOGO},
               "footer": {
-                  "text": (
-                      f"🟢 current  ·  🔵 one cycle behind  ·  🟡 two behind  ·  ⚪ older"
-                  ),
+                  "text": "🟢 current  ·  🔵 one behind  ·  🟡 two behind  ·  ⚪ older",
                   "icon_url": os.environ["BOT_ICON"],
               },
           }
@@ -130,9 +130,11 @@ jobs:
                   f"[VATSIM SSA GitHub organisation](https://github.com/{org}). "
                   f"Anyone with a GitHub account can open an issue to report a problem, "
                   f"or send a pull request to fix one.\n\n"
-                  f"Last updated {stamp}"
+                  f"-# Last updated {stamp}"
               ),
-              "color": GREEN,
+              "color": TEAL,
+              # Banner sits on the LAST embed so it closes the whole message.
+              "image": {"url": BANNER},
           }
 
           print(json.dumps({
