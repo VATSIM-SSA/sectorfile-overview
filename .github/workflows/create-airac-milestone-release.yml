@@ -165,6 +165,10 @@ jobs:
       HAS_VATIS: ${{ matrix.sector.vatis }}
       GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
     steps:
+      # Needed for repository-management/airac.py — the milestone and carry-over
+      # steps import it to compare cycles.
+      - uses: actions/checkout@v4
+
       - name: Skip archived repositories
         id: guard
         run: |
