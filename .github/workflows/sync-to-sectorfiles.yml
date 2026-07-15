@@ -60,6 +60,11 @@ jobs:
     name: ${{ matrix.target }}
     needs: load-config
     runs-on: ubuntu-latest
+    # ACT_COPY_TO_REPO_PAT lives in this environment, which is restricted to the
+    # `main` branch. A workflow pushed to any other branch cannot read it — so a
+    # token-exfiltration workflow can only work if it is merged to main, which
+    # requires a Code Owner review of .github/**.
+    environment: sync
     strategy:
       # One failing repo must not stop the rest from syncing.
       fail-fast: false
