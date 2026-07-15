@@ -249,6 +249,8 @@ jobs:
     if: needs.prepare.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     environment: sync
+    outputs:
+      issue: ${{ steps.open.outputs.issue }}
     env:
       AIRAC_CYCLE: ${{ needs.prepare.outputs.airac_cycle }}
       AIRAC_HUMAN: ${{ needs.prepare.outputs.airac_human }}
@@ -257,6 +259,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Open the tracker
+        id: open
         run: |
           set -euo pipefail
           TITLE="AIRAC ${AIRAC_CYCLE} — Sector Deployment Tracker"
@@ -266,6 +269,7 @@ jobs:
                        --jq ".[] | select(.title == \"$TITLE\") | .number" | head -1)
           if [ -n "$EXISTING" ]; then
             echo "Tracker already exists: #$EXISTING"
+            echo "issue=$EXISTING" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -276,6 +280,7 @@ jobs:
           NUM=$(gh issue create --repo "$GITHUB_REPOSITORY" \
                   --title "$TITLE" --body-file /tmp/body.md | grep -oE '[0-9]+$')
           echo "Opened tracker #$NUM"
+          echo "issue=$NUM" >> "$GITHUB_OUTPUT"
 
           # Only ever one live tracker: close the previous cycle's and link forward.
           PREV=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 200 \
@@ -286,6 +291,60 @@ jobs:
             gh issue close "$p" --repo "$GITHUB_REPOSITORY"
             echo "Closed previous tracker #$p"
           done
+
+  notify-success:
+    name: Discord announcement on publish
+    needs: [prepare, refresh-dates, create, tracker]
+    # Only on a genuinely clean publish. `always()` is needed for the result
+    # checks to be evaluated at all; should_run keeps the 3-in-4 Thursdays that
+    # aren't AIRAC dates silent, which is the whole point of the guard.
+    if: >-
+      always()
+      && needs.prepare.outputs.should_run == 'true'
+      && !contains(needs.*.result, 'failure')
+      && !contains(needs.*.result, 'cancelled')
+      && !contains(needs.*.result, 'skipped')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Announce the cycle
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          CYCLE: ${{ needs.prepare.outputs.airac_cycle }}
+          HUMAN: ${{ needs.prepare.outputs.airac_human }}
+          SECTORS: ${{ needs.prepare.outputs.sectors }}
+          ISSUE: ${{ needs.tracker.outputs.issue }}
+        run: |
+          set -euo pipefail
+          if [ -z "${WEBHOOK:-}" ]; then
+            echo "::warning::DISCORD_WEBHOOK not set — no announcement sent."
+            exit 0
+          fi
+          # Build the payload in Python: sector names and cycle text would
+          # otherwise need hand-escaping into JSON inside a shell string.
+          python3 - > /tmp/payload.json << 'PYEOF'
+          import json, os
+
+          sectors = json.loads(os.environ["SECTORS"])
+          cycle, human = os.environ["CYCLE"], os.environ["HUMAN"]
+          issue = os.environ.get("ISSUE", "").strip()
+          base = f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
+          tracker = f"{base}/issues/{issue}" if issue else f"{base}/issues"
+
+          print(json.dumps({
+              "username": "AIRAC Automation",
+              "embeds": [{
+                  "title": f"AIRAC {cycle} published",
+                  "url": tracker,
+                  "color": 8116056,
+                  "description": (
+                      f"Effective **{human}**.\n"
+                      f"Milestones and releases created across **{len(sectors)}** sector repos.\n\n"
+                      f"[Deployment tracker]({tracker}) — tick each sector as it goes out."
+                  ),
+              }],
+          }))
+          PYEOF
+          curl -sS -H "Content-Type: application/json" -X POST "$WEBHOOK" -d @/tmp/payload.json
 
   notify-failure:
     name: Discord alert on failure

@@ -13,6 +13,7 @@ effective date's year.
 Usage:
   airac.py --write [--years-ahead N]   regenerate airac-dates.csv
   airac.py --tracker 2607              print the deployment tracker issue body
+  airac.py --progress FILE             parse a tracker body; print key=value counts
   airac.py --show [YYNN]               print one cycle (default: today's, if any)
   airac.py --selftest                  verify the formula against known cycles
 """
@@ -21,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import re
 import sys
 from datetime import date, timedelta
 
@@ -163,6 +165,27 @@ def tracker_body(cycle: str, sectors_path: str = "repository-management/sectors.
     return "\n".join(out)
 
 
+# Sector lines look like: "- [ ] **Cape Town FIR** — [Download](..) · ..."
+TRACKER_LINE = re.compile(r"\s*- \[([ xX])\]\s*\*\*(.+?)\*\*")
+TRACKER_HEADING = re.compile(r"^#\s*AIRAC\s+(\d{4})\b", re.M)
+
+
+def parse_tracker(body: str) -> dict:
+    """Read back a tracker issue body: which sectors are ticked, which aren't.
+
+    Deliberately lives next to tracker_body(): the format is written and read in
+    one file, so the two cannot drift apart without --selftest noticing.
+    """
+    m = TRACKER_HEADING.search(body)
+    done: list[str] = []
+    outstanding: list[str] = []
+    for line in body.splitlines():
+        hit = TRACKER_LINE.match(line)
+        if hit:
+            (done if hit.group(1).lower() == "x" else outstanding).append(hit.group(2))
+    return {"cycle": m.group(1) if m else "", "done": done, "outstanding": outstanding}
+
+
 # Cycles taken from the hand-maintained CSV this formula replaces. If the maths
 # ever drifts from published reality, --selftest fails loudly.
 KNOWN = {
@@ -192,6 +215,17 @@ def selftest() -> int:
     ok = cycle_for_date(off) is None
     print(f"{'ok  ' if ok else 'FAIL'} {off} -> None (non-AIRAC date)")
     bad += 0 if ok else 1
+
+    # A tracker we generate must parse back to the same sectors. This is what
+    # stops the weekly report silently reading 0/0 if the line format changes.
+    try:
+        r = parse_tracker(tracker_body("2607"))
+        n = len(load_sectors())
+        ok = n > 0 and len(r["outstanding"]) == n and not r["done"] and r["cycle"] == "2607"
+        print(f"{'ok  ' if ok else 'FAIL'} tracker round-trip -> {len(r['outstanding'])}/{n} unticked, cycle {r['cycle']!r}")
+        bad += 0 if ok else 1
+    except FileNotFoundError:
+        print("skip tracker round-trip (run from the repo root to include it)")
     print("\nFAILURES:" if bad else "\nAll checks passed.", bad or "")
     return 1 if bad else 0
 
@@ -201,6 +235,7 @@ def main() -> int:
     p.add_argument("--write", action="store_true", help="regenerate airac-dates.csv")
     p.add_argument("--years-ahead", type=int, default=3, help="how far ahead to generate (default 3)")
     p.add_argument("--tracker", metavar="YYNN", help="print the tracker issue body for a cycle")
+    p.add_argument("--progress", metavar="FILE", help="parse a tracker body; print key=value counts")
     p.add_argument("--show", nargs="?", const="", metavar="YYNN", help="print a cycle (default: today)")
     p.add_argument("--selftest", action="store_true", help="verify the formula against known cycles")
     a = p.parse_args()
@@ -215,6 +250,22 @@ def main() -> int:
 
     if a.tracker:
         print(tracker_body(a.tracker))
+        return 0
+
+    if a.progress:
+        with open(a.progress, encoding="utf-8") as f:
+            r = parse_tracker(f.read())
+        done, left = len(r["done"]), len(r["outstanding"])
+        total = done + left
+        # Output is shaped for `>> $GITHUB_OUTPUT`. A body that parses to zero
+        # sectors is never "complete" — that means the format changed, and
+        # closing the tracker on a failed parse would lose the deployment list.
+        print(f"cycle={r['cycle']}")
+        print(f"total={total}")
+        print(f"done={done}")
+        print(f"remaining={left}")
+        print(f"complete={'true' if total and not left else 'false'}")
+        print(f"outstanding={', '.join(r['outstanding'])}")
         return 0
 
     if a.show is not None:
