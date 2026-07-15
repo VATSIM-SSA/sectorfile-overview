@@ -20,7 +20,7 @@ permissions: {}
 env:
   # Discord webhook identity. The avatar MUST be a raster format — Discord's CDN
   # silently ignores an SVG and falls back to a blank default avatar.
-  BOT_NAME: VATSSA Operation Help
+  BOT_NAME: VATSSA Operations Bot
   BOT_ICON: https://palette.vatssa.com/logo_icon.png
 
 concurrency:
