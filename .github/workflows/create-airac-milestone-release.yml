@@ -1,153 +1,311 @@
 name: Create AIRAC Milestones and Releases
 
+# On each AIRAC date, for every sector in repository-management/sectors.yml:
+#   1. Create the AIRAC milestone
+#   2. Carry still-open issues from earlier AIRAC milestones onto it, then close
+#      those older milestones
+#   3. Cut the release (AIRAC 2607 #1 / v26.07.1) with auto-generated notes
+# ...and open ONE deployment tracker issue in this repo covering all sectors.
+#
+# Sectors are defined in repository-management/sectors.yml — nothing here needs
+# editing to add one.
+#
+# AIRAC dates are COMPUTED, not looked up: cycles are exactly 28 days apart,
+# anchored on AIRAC 2601 = 2026-01-22. airac-dates.csv is regenerated from that
+# formula as a human reference; it is never the source of truth and can never
+# "run out".
+
 on:
   workflow_dispatch:
     inputs:
       airac_cycle:
-        description: "AIRAC cycle (YYNNN format, e.g. 2603). Leave empty to auto-detect from today's date."
+        description: "AIRAC cycle (YYNN, e.g. 2607). Empty = auto-detect from today."
         required: false
         type: string
+      new_revision:
+        description: "Cut the NEXT revision (#2 / v26.07.2) instead of skipping an existing release."
+        required: false
+        default: false
+        type: boolean
   schedule:
-    - cron: "0 1 * * 4" # Every Thursday at 01:00 UTC (AIRAC cycles always start on Thursdays)
+    - cron: "0 1 * * 4" # Thursdays 01:00 UTC — AIRAC cycles always start Thursday
 
 permissions: {}
 
+concurrency:
+  # A manual dispatch landing on top of the scheduled run would otherwise
+  # double-create milestones and race on release revision numbers.
+  group: airac-${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   prepare:
-    name: Determine AIRAC Cycle
+    name: Determine AIRAC cycle
     runs-on: ubuntu-latest
     outputs:
       airac_cycle: ${{ steps.airac.outputs.airac_cycle }}
       airac_date: ${{ steps.airac.outputs.airac_date }}
-      release_tag: ${{ steps.airac.outputs.release_tag }}
+      airac_human: ${{ steps.airac.outputs.airac_human }}
       should_run: ${{ steps.airac.outputs.should_run }}
+      sectors: ${{ steps.airac.outputs.sectors }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Resolve AIRAC Cycle from dates file
+      - name: Resolve cycle from the 28-day formula
         id: airac
         env:
           AIRAC_INPUT: ${{ inputs.airac_cycle }}
         run: |
           python3 << 'PYEOF'
-          import csv
-          import os
+          import json, os, sys
+          sys.path.insert(0, "repository-management")
+          from airac import cycle_for_date, date_for_cycle, human, load_sectors
           from datetime import date
 
-          airac_input = os.environ.get("AIRAC_INPUT", "").strip()
+          wanted = os.environ.get("AIRAC_INPUT", "").strip()
+          today = date.today()
 
-          # Load AIRAC dates from the repository's reference file
-          dates = {}
-          with open("repository-management/airac-dates.csv") as f:
-              for row in csv.DictReader(f):
-                  dates[row["cycle"]] = row["date"]
-
-          if airac_input:
-              if airac_input not in dates:
-                  raise SystemExit(f"Cycle '{airac_input}' not found in airac-dates.csv")
-              airac_id = airac_input
-              cycle_date = dates[airac_id]
-              should_run = "true"
+          if wanted:
+              d = date_for_cycle(wanted)
+              if d is None:
+                  raise SystemExit(f"'{wanted}' is not a valid AIRAC cycle")
+              cycle, cdate, run = wanted, d, "true"
           else:
-              today = date.today().isoformat()
-              airac_id = next((c for c, d in dates.items() if d == today), None)
-              if airac_id:
-                  cycle_date = today
-                  should_run = "true"
+              c = cycle_for_date(today)
+              if c:
+                  cycle, cdate, run = c, today, "true"
               else:
-                  # Not an AIRAC date today — report for logging but skip the create job
-                  airac_id = "none"
-                  cycle_date = today
-                  should_run = "false"
+                  cycle, cdate, run = "none", today, "false"
 
-          # Release tag: v.YY.NN.1  (e.g. 2603 → v.26.03.1)
-          if airac_id != "none":
-              release_tag = f"v.{airac_id[:2]}.{airac_id[2:]}.1"
-          else:
-              release_tag = "none"
+          sectors = load_sectors("repository-management/sectors.yml")
 
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-              f.write(f"airac_cycle={airac_id}\n")
-              f.write(f"airac_date={cycle_date}\n")
-              f.write(f"release_tag={release_tag}\n")
-              f.write(f"should_run={should_run}\n")
+              f.write(f"airac_cycle={cycle}\n")
+              f.write(f"airac_date={cdate.isoformat()}\n")
+              f.write(f"airac_human={human(cdate) if cycle != 'none' else ''}\n")
+              f.write(f"should_run={run}\n")
+              f.write(f"sectors={json.dumps([s['repo'] for s in sectors])}\n")
 
-          print(f"AIRAC Cycle  : {airac_id}")
-          print(f"AIRAC Date   : {cycle_date}")
-          print(f"Release Tag  : {release_tag}")
-          print(f"Should Run   : {should_run}")
+          print(f"Cycle      : {cycle}")
+          print(f"Date       : {cdate}")
+          print(f"Should run : {run}")
+          print(f"Sectors    : {len(sectors)}")
           PYEOF
 
+  refresh-dates:
+    name: Top up airac-dates.csv
+    runs-on: ubuntu-latest
+    environment: sync
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate the reference CSV
+        run: python3 repository-management/airac.py --write --years-ahead 3
+
+      - name: Commit if it changed
+        env:
+          GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- repository-management/airac-dates.csv; then
+            echo "airac-dates.csv already covers the horizon — nothing to do."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add repository-management/airac-dates.csv
+          git commit -m "chore(airac): extend airac-dates.csv (generated)"
+          # Best-effort: the CSV is a generated convenience, not the source of
+          # truth, so a protected branch rejecting this must not fail the run.
+          git push origin HEAD:main || \
+            echo "::warning::Could not push the regenerated airac-dates.csv (branch protection?). Dates are still computed correctly at runtime."
+
   create:
-    name: "Create Milestone and Release - ${{ matrix.repo }}"
+    name: "${{ matrix.repo }}"
     needs: prepare
     if: needs.prepare.outputs.should_run == 'true'
     runs-on: ubuntu-latest
+    # The PAT lives in this environment, which is restricted to `main`.
+    environment: sync
     strategy:
-      matrix:
-        repo:
-          - sectorfile-afrc
-          - sectorfile-afrs
-          - sectorfile-afrw
-          - sectorfile-dgac
-          - sectorfile-dnkk
-          - sectorfile-fajo
-          - sectorfile-fasa
-          - sectorfile-fbgr
-          - sectorfile-fccc
-          - sectorfile-fimm
-          - sectorfile-flfi
-          - sectorfile-fmmm
-          - sectorfile-fnan
-          - sectorfile-fqbe
-          - sectorfile-fsss
-          - sectorfile-fvhf
-          - sectorfile-fwll
-          - sectorfile-fywf
-          - sectorfile-fzza
-          - sectorfile-gooo
-          - sectorfile-goooo
-          - sectorfile-gvsc
-          - sectorfile-hkna
-          - sectorfile-htdc
-          - sectorfile-huec
       fail-fast: false
+      matrix:
+        repo: ${{ fromJSON(needs.prepare.outputs.sectors) }}
     env:
       AIRAC_CYCLE: ${{ needs.prepare.outputs.airac_cycle }}
       AIRAC_DATE: ${{ needs.prepare.outputs.airac_date }}
-      RELEASE_TAG: ${{ needs.prepare.outputs.release_tag }}
+      NEW_REVISION: ${{ inputs.new_revision }}
+      REPO: VATSIM-SSA/${{ matrix.repo }}
       GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
     steps:
-      - name: Create Milestone
+      - name: Skip archived repositories
+        id: guard
         run: |
-          EXISTING=$(gh api repos/VATSIM-SSA/${{ matrix.repo }}/milestones \
-            --jq ".[] | select(.title == \"AIRAC $AIRAC_CYCLE\") | .number" 2>/dev/null || true)
-          if [ -z "$EXISTING" ]; then
-            gh api repos/VATSIM-SSA/${{ matrix.repo }}/milestones \
-              --method POST \
-              -f title="AIRAC $AIRAC_CYCLE" \
-              -f due_on="${AIRAC_DATE}T00:00:00Z" \
-              -f state="open"
-            echo "Milestone 'AIRAC $AIRAC_CYCLE' created in ${{ matrix.repo }}"
+          set -euo pipefail
+          if [ "$(gh api "repos/$REPO" --jq .archived)" = "true" ]; then
+            echo "::notice::$REPO is archived — skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Milestone 'AIRAC $AIRAC_CYCLE' already exists in ${{ matrix.repo }} (#$EXISTING), skipping"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Create Release
+      - name: Create milestone
+        if: steps.guard.outputs.skip == 'false'
+        id: milestone
         run: |
-          # Release tag: v.YY.NN.1  (e.g. AIRAC 2603 → v.26.03.1)
-          # Release name: AIRAC YYNNN #1
-          RELEASE_NAME="AIRAC $AIRAC_CYCLE #1"
-          if ! gh api repos/VATSIM-SSA/${{ matrix.repo }}/releases/tags/$RELEASE_TAG &>/dev/null; then
-            gh api repos/VATSIM-SSA/${{ matrix.repo }}/releases \
-              --method POST \
-              -f tag_name="$RELEASE_TAG" \
-              -f target_commitish="main" \
-              -f name="$RELEASE_NAME" \
-              -f body="$RELEASE_NAME" \
-              -f draft=false \
-              -f prerelease=false
-            echo "Release '$RELEASE_NAME' ($RELEASE_TAG) created in ${{ matrix.repo }}"
+          set -euo pipefail
+          NUM=$(gh api "repos/$REPO/milestones?state=all&per_page=100" --paginate \
+                  --jq ".[] | select(.title == \"AIRAC $AIRAC_CYCLE\") | .number" | head -1)
+          if [ -z "$NUM" ]; then
+            NUM=$(gh api "repos/$REPO/milestones" --method POST \
+                    -f title="AIRAC $AIRAC_CYCLE" \
+                    -f due_on="${AIRAC_DATE}T00:00:00Z" \
+                    -f state="open" --jq .number)
+            echo "Created milestone 'AIRAC $AIRAC_CYCLE' (#$NUM)"
           else
-            echo "Release '$RELEASE_TAG' already exists in ${{ matrix.repo }}, skipping"
+            echo "Milestone 'AIRAC $AIRAC_CYCLE' already exists (#$NUM)"
           fi
+          echo "number=$NUM" >> "$GITHUB_OUTPUT"
+
+      - name: Carry over unfinished work, close old milestones
+        if: steps.guard.outputs.skip == 'false'
+        env:
+          CURRENT: ${{ steps.milestone.outputs.number }}
+        run: |
+          set -euo pipefail
+
+          # Any OPEN milestone titled "AIRAC ..." other than the current one is a
+          # past cycle whose work never finished. Move its still-open issues onto
+          # the current milestone, then close it — otherwise stale milestones pile
+          # up and the unfinished work is quietly forgotten.
+          OLD=$(gh api "repos/$REPO/milestones?state=open&per_page=100" --paginate \
+                  --jq ".[] | select(.title | startswith(\"AIRAC \")) | select(.number != $CURRENT) | .number")
+
+          if [ -z "$OLD" ]; then
+            echo "No earlier open AIRAC milestones."
+            exit 0
+          fi
+
+          for m in $OLD; do
+            TITLE=$(gh api "repos/$REPO/milestones/$m" --jq .title)
+            echo "::group::Carrying over from '$TITLE' (#$m)"
+            ISSUES=$(gh api "repos/$REPO/issues?milestone=$m&state=open&per_page=100" \
+                       --paginate --jq '.[] | .number' || true)
+            if [ -z "$ISSUES" ]; then
+              echo "  nothing still open"
+            else
+              for i in $ISSUES; do
+                gh api "repos/$REPO/issues/$i" --method PATCH -F milestone="$CURRENT" >/dev/null
+                echo "  moved #$i -> AIRAC $AIRAC_CYCLE"
+              done
+            fi
+            gh api "repos/$REPO/milestones/$m" --method PATCH -f state=closed >/dev/null
+            echo "  closed '$TITLE'"
+            echo "::endgroup::"
+          done
+
+      - name: Create release
+        if: steps.guard.outputs.skip == 'false'
+        run: |
+          set -euo pipefail
+
+          # Tag format is v<YY>.<NN>.<REV>, e.g. AIRAC 2607 #1 -> v26.07.1.
+          # NOTE: no dot after the "v" — this matches every existing release.
+          YY="${AIRAC_CYCLE:0:2}"
+          NN="${AIRAC_CYCLE:2:2}"
+
+          # Highest revision already cut for this cycle, so a re-run lands on
+          # #2, #3... rather than colliding or silently doing nothing.
+          LATEST=$(gh api "repos/$REPO/releases?per_page=100" --paginate \
+                     --jq "[.[] | .tag_name | select(startswith(\"v${YY}.${NN}.\")) | split(\".\") | last | tonumber] | max // 0")
+
+          if [ "$LATEST" -gt 0 ] && [ "$NEW_REVISION" != "true" ]; then
+            echo "v${YY}.${NN}.${LATEST} already exists for AIRAC $AIRAC_CYCLE — skipping."
+            echo "Re-run with new_revision: true to cut #$((LATEST + 1))."
+            exit 0
+          fi
+
+          REV=$((LATEST + 1))
+          TAG="v${YY}.${NN}.${REV}"
+          NAME="AIRAC ${AIRAC_CYCLE} #${REV}"
+
+          # generate_release_notes builds the notes from PRs merged since the
+          # previous release — no hand-written changelog.
+          gh api "repos/$REPO/releases" --method POST \
+            -f tag_name="$TAG" \
+            -f target_commitish="main" \
+            -f name="$NAME" \
+            -F draft=false \
+            -F prerelease=false \
+            -F generate_release_notes=true >/dev/null
+
+          echo "Created release '$NAME' ($TAG)"
+
+  tracker:
+    name: Deployment tracker issue
+    needs: prepare
+    if: needs.prepare.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    environment: sync
+    env:
+      AIRAC_CYCLE: ${{ needs.prepare.outputs.airac_cycle }}
+      AIRAC_HUMAN: ${{ needs.prepare.outputs.airac_human }}
+      GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Open the tracker
+        run: |
+          set -euo pipefail
+          TITLE="AIRAC ${AIRAC_CYCLE} — Sector Deployment Tracker"
+
+          EXISTING=$(gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 200 \
+                       --json number,title \
+                       --jq ".[] | select(.title == \"$TITLE\") | .number" | head -1)
+          if [ -n "$EXISTING" ]; then
+            echo "Tracker already exists: #$EXISTING"
+            exit 0
+          fi
+
+          # Body is generated from the sector registry, so the links and grouping
+          # cannot drift from reality. All boxes start unticked.
+          python3 repository-management/airac.py --tracker "$AIRAC_CYCLE" > /tmp/body.md
+
+          NUM=$(gh issue create --repo "$GITHUB_REPOSITORY" \
+                  --title "$TITLE" --body-file /tmp/body.md | grep -oE '[0-9]+$')
+          echo "Opened tracker #$NUM"
+
+          # Only ever one live tracker: close the previous cycle's and link forward.
+          PREV=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 200 \
+                   --json number,title \
+                   --jq ".[] | select(.title | contains(\"Sector Deployment Tracker\")) | select(.number != $NUM) | .number")
+          for p in $PREV; do
+            gh issue comment "$p" --repo "$GITHUB_REPOSITORY" --body "Superseded by #${NUM} (AIRAC ${AIRAC_CYCLE})."
+            gh issue close "$p" --repo "$GITHUB_REPOSITORY"
+            echo "Closed previous tracker #$p"
+          done
+
+  notify-failure:
+    name: Discord alert on failure
+    needs: [prepare, refresh-dates, create, tracker]
+    if: always() && contains(needs.*.result, 'failure')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Discord
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          set -euo pipefail
+          if [ -z "${WEBHOOK:-}" ]; then
+            echo "::warning::DISCORD_WEBHOOK not set — no alert sent."
+            exit 0
+          fi
+          curl -sS -H "Content-Type: application/json" -X POST "$WEBHOOK" -d "{
+            \"username\": \"AIRAC Automation\",
+            \"embeds\": [{
+              \"title\": \"❌ AIRAC automation failed\",
+              \"url\": \"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}\",
+              \"color\": 15158332,
+              \"description\": \"Cycle **${{ needs.prepare.outputs.airac_cycle }}**. One or more sectors did not get their milestone or release. Check the run.\"
+            }]
+          }"
