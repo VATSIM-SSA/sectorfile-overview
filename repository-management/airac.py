@@ -57,15 +57,18 @@ MONTHS = [
     "July", "August", "September", "October", "November", "December",
 ]
 
+# Only the steps a human still has to do. The GitHub release, the tag, the
+# release notes, the Discord status message and the announcement are all
+# automated now — listing them here just invites someone to do them twice.
 PROCESS_STEPS = [
     "Download and open the current sector file; check for plugin crashes",
-    "Review pending pull requests",
-    "Make GitHub release (tag + release notes)",
+    "Review and merge pending pull requests",
     "Pull GitHub main to GNG",
     "Ensure all files are checked",
-    "Publish install package",
-    "Create GNG release notes from the GitHub release notes",
-    "Update the Discord message",
+    "Publish the install package",
+    "Paste this sector's section of `repository-management/gng-notes.md` into "
+    "Claude with the GNG prompt, then paste the result into GNG",
+    "Update the `cycle` in backticks on the line below, then tick the box",
 ]
 
 # How far behind the current cycle each colour means. Anything older is grey.

@@ -110,7 +110,8 @@ jobs:
               # -# is Discord subtext: small and grey, so the cycle line reads as
               # context rather than competing with the region headers.
               "description": (
-                  f"-# Current cycle **AIRAC {cur}** · effective {effective}\n"
+                  f"-# Current cycle **AIRAC {cur}** · effective {effective} · "
+                  f"updated {stamp}\n"
                   f"{board}"
               ),
               "color": TEAL,
@@ -129,8 +130,7 @@ jobs:
                   f"Every sector file lives on the "
                   f"[VATSIM SSA GitHub organisation](https://github.com/{org}). "
                   f"Anyone with a GitHub account can open an issue to report a problem, "
-                  f"or send a pull request to fix one.\n\n"
-                  f"-# Last updated {stamp}"
+                  f"or send a pull request to fix one."
               ),
               "color": TEAL,
               # Banner sits on the LAST embed so it closes the whole message.

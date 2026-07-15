@@ -14,6 +14,12 @@ on:
   issues:
     types: [edited]
   workflow_dispatch:
+    inputs:
+      force_warning:
+        description: "Show the pre-AIRAC warning even when the next cycle is weeks away (for testing)."
+        required: false
+        default: false
+        type: boolean
 
 permissions: {}
 
@@ -40,7 +46,12 @@ jobs:
     environment: sync
     env:
       GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+      # Staff channel: failures, the Monday report, the pre-AIRAC warning.
       WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      # Public channel: the "released for all sectors" announcement, alongside
+      # the status board. Members read this one.
+      ANNOUNCE_WEBHOOK: ${{ secrets.DISCORD_STATUS_WEBHOOK }}
+      RELEASED_ID: ${{ vars.RELEASED_MESSAGE_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -86,8 +97,8 @@ jobs:
           gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY"
           echo "Closed tracker #$NUMBER"
 
-          if [ -z "${WEBHOOK:-}" ]; then
-            echo "::warning::DISCORD_WEBHOOK not set — no announcement sent."
+          if [ -z "${ANNOUNCE_WEBHOOK:-}" ]; then
+            echo "::warning::DISCORD_STATUS_WEBHOOK not set — no announcement sent."
             exit 0
           fi
           python3 - > /tmp/payload.json << 'PYEOF'
@@ -111,7 +122,26 @@ jobs:
               }],
           }))
           PYEOF
-          curl -sS -H "Content-Type: application/json" -X POST "$WEBHOOK" -d @/tmp/payload.json
+
+          # Only one "released for all sectors" message should ever exist. Delete
+          # last cycle's before posting this one — otherwise the channel fills up
+          # with stale mandatory-update notices for cycles nobody cares about now.
+          if [ -n "${RELEASED_ID:-}" ]; then
+            CODE=$(curl -sS -o /dev/null -w '%{http_code}' \
+                     -X DELETE "${ANNOUNCE_WEBHOOK}/messages/${RELEASED_ID}")
+            case "$CODE" in
+              204) echo "Deleted the previous announcement (${RELEASED_ID})" ;;
+              404) echo "::notice::Previous announcement ${RELEASED_ID} already gone." ;;
+              *)   echo "::warning::Could not delete ${RELEASED_ID} (HTTP $CODE) — continuing." ;;
+            esac
+          fi
+
+          # ?wait=true so Discord returns the message and we can record its id.
+          ID=$(curl -sS -H "Content-Type: application/json" \
+                 -X POST "${ANNOUNCE_WEBHOOK}?wait=true" -d @/tmp/payload.json \
+               | python3 -c "import json,sys; print(json.load(sys.stdin)['id'])")
+          echo "Announced AIRAC ${CYCLE} as message ${ID}"
+          gh variable set RELEASED_MESSAGE_ID --repo "$GITHUB_REPOSITORY" --body "$ID"
 
       - name: Monday report
         # Only on the schedule (or a manual run) — posting on every checkbox tick
@@ -120,6 +150,7 @@ jobs:
         if: github.event_name != 'issues'
         env:
           ORG: ${{ github.repository_owner }}
+          FORCE_WARNING: ${{ inputs.force_warning }}
           FOUND: ${{ steps.find.outputs.found }}
           NUMBER: ${{ steps.find.outputs.number }}
           CYCLE: ${{ steps.prog.outputs.cycle }}
@@ -153,7 +184,7 @@ jobs:
           # Pre-AIRAC warning. Cycles always start on a Thursday and this report
           # runs on Mondays, so the "3 days out" Monday happens once every four.
           nxt, nxt_date, days = next_airac()
-          if days <= 4:
+          if days <= 4 or os.environ.get("FORCE_WARNING") == "true":
               embeds.append({
                   "title": f"⚠️ AIRAC {nxt} goes live in {days} days",
                   "url": f"https://github.com/{org}/sectorfile-overview/pulls",

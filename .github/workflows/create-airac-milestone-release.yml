@@ -31,6 +31,10 @@ on:
         description: "Extra release-note text added to EVERY sector (e.g. files synced from this repo). Markdown, blank lines OK."
         required: false
         type: string
+      only_sectors:
+        description: "Limit the run to these sectors (comma-separated codes, e.g. FASA,FVHF). Empty = all. Use with new_revision to re-cut ONE sector."
+        required: false
+        type: string
   schedule:
     - cron: "0 1 * * 4" # Thursdays 01:00 UTC — AIRAC cycles always start Thursday
 
@@ -68,6 +72,7 @@ jobs:
         id: airac
         env:
           AIRAC_INPUT: ${{ inputs.airac_cycle }}
+          ONLY_SECTORS: ${{ inputs.only_sectors }}
         run: |
           python3 << 'PYEOF'
           import json, os, sys
@@ -91,6 +96,17 @@ jobs:
                   cycle, cdate, run = "none", today, "false"
 
           sectors = load_sectors("repository-management/sectors.yml")
+
+          # A revision usually fixes ONE sector. Without this filter,
+          # new_revision cuts a #2 in all 25 repos — 24 of them pointless.
+          only = [c.strip().upper() for c in os.environ.get("ONLY_SECTORS", "").split(",") if c.strip()]
+          if only:
+              known = {s["code"].upper() for s in sectors}
+              unknown = [c for c in only if c not in known]
+              if unknown:
+                  raise SystemExit(f"unknown sector code(s): {', '.join(unknown)}")
+              sectors = [s for s in sectors if s["code"].upper() in only]
+              print(f"Limited to: {', '.join(s['code'] for s in sectors)}")
 
           # Milestones are cut for the cycles AHEAD of this one, so issues can be
           # planned forward. The release is still cut for `cycle` itself.
