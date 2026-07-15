@@ -10,12 +10,24 @@ Verified against the 39 hand-maintained cycles that were in airac-dates.csv
 (2601..2813): zero non-28-day gaps, every date a Thursday, YY always equal to the
 effective date's year.
 
+STATE LIVES IN THE TRACKER ISSUE. Each tracker line carries the cycle a sector is
+actually on and its download link:
+
+    - [ ] `2607` **FASA Cape Town + Johannesburg** — [Download](...) · [GitHub](...) · [GNG](...)
+
+Both are hand-editable. When the next cycle's tracker is created it is SEEDED from
+the previous one (--seed), so those values carry forward. The Discord status board
+reads the same lines. Generation and parsing live in this one file on purpose, so
+the format cannot drift; --selftest round-trips them.
+
 Usage:
-  airac.py --write [--years-ahead N]   regenerate airac-dates.csv
-  airac.py --tracker 2607              print the deployment tracker issue body
-  airac.py --progress FILE             parse a tracker body; print key=value counts
-  airac.py --show [YYNN]               print one cycle (default: today's, if any)
-  airac.py --selftest                  verify the formula against known cycles
+  airac.py --write [--years-ahead N]     regenerate airac-dates.csv
+  airac.py --tracker 2607 [--seed FILE]  print the tracker issue body
+  airac.py --progress FILE               parse a tracker body; print key=value counts
+  airac.py --status FILE [--as-of YYNN]  print the Discord status-board text
+  airac.py --next 2607 [--count 3]       print the cycles that follow one
+  airac.py --show [YYNN]                 print one cycle (default: today's, if any)
+  airac.py --selftest                    verify the formula against known cycles
 """
 
 from __future__ import annotations
@@ -31,6 +43,14 @@ ANCHOR_DATE = date(2026, 1, 22)
 ANCHOR_YEAR_ORDINAL = 1  # it was the 1st cycle of 2026
 
 CYCLE_DAYS = 28
+
+# A sector whose cycle has never been recorded. Renders grey on the board rather
+# than silently claiming to be current.
+UNKNOWN_CYCLE = "----"
+
+DOWNLOAD_BASE = "https://files.aero-nav.com"
+GNG_BASE = "https://gng.aero-nav.com"
+GITHUB_ORG = "https://github.com/VATSIM-SSA"
 
 MONTHS = [
     "January", "February", "March", "April", "May", "June",
@@ -48,11 +68,9 @@ PROCESS_STEPS = [
     "Update the Discord message",
 ]
 
-CATEGORY_HEADINGS = [
-    ("Standard", "Standard Sectors"),
-    ("Oceanic", "Oceanic"),
-    ("FSS", "FSS"),
-]
+# How far behind the current cycle each colour means. Anything older is grey.
+STATUS_COLOURS = ["🟢", "🔵", "🟡"]
+STATUS_STALE = "⚪"
 
 
 def generate(until: date):
@@ -80,6 +98,19 @@ def cycle_for_date(d: date) -> str | None:
     return None
 
 
+def current_cycle(d: date | None = None) -> str | None:
+    """The cycle IN EFFECT on `d` — i.e. the most recent one on or before it.
+
+    Unlike cycle_for_date this answers on every day of the year, which is what the
+    status board needs: it runs daily, not only on AIRAC dates.
+    """
+    d = d or date.today()
+    if d < ANCHOR_DATE:
+        return None
+    offset = (d - ANCHOR_DATE).days // CYCLE_DAYS
+    return cycle_for_date(ANCHOR_DATE + timedelta(days=offset * CYCLE_DAYS))
+
+
 def date_for_cycle(cycle: str) -> date | None:
     """The effective date of `cycle` (YYNN), or None if it isn't a real cycle."""
     if len(cycle) != 4 or not cycle.isdigit():
@@ -92,6 +123,41 @@ def date_for_cycle(cycle: str) -> date | None:
     return None
 
 
+def next_cycles(cycle: str, count: int = 3) -> list[tuple[str, date]]:
+    """The `count` cycles that FOLLOW `cycle`, earliest first.
+
+    Milestones are cut for future cycles so issues can be planned ahead; the
+    release is still cut for the current one.
+    """
+    start = date_for_cycle(cycle)
+    if start is None:
+        raise SystemExit(f"'{cycle}' is not a valid AIRAC cycle")
+    horizon = start + timedelta(days=CYCLE_DAYS * (count + 2))
+    out = [(c, d) for c, d in generate(horizon) if d > start]
+    return out[:count]
+
+
+def next_airac(d: date | None = None) -> tuple[str, date, int]:
+    """The NEXT cycle, its effective date, and how many days away it is.
+
+    Drives the pre-AIRAC warning: the Monday report lands 3 days out, since
+    cycles always start on a Thursday.
+    """
+    d = d or date.today()
+    cur = current_cycle(d)
+    start = date_for_cycle(cur) if cur else ANCHOR_DATE
+    nxt_date = start + timedelta(days=CYCLE_DAYS)
+    return cycle_for_date(nxt_date) or "", nxt_date, (nxt_date - d).days
+
+
+def cycles_behind(cycle: str, reference: str) -> int | None:
+    """How many cycles `cycle` is behind `reference`. Negative = ahead."""
+    a, b = date_for_cycle(cycle), date_for_cycle(reference)
+    if a is None or b is None:
+        return None
+    return (b - a).days // CYCLE_DAYS
+
+
 def human(d: date) -> str:
     return f"{d.day} {MONTHS[d.month - 1]} {d.year}"
 
@@ -101,7 +167,7 @@ def load_sectors(path: str = "repository-management/sectors.yml") -> list[dict]:
 
     Deliberately dependency-free: the GitHub runners have no PyYAML preinstalled,
     and a `pip install` on every run is a needless failure mode for a file this
-    simple.
+    simple. File order is preserved — it drives render order everywhere.
     """
     sectors: list[dict] = []
     cur: dict | None = None
@@ -116,9 +182,38 @@ def load_sectors(path: str = "repository-management/sectors.yml") -> list[dict]:
             elif cur is not None and ":" in s:
                 k, v = s.split(":", 1)
                 k = k.strip()
-                if k in ("code", "name", "category"):
+                if k in ("code", "name", "region", "label", "includes"):
                     cur[k] = v.strip()
+                elif k == "vatis":
+                    cur["vatis"] = v.strip().lower() == "true"
     return sectors
+
+
+def regions_in_order(sectors: list[dict]) -> list[str]:
+    """Region names in the order they first appear in sectors.yml."""
+    seen: list[str] = []
+    for s in sectors:
+        r = s.get("region", "")
+        if r and r not in seen:
+            seen.append(r)
+    return seen
+
+
+def download_url(s: dict) -> str:
+    return f"{DOWNLOAD_BASE}/{s['code']}"
+
+
+def vatis_url(s: dict) -> str | None:
+    """The vATIS profile as a RELEASE ASSET, which downloads rather than renders.
+
+    raw.githubusercontent.com serves .json as text/plain with no
+    Content-Disposition, so browsers display it. Release assets send
+    `Content-Disposition: attachment`. /releases/latest/download/ always
+    resolves to the newest release, so this URL never needs updating.
+    """
+    if not s.get("vatis"):
+        return None
+    return f"{GITHUB_ORG}/{s['repo']}/releases/latest/download/{s['code']}.json"
 
 
 def write_csv(years_ahead: int, path: str = "repository-management/airac-dates.csv") -> int:
@@ -132,58 +227,139 @@ def write_csv(years_ahead: int, path: str = "repository-management/airac-dates.c
     return len(rows)
 
 
-def tracker_body(cycle: str, sectors_path: str = "repository-management/sectors.yml") -> str:
+# ── tracker issue ─────────────────────────────────────────────────────────────
+#
+# Sector lines look like:
+#   - [ ] `2607` **FASA Cape Town + Johannesburg** — [Download](url) · [GitHub](url) · [GNG](url)
+#
+# The backticked cycle and the Download URL are the two hand-editable fields.
+TRACKER_LINE = re.compile(
+    r"\s*- \[([ xX])\]\s*`([^`]*)`\s*\*\*(.+?)\*\*.*?\[Download\]\(([^)]+)\)"
+)
+TRACKER_HEADING = re.compile(r"^#\s*AIRAC\s+(\d{4})\b", re.M)
+
+
+def tracker_body(
+    cycle: str,
+    seed: dict | None = None,
+    sectors_path: str = "repository-management/sectors.yml",
+) -> str:
     d = date_for_cycle(cycle)
     if d is None:
         raise SystemExit(f"'{cycle}' is not a valid AIRAC cycle")
 
+    seed = seed or {}
     sectors = load_sectors(sectors_path)
     out: list[str] = []
     out.append(f"# AIRAC {cycle} — Sector Deployment Tracker")
     out.append("")
     out.append(f"Effective {human(d)}. Tick a sector once all steps below are complete.")
     out.append("")
+    out.append(
+        "The `cycle` in backticks is the AIRAC each sector is **actually** on — "
+        "update it as you deploy. Repoint the Download link if a sector is served "
+        "from somewhere else. Both carry over to the next cycle's tracker."
+    )
+    out.append("")
     out.append("## Process (per sector)")
     for i, step in enumerate(PROCESS_STEPS, 1):
         out.append(f"{i}. {step}")
 
-    for cat, heading in CATEGORY_HEADINGS:
-        rows = [s for s in sectors if s.get("category") == cat]
-        if not rows:
-            continue
+    for region in regions_in_order(sectors):
         out.append("")
-        out.append(f"## {heading}")
-        for s in rows:
-            code, repo, name = s["code"], s["repo"], s["name"]
+        out.append(f"## {region}")
+        for s in (x for x in sectors if x.get("region") == region):
+            prev = seed.get(s["name"], {})
+            cyc = prev.get("cycle") or UNKNOWN_CYCLE
+            link = prev.get("link") or download_url(s)
             out.append(
-                f"- [ ] **{name}** — "
-                f"[Download](https://files.aero-nav.com/{code}) · "
-                f"[GitHub](https://github.com/VATSIM-SSA/{repo}) · "
-                f"[GNG](https://gng.aero-nav.com/{code}/)"
+                f"- [ ] `{cyc}` **{s['name']}** — "
+                f"[Download]({link}) · "
+                f"[GitHub]({GITHUB_ORG}/{s['repo']}) · "
+                f"[GNG]({GNG_BASE}/{s['code']}/)"
             )
     out.append("")
     return "\n".join(out)
 
 
-# Sector lines look like: "- [ ] **Cape Town FIR** — [Download](..) · ..."
-TRACKER_LINE = re.compile(r"\s*- \[([ xX])\]\s*\*\*(.+?)\*\*")
-TRACKER_HEADING = re.compile(r"^#\s*AIRAC\s+(\d{4})\b", re.M)
-
-
 def parse_tracker(body: str) -> dict:
-    """Read back a tracker issue body: which sectors are ticked, which aren't.
+    """Read a tracker issue body back into state.
 
-    Deliberately lives next to tracker_body(): the format is written and read in
-    one file, so the two cannot drift apart without --selftest noticing.
+    Returns the tracker's own cycle plus, per sector, whether it is ticked, the
+    cycle it claims to be on, and its download link.
     """
     m = TRACKER_HEADING.search(body)
-    done: list[str] = []
-    outstanding: list[str] = []
+    sectors: list[dict] = []
     for line in body.splitlines():
         hit = TRACKER_LINE.match(line)
         if hit:
-            (done if hit.group(1).lower() == "x" else outstanding).append(hit.group(2))
-    return {"cycle": m.group(1) if m else "", "done": done, "outstanding": outstanding}
+            sectors.append({
+                "ticked": hit.group(1).lower() == "x",
+                "cycle": hit.group(2).strip(),
+                "name": hit.group(3),
+                "link": hit.group(4),
+            })
+    return {"cycle": m.group(1) if m else "", "sectors": sectors}
+
+
+def seed_from(body: str) -> dict:
+    """Tracker body -> {name: {cycle, link}} for seeding the next tracker."""
+    return {
+        s["name"]: {"cycle": s["cycle"], "link": s["link"]}
+        for s in parse_tracker(body)["sectors"]
+    }
+
+
+# ── Discord status board ──────────────────────────────────────────────────────
+
+
+def status_marker(sector_cycle: str, reference: str) -> str:
+    """Green = on the current cycle, blue = one behind, yellow = two, grey = older."""
+    behind = cycles_behind(sector_cycle, reference)
+    if behind is None:
+        return STATUS_STALE  # unparseable, e.g. UNKNOWN_CYCLE
+    if behind < 0:
+        behind = 0  # ahead of current (shouldn't happen) — treat as current
+    if behind < len(STATUS_COLOURS):
+        return STATUS_COLOURS[behind]
+    return STATUS_STALE
+
+
+def status_body(
+    body: str,
+    reference: str | None = None,
+    sectors_path: str = "repository-management/sectors.yml",
+) -> str:
+    """The status-board text, rendered from a tracker body.
+
+    Order comes from sectors.yml, never from the tracker, so the board's layout is
+    stable even if someone reorders the issue.
+    """
+    reference = reference or current_cycle() or ""
+    state = seed_from(body)
+    sectors = load_sectors(sectors_path)
+
+    out: list[str] = []
+    for region in regions_in_order(sectors):
+        rows = [s for s in sectors if s.get("region") == region]
+        if not rows:
+            continue
+        # Pad within the region, not globally: the code-only regions would
+        # otherwise inherit the long FSS labels' width and look broken.
+        width = max(len(s.get("label") or s["code"]) for s in rows)
+        out.append("")
+        out.append(f"**{region}**")
+        for s in rows:
+            label = s.get("label") or s["code"]
+            cyc = (state.get(s["name"], {}).get("cycle") or UNKNOWN_CYCLE).strip() or UNKNOWN_CYCLE
+            link = state.get(s["name"], {}).get("link") or download_url(s)
+            note = f" (includes {s['includes']})" if s.get("includes") else ""
+            v = vatis_url(s)
+            vat = f" · [vATIS]({v})" if v else ""
+            out.append(
+                f"`{status_marker(cyc, reference)} {label:<{width}} | AIRAC{cyc} |` {link}{vat}{note}"
+            )
+    return "\n".join(out).strip()
 
 
 # Cycles taken from the hand-maintained CSV this formula replaces. If the maths
@@ -210,22 +386,73 @@ def selftest() -> int:
         ok = got == cycle
         print(f"{'ok  ' if ok else 'FAIL'} {expected} -> {got} (expected {cycle})")
         bad += 0 if ok else 1
+
     # A non-AIRAC date must resolve to nothing.
     off = ANCHOR_DATE + timedelta(days=1)
     ok = cycle_for_date(off) is None
     print(f"{'ok  ' if ok else 'FAIL'} {off} -> None (non-AIRAC date)")
     bad += 0 if ok else 1
 
-    # A tracker we generate must parse back to the same sectors. This is what
-    # stops the weekly report silently reading 0/0 if the line format changes.
+    # ...but it must still have a cycle IN EFFECT — that's what the board uses.
+    ok = current_cycle(off) == "2601"
+    print(f"{'ok  ' if ok else 'FAIL'} current_cycle({off}) -> {current_cycle(off)} (expected 2601)")
+    bad += 0 if ok else 1
+    ok = current_cycle(date(2026, 7, 15)) == "2607"
+    print(f"{'ok  ' if ok else 'FAIL'} current_cycle(2026-07-15) -> {current_cycle(date(2026, 7, 15))} (expected 2607)")
+    bad += 0 if ok else 1
+
+    # Milestones are cut ahead, so next_cycles must cross the year boundary right.
+    got = [c for c, _ in next_cycles("2607", 3)]
+    ok = got == ["2608", "2609", "2610"]
+    print(f"{'ok  ' if ok else 'FAIL'} next_cycles(2607, 3) -> {got}")
+    bad += 0 if ok else 1
+    got = [c for c, _ in next_cycles("2613", 3)]
+    ok = got == ["2701", "2702", "2703"]
+    print(f"{'ok  ' if ok else 'FAIL'} next_cycles(2613, 3) -> {got} (year rollover)")
+    bad += 0 if ok else 1
+
+    # The Monday before a cycle must read exactly 3 days out — that is what
+    # arms the pre-AIRAC warning.
+    monday_before = date(2026, 8, 3)  # 2608 is effective Thu 2026-08-06
+    got = next_airac(monday_before)
+    ok = got[0] == "2608" and got[2] == 3
+    print(f"{'ok  ' if ok else 'FAIL'} next_airac({monday_before}) -> {got} (expected 2608, 3 days)")
+    bad += 0 if ok else 1
+    # ...and the Monday after must not.
+    got = next_airac(date(2026, 8, 10))
+    ok = got[0] == "2609" and got[2] == 24
+    print(f"{'ok  ' if ok else 'FAIL'} next_airac(2026-08-10) -> {got} (expected 2609, 24 days)")
+    bad += 0 if ok else 1
+
+    # Colour rule: green/blue/yellow/grey by distance behind the reference.
+    for cyc, expected in [("2607", "🟢"), ("2606", "🔵"), ("2605", "🟡"),
+                          ("2604", "⚪"), ("2602", "⚪"), (UNKNOWN_CYCLE, "⚪")]:
+        got = status_marker(cyc, "2607")
+        ok = got == expected
+        print(f"{'ok  ' if ok else 'FAIL'} status_marker({cyc}, 2607) -> {got} (expected {expected})")
+        bad += 0 if ok else 1
+
+    # A tracker we generate must parse back to the same sectors, and seeded
+    # values must survive the round trip. This is what stops the board silently
+    # reading nothing if the line format changes.
     try:
-        r = parse_tracker(tracker_body("2607"))
         n = len(load_sectors())
-        ok = n > 0 and len(r["outstanding"]) == n and not r["done"] and r["cycle"] == "2607"
-        print(f"{'ok  ' if ok else 'FAIL'} tracker round-trip -> {len(r['outstanding'])}/{n} unticked, cycle {r['cycle']!r}")
+        body = tracker_body("2607")
+        r = parse_tracker(body)
+        ok = n > 0 and len(r["sectors"]) == n and r["cycle"] == "2607"
+        print(f"{'ok  ' if ok else 'FAIL'} tracker round-trip -> {len(r['sectors'])}/{n} lines, cycle {r['cycle']!r}")
+        bad += 0 if ok else 1
+
+        seeded = tracker_body("2608", seed={
+            "FASA Cape Town + Johannesburg": {"cycle": "2607", "link": "https://example.test/x"},
+        })
+        st = seed_from(seeded)["FASA Cape Town + Johannesburg"]
+        ok = st["cycle"] == "2607" and st["link"] == "https://example.test/x"
+        print(f"{'ok  ' if ok else 'FAIL'} seed carries over -> {st}")
         bad += 0 if ok else 1
     except FileNotFoundError:
         print("skip tracker round-trip (run from the repo root to include it)")
+
     print("\nFAILURES:" if bad else "\nAll checks passed.", bad or "")
     return 1 if bad else 0
 
@@ -235,7 +462,12 @@ def main() -> int:
     p.add_argument("--write", action="store_true", help="regenerate airac-dates.csv")
     p.add_argument("--years-ahead", type=int, default=3, help="how far ahead to generate (default 3)")
     p.add_argument("--tracker", metavar="YYNN", help="print the tracker issue body for a cycle")
+    p.add_argument("--seed", metavar="FILE", help="previous tracker body to carry values over from")
     p.add_argument("--progress", metavar="FILE", help="parse a tracker body; print key=value counts")
+    p.add_argument("--status", metavar="FILE", help="print the Discord status-board text")
+    p.add_argument("--as-of", metavar="YYNN", help="cycle to colour the board against (default: today's)")
+    p.add_argument("--next", metavar="YYNN", help="print the cycles following one")
+    p.add_argument("--count", type=int, default=3, help="how many cycles --next prints (default 3)")
     p.add_argument("--show", nargs="?", const="", metavar="YYNN", help="print a cycle (default: today)")
     p.add_argument("--selftest", action="store_true", help="verify the formula against known cycles")
     a = p.parse_args()
@@ -249,23 +481,39 @@ def main() -> int:
         return 0
 
     if a.tracker:
-        print(tracker_body(a.tracker))
+        seed = {}
+        if a.seed:
+            with open(a.seed, encoding="utf-8") as f:
+                seed = seed_from(f.read())
+        print(tracker_body(a.tracker, seed=seed))
+        return 0
+
+    if a.next:
+        for c, d in next_cycles(a.next, a.count):
+            print(f"{c} {d.isoformat()}")
+        return 0
+
+    if a.status:
+        with open(a.status, encoding="utf-8") as f:
+            print(status_body(f.read(), reference=a.as_of))
         return 0
 
     if a.progress:
         with open(a.progress, encoding="utf-8") as f:
             r = parse_tracker(f.read())
-        done, left = len(r["done"]), len(r["outstanding"])
-        total = done + left
+        rows = r["sectors"]
+        done = [s["name"] for s in rows if s["ticked"]]
+        left = [s["name"] for s in rows if not s["ticked"]]
+        total = len(rows)
         # Output is shaped for `>> $GITHUB_OUTPUT`. A body that parses to zero
         # sectors is never "complete" — that means the format changed, and
         # closing the tracker on a failed parse would lose the deployment list.
         print(f"cycle={r['cycle']}")
         print(f"total={total}")
-        print(f"done={done}")
-        print(f"remaining={left}")
+        print(f"done={len(done)}")
+        print(f"remaining={len(left)}")
         print(f"complete={'true' if total and not left else 'false'}")
-        print(f"outstanding={', '.join(r['outstanding'])}")
+        print(f"outstanding={', '.join(left)}")
         return 0
 
     if a.show is not None:

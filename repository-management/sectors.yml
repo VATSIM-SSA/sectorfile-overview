@@ -6,149 +6,197 @@
 #    - .github/workflows/sync-to-sectorfiles.yml       (which repos receive files)
 #    - .github/workflows/create-airac-milestone-release.yml
 #                                    (milestones, releases, the AIRAC tracker)
+#    - .github/workflows/sector-status.yml             (the Discord status board)
 #
 #  Adding a sector = one entry here. Nothing else to edit.
+#
+#  ORDER IS SIGNIFICANT. The tracker issue and the Discord status board render
+#  sectors in exactly the order they appear below, grouped by `region` in the
+#  order each region first appears. Reordering this file reorders both.
 #
 #  FIELDS
 #    repo      GitHub repo name under VATSIM-SSA.
 #    code      The aero-nav code. Used for the download + GNG links.
 #              ⚠️ This is NOT always the repo suffix — see FYWH below, whose
 #              repo is `sectorfile-fywf`. Never derive one from the other.
-#    name      Display name, as it should appear in the AIRAC tracker issue.
-#    category  Standard | Oceanic | FSS — groups the tracker issue.
+#    name      Display name, as it appears in the AIRAC tracker issue.
+#    region    Groups both the tracker issue and the status board.
+#    label     OPTIONAL. What the status board calls it. Defaults to `code`.
+#              Only set where the board should say more than the bare code.
+#    includes  OPTIONAL. Extra airports folded into this sector file, shown as
+#              a trailing note on the status board.
+#    vatis     OPTIONAL. Set true when the repo has vATIS/<code>.json. Oceanic
+#              and FSS sectors have no ATIS, so they have no profile. If you add
+#              a profile to a repo, set this — nothing detects it automatically.
 #
 #  Links are built as:
 #    Download  https://files.aero-nav.com/<code>
+#              ⚠️ Overridable per sector — edit the [Download](...) link on the
+#              tracker line to point somewhere else (e.g. a Discord ticket when
+#              a sector is temporarily unavailable). The override carries over
+#              to the next cycle's tracker.
 #    GitHub    https://github.com/VATSIM-SSA/<repo>
 #    GNG       https://gng.aero-nav.com/<code>/
+#    vATIS     https://github.com/VATSIM-SSA/<repo>/releases/latest/download/<code>.json
+#              ⚠️ Deliberately the RELEASE ASSET, not the file on main. A raw
+#              GitHub URL serves text/plain with no Content-Disposition, so the
+#              browser renders the JSON instead of downloading it. Release assets
+#              send `Content-Disposition: attachment` and download properly. The
+#              publish workflow uploads the asset on every release.
 # ─────────────────────────────────────────────────────────────────────────────
 
 sectors:
-  # ── Standard ──────────────────────────────────────────────────────────────
-  - repo: sectorfile-dgac
-    code: DGAC
-    name: DGAC Accra
-    category: Standard
-
-  - repo: sectorfile-dnkk
-    code: DNKK
-    name: DNKK Kano
-    category: Standard
-
+  # ── Southern Africa ───────────────────────────────────────────────────────
   - repo: sectorfile-fasa
     code: FASA
+    vatis: true
     name: FASA Cape Town + Johannesburg
-    category: Standard
+    region: Southern Africa
+    includes: FACA and FAJA
 
   - repo: sectorfile-fbgr
     code: FBGR
+    vatis: true
     name: FBGR Gaborone
-    category: Standard
-
-  - repo: sectorfile-fccc
-    code: FCCC
-    name: FCCC Brazzaville
-    category: Standard
-
-  - repo: sectorfile-fimm
-    code: FIMM
-    name: FIMM Mauritius
-    category: Standard
-
-  - repo: sectorfile-flfi
-    code: FLFI
-    name: FLFI Lusaka
-    category: Standard
-
-  - repo: sectorfile-fmmm
-    code: FMMM
-    name: FMMM Antananarivo
-    category: Standard
-
-  - repo: sectorfile-fnan
-    code: FNAN
-    name: FNAN Luanda
-    category: Standard
+    region: Southern Africa
 
   - repo: sectorfile-fqbe
     code: FQBE
     name: FQBE Beira
-    category: Standard
-
-  - repo: sectorfile-fsss
-    code: FSSS
-    name: FSSS Seychelles
-    category: Standard
+    region: Southern Africa
 
   - repo: sectorfile-fvhf
     code: FVHF
+    vatis: true
     name: FVHF Harare
-    category: Standard
-
-  - repo: sectorfile-fwll
-    code: FWLL
-    name: FWLL Lilongwe
-    category: Standard
+    region: Southern Africa
 
   # ⚠️ repo suffix (fywf) deliberately differs from the code (FYWH).
   - repo: sectorfile-fywf
     code: FYWH
     name: FYWH Windhoek
-    category: Standard
+    region: Southern Africa
+
+  # ── Eastern Africa ────────────────────────────────────────────────────────
+  - repo: sectorfile-hkna
+    code: HKNA
+    vatis: true
+    name: HKNA Nairobi
+    region: Eastern Africa
+
+  - repo: sectorfile-htdc
+    code: HTDC
+    vatis: true
+    name: HTDC Dar es Salaam
+    region: Eastern Africa
+    includes: HBBA and HRYR
+
+  - repo: sectorfile-huec
+    code: HUEC
+    vatis: true
+    name: HUEC Entebbe
+    region: Eastern Africa
+
+  - repo: sectorfile-fwll
+    code: FWLL
+    name: FWLL Lilongwe
+    region: Eastern Africa
+
+  # ── Western Africa ────────────────────────────────────────────────────────
+  - repo: sectorfile-dgac
+    code: DGAC
+    vatis: true
+    name: DGAC Accra
+    region: Western Africa
+
+  - repo: sectorfile-dnkk
+    code: DNKK
+    vatis: true
+    name: DNKK Kano
+    region: Western Africa
+
+  - repo: sectorfile-gooo
+    code: GOOO
+    vatis: true
+    name: GOOO Dakar
+    region: Western Africa
+    includes: GLRB
+
+  - repo: sectorfile-gvsc
+    code: GVSC
+    vatis: true
+    name: GVSC Sal
+    region: Western Africa
+
+  # ── Central Africa ────────────────────────────────────────────────────────
+  - repo: sectorfile-fnan
+    code: FNAN
+    vatis: true
+    name: FNAN Luanda
+    region: Central Africa
+
+  - repo: sectorfile-fccc
+    code: FCCC
+    name: FCCC Brazzaville
+    region: Central Africa
+
+  - repo: sectorfile-flfi
+    code: FLFI
+    name: FLFI Lusaka
+    region: Central Africa
 
   - repo: sectorfile-fzza
     code: FZZA
     name: FZZA Kinshasa
-    category: Standard
+    region: Central Africa
 
-  - repo: sectorfile-gooo
-    code: GOOO
-    name: GOOO Dakar
-    category: Standard
+  # ── Vanilla ───────────────────────────────────────────────────────────────
+  - repo: sectorfile-fimm
+    code: FIMM
+    vatis: true
+    name: FIMM Mauritius
+    region: Vanilla
 
-  - repo: sectorfile-gvsc
-    code: GVSC
-    name: GVSC Sal
-    category: Standard
+  - repo: sectorfile-fmmm
+    code: FMMM
+    vatis: true
+    name: FMMM Antananarivo
+    region: Vanilla
 
-  - repo: sectorfile-hkna
-    code: HKNA
-    name: HKNA Nairobi
-    category: Standard
+  - repo: sectorfile-fsss
+    code: FSSS
+    vatis: true
+    name: FSSS Seychelles
+    region: Vanilla
 
-  - repo: sectorfile-htdc
-    code: HTDC
-    name: HTDC Dar es Salaam
-    category: Standard
-
-  - repo: sectorfile-huec
-    code: HUEC
-    name: HUEC Entebbe
-    category: Standard
-
-  # ── Oceanic ───────────────────────────────────────────────────────────────
-  - repo: sectorfile-fajo
-    code: FAJO
-    name: FAJO Africa Oceanic South (AFOS)
-    category: Oceanic
-
-  - repo: sectorfile-goooo
-    code: GOOOO
-    name: GOOOO Africa Oceanic West (AFOW)
-    category: Oceanic
-
-  # ── FSS ───────────────────────────────────────────────────────────────────
+  # ── Oceanic and FSS ───────────────────────────────────────────────────────
   - repo: sectorfile-afrc
     code: AFRC
     name: AFRC Africa Central FSS
-    category: FSS
+    region: Oceanic and FSS
+    label: AFRC Africa Central FSS
 
   - repo: sectorfile-afrs
     code: AFRS
     name: AFRS Africa South FSS
-    category: FSS
+    region: Oceanic and FSS
+    label: AFRS Africa South FSS
 
   - repo: sectorfile-afrw
     code: AFRW
     name: AFRW Africa West FSS
-    category: FSS
+    region: Oceanic and FSS
+    label: AFRW Africa West FSS
+
+  - repo: sectorfile-fajo
+    code: FAJO
+    name: FAJO Africa Oceanic South (AFOS)
+    region: Oceanic and FSS
+    label: AFOS Africa Oceanic South
+
+  - repo: sectorfile-goooo
+    code: GOOOO
+    name: GOOOO Africa Oceanic West (AFOW)
+    region: Oceanic and FSS
+    label: AFOW Africa Oceanic West
+    includes: DGAO and GOOC

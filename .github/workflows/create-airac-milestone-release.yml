@@ -27,6 +27,10 @@ on:
         required: false
         default: false
         type: boolean
+      extra_notes:
+        description: "Extra release-note text added to EVERY sector (e.g. files synced from this repo). Markdown, blank lines OK."
+        required: false
+        type: string
   schedule:
     - cron: "0 1 * * 4" # Thursdays 01:00 UTC — AIRAC cycles always start Thursday
 
@@ -56,6 +60,7 @@ jobs:
       airac_human: ${{ steps.airac.outputs.airac_human }}
       should_run: ${{ steps.airac.outputs.should_run }}
       sectors: ${{ steps.airac.outputs.sectors }}
+      future: ${{ steps.airac.outputs.future }}
     steps:
       - uses: actions/checkout@v4
 
@@ -67,7 +72,7 @@ jobs:
           python3 << 'PYEOF'
           import json, os, sys
           sys.path.insert(0, "repository-management")
-          from airac import cycle_for_date, date_for_cycle, human, load_sectors
+          from airac import cycle_for_date, date_for_cycle, human, load_sectors, next_cycles
           from datetime import date
 
           wanted = os.environ.get("AIRAC_INPUT", "").strip()
@@ -87,17 +92,28 @@ jobs:
 
           sectors = load_sectors("repository-management/sectors.yml")
 
+          # Milestones are cut for the cycles AHEAD of this one, so issues can be
+          # planned forward. The release is still cut for `cycle` itself.
+          future = [[c, d.isoformat()] for c, d in next_cycles(cycle, 3)] if run == "true" else []
+
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
               f.write(f"airac_cycle={cycle}\n")
               f.write(f"airac_date={cdate.isoformat()}\n")
               f.write(f"airac_human={human(cdate) if cycle != 'none' else ''}\n")
               f.write(f"should_run={run}\n")
-              f.write(f"sectors={json.dumps([s['repo'] for s in sectors])}\n")
+              # Objects, not bare names: the release step needs `code` to find and
+              # upload the vATIS profile, and code != repo suffix for FYWH.
+              f.write("sectors=" + json.dumps(
+                  [{"repo": s["repo"], "code": s["code"], "vatis": bool(s.get("vatis"))}
+                   for s in sectors]
+              ) + "\n")
+              f.write(f"future={json.dumps(future)}\n")
 
           print(f"Cycle      : {cycle}")
           print(f"Date       : {cdate}")
           print(f"Should run : {run}")
           print(f"Sectors    : {len(sectors)}")
+          print(f"Milestones : {[c for c, _ in future]}")
           PYEOF
 
   refresh-dates:
@@ -129,7 +145,7 @@ jobs:
             echo "::warning::Could not push the regenerated airac-dates.csv (branch protection?). Dates are still computed correctly at runtime."
 
   create:
-    name: "${{ matrix.repo }}"
+    name: "${{ matrix.sector.repo }}"
     needs: prepare
     if: needs.prepare.outputs.should_run == 'true'
     runs-on: ubuntu-latest
@@ -138,12 +154,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        repo: ${{ fromJSON(needs.prepare.outputs.sectors) }}
+        sector: ${{ fromJSON(needs.prepare.outputs.sectors) }}
     env:
       AIRAC_CYCLE: ${{ needs.prepare.outputs.airac_cycle }}
       AIRAC_DATE: ${{ needs.prepare.outputs.airac_date }}
       NEW_REVISION: ${{ inputs.new_revision }}
-      REPO: VATSIM-SSA/${{ matrix.repo }}
+      EXTRA_NOTES: ${{ inputs.extra_notes }}
+      REPO: VATSIM-SSA/${{ matrix.sector.repo }}
+      CODE: ${{ matrix.sector.code }}
+      HAS_VATIS: ${{ matrix.sector.vatis }}
       GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
     steps:
       - name: Skip archived repositories
@@ -157,44 +176,82 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Create milestone
+      - name: Create the next three milestones
         if: steps.guard.outputs.skip == 'false'
         id: milestone
+        env:
+          FUTURE: ${{ needs.prepare.outputs.future }}
         run: |
           set -euo pipefail
-          NUM=$(gh api "repos/$REPO/milestones?state=all&per_page=100" --paginate \
-                  --jq ".[] | select(.title == \"AIRAC $AIRAC_CYCLE\") | .number" | head -1)
-          if [ -z "$NUM" ]; then
-            NUM=$(gh api "repos/$REPO/milestones" --method POST \
-                    -f title="AIRAC $AIRAC_CYCLE" \
-                    -f due_on="${AIRAC_DATE}T00:00:00Z" \
-                    -f state="open" --jq .number)
-            echo "Created milestone 'AIRAC $AIRAC_CYCLE' (#$NUM)"
-          else
-            echo "Milestone 'AIRAC $AIRAC_CYCLE' already exists (#$NUM)"
-          fi
-          echo "number=$NUM" >> "$GITHUB_OUTPUT"
 
-      - name: Carry over unfinished work, close old milestones
+          # Milestones are cut AHEAD of the cycle being released: work is planned
+          # into future cycles, so on the 2607 run we open 2608/2609/2610. The
+          # release below is still cut for 2607.
+          NEXT=""
+          echo "$FUTURE" | python3 -c "import json,sys; [print(c,d) for c,d in json.load(sys.stdin)]" |
+          while read -r CYC CDATE; do
+            NUM=$(gh api "repos/$REPO/milestones?state=all&per_page=100" --paginate \
+                    --jq ".[] | select(.title == \"AIRAC $CYC\") | .number" | head -1)
+            if [ -z "$NUM" ]; then
+              NUM=$(gh api "repos/$REPO/milestones" --method POST \
+                      -f title="AIRAC $CYC" \
+                      -f due_on="${CDATE}T00:00:00Z" \
+                      -f state="open" --jq .number)
+              echo "Created milestone 'AIRAC $CYC' (#$NUM)"
+            else
+              echo "Milestone 'AIRAC $CYC' already exists (#$NUM)"
+            fi
+          done
+
+          # The first future cycle is where unfinished work lands.
+          NEXT_CYCLE=$(echo "$FUTURE" | python3 -c "import json,sys; print(json.load(sys.stdin)[0][0])")
+          NEXT=$(gh api "repos/$REPO/milestones?state=all&per_page=100" --paginate \
+                   --jq ".[] | select(.title == \"AIRAC $NEXT_CYCLE\") | .number" | head -1)
+          echo "next_cycle=$NEXT_CYCLE" >> "$GITHUB_OUTPUT"
+          echo "next=$NEXT" >> "$GITHUB_OUTPUT"
+
+      - name: Carry unfinished work onto the next cycle, close spent milestones
         if: steps.guard.outputs.skip == 'false'
         env:
-          CURRENT: ${{ steps.milestone.outputs.number }}
+          NEXT: ${{ steps.milestone.outputs.next }}
+          NEXT_CYCLE: ${{ steps.milestone.outputs.next_cycle }}
         run: |
           set -euo pipefail
 
-          # Any OPEN milestone titled "AIRAC ..." other than the current one is a
-          # past cycle whose work never finished. Move its still-open issues onto
-          # the current milestone, then close it — otherwise stale milestones pile
-          # up and the unfinished work is quietly forgotten.
-          OLD=$(gh api "repos/$REPO/milestones?state=open&per_page=100" --paginate \
-                  --jq ".[] | select(.title | startswith(\"AIRAC \")) | select(.number != $CURRENT) | .number")
+          # Only milestones for cycles AT OR BEFORE the one being released are
+          # spent. The future ones we just created (2609, 2610, ...) exist so work
+          # can be planned into them — sweeping those would destroy that planning,
+          # which is exactly what the old "anything that isn't current" rule did.
+          gh api "repos/$REPO/milestones?state=open&per_page=100" --paginate \
+            --jq '.[] | select(.title | startswith("AIRAC ")) | [.number, .title] | @tsv' > /tmp/open.tsv
 
-          if [ -z "$OLD" ]; then
-            echo "No earlier open AIRAC milestones."
+          SPENT=$(python3 - << 'PYEOF'
+          import os, sys
+          sys.path.insert(0, "repository-management")
+          from airac import cycles_behind
+
+          current = os.environ["AIRAC_CYCLE"]
+          out = []
+          with open("/tmp/open.tsv", encoding="utf-8") as f:
+              for line in f:
+                  if not line.strip():
+                      continue
+                  num, title = line.rstrip("\n").split("\t", 1)
+                  cyc = title.split()[-1]
+                  behind = cycles_behind(cyc, current)
+                  # behind >= 0 -> that cycle is current or older, i.e. spent.
+                  if behind is not None and behind >= 0:
+                      out.append(num)
+          print(" ".join(out))
+          PYEOF
+          )
+
+          if [ -z "$SPENT" ]; then
+            echo "No spent AIRAC milestones (nothing at or before $AIRAC_CYCLE)."
             exit 0
           fi
 
-          for m in $OLD; do
+          for m in $SPENT; do
             TITLE=$(gh api "repos/$REPO/milestones/$m" --jq .title)
             echo "::group::Carrying over from '$TITLE' (#$m)"
             ISSUES=$(gh api "repos/$REPO/issues?milestone=$m&state=open&per_page=100" \
@@ -203,8 +260,8 @@ jobs:
               echo "  nothing still open"
             else
               for i in $ISSUES; do
-                gh api "repos/$REPO/issues/$i" --method PATCH -F milestone="$CURRENT" >/dev/null
-                echo "  moved #$i -> AIRAC $AIRAC_CYCLE"
+                gh api "repos/$REPO/issues/$i" --method PATCH -F milestone="$NEXT" >/dev/null
+                echo "  moved #$i -> AIRAC $NEXT_CYCLE"
               done
             fi
             gh api "repos/$REPO/milestones/$m" --method PATCH -f state=closed >/dev/null
@@ -237,17 +294,59 @@ jobs:
           TAG="v${YY}.${NN}.${REV}"
           NAME="AIRAC ${AIRAC_CYCLE} #${REV}"
 
-          # generate_release_notes builds the notes from PRs merged since the
-          # previous release — no hand-written changelog.
+          # GitHub PRE-pends `body` to the notes it generates, so the NavData line
+          # and any synced-file notes sit above the auto PR list.
+          # EXTRA_NOTES only exists on a manual dispatch — the scheduled run gets
+          # the NavData line alone, since there is nobody there to type the rest.
+          BODY="Updated NavData to the current AIRAC ${AIRAC_CYCLE}"
+          if [ -n "${EXTRA_NOTES:-}" ]; then
+            BODY="${BODY}"$'\n\n'"${EXTRA_NOTES}"
+          fi
+
+          # generate_release_notes builds the PR list since the previous release —
+          # no hand-written changelog.
           gh api "repos/$REPO/releases" --method POST \
             -f tag_name="$TAG" \
             -f target_commitish="main" \
             -f name="$NAME" \
+            -f body="$BODY" \
             -F draft=false \
             -F prerelease=false \
             -F generate_release_notes=true >/dev/null
 
           echo "Created release '$NAME' ($TAG)"
+
+      - name: Attach the vATIS profile to the release
+        # Runs even when the release already existed, so re-running a cycle
+        # back-fills assets onto releases cut before this step existed.
+        if: steps.guard.outputs.skip == 'false' && env.HAS_VATIS == 'true'
+        run: |
+          set -euo pipefail
+
+          # The board links to /releases/latest/download/<CODE>.json. That only
+          # downloads (rather than rendering as text) because release assets send
+          # Content-Disposition: attachment — a raw.githubusercontent URL does not.
+          YY="${AIRAC_CYCLE:0:2}"
+          NN="${AIRAC_CYCLE:2:2}"
+          TAG=$(gh api "repos/$REPO/releases?per_page=100" --paginate \
+                  --jq "[.[] | .tag_name | select(startswith(\"v${YY}.${NN}.\"))] | sort | last // empty")
+          if [ -z "$TAG" ]; then
+            echo "::warning::No release for AIRAC $AIRAC_CYCLE — nothing to attach to."
+            exit 0
+          fi
+
+          URL=$(gh api "repos/$REPO/contents/vATIS/${CODE}.json" --jq .download_url 2>/dev/null || true)
+          if [ -z "$URL" ] || [ "$URL" = "null" ]; then
+            echo "::warning::$REPO has no vATIS/${CODE}.json — clear 'vatis' in sectors.yml."
+            exit 0
+          fi
+
+          curl -sSfL "$URL" -o "/tmp/${CODE}.json"
+          python3 -c "import json,sys; json.load(open(sys.argv[1]))" "/tmp/${CODE}.json" \
+            || { echo "::error::vATIS/${CODE}.json is not valid JSON"; exit 1; }
+
+          gh release upload "$TAG" "/tmp/${CODE}.json" --repo "$REPO" --clobber
+          echo "Attached ${CODE}.json to $TAG"
 
   tracker:
     name: Deployment tracker issue
@@ -279,9 +378,24 @@ jobs:
             exit 0
           fi
 
+          # Seed from the most recent previous tracker so each sector's recorded
+          # cycle and any overridden download link carry forward. Without this the
+          # new tracker would forget everything the last one knew.
+          PREV=$(gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 200 \
+                   --json number,title \
+                   --jq '[.[] | select(.title | contains("Sector Deployment Tracker")) | .number] | max // empty')
+          SEED_ARG=""
+          if [ -n "$PREV" ]; then
+            gh issue view "$PREV" --repo "$GITHUB_REPOSITORY" --json body --jq .body > /tmp/prev.md
+            SEED_ARG="--seed /tmp/prev.md"
+            echo "Seeding from tracker #$PREV"
+          else
+            echo "No previous tracker — sectors start at ----"
+          fi
+
           # Body is generated from the sector registry, so the links and grouping
           # cannot drift from reality. All boxes start unticked.
-          python3 repository-management/airac.py --tracker "$AIRAC_CYCLE" > /tmp/body.md
+          python3 repository-management/airac.py --tracker "$AIRAC_CYCLE" $SEED_ARG > /tmp/body.md
 
           NUM=$(gh issue create --repo "$GITHUB_REPOSITORY" \
                   --title "$TITLE" --body-file /tmp/body.md | grep -oE '[0-9]+$')
@@ -297,6 +411,137 @@ jobs:
             gh issue close "$p" --repo "$GITHUB_REPOSITORY"
             echo "Closed previous tracker #$p"
           done
+
+  gng-notes:
+    name: Collect GNG release notes
+    needs: [prepare, create, tracker]
+    if: needs.prepare.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    environment: sync
+    env:
+      AIRAC_CYCLE: ${{ needs.prepare.outputs.airac_cycle }}
+      GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Gather every release each sector is behind by
+        run: |
+          set -euo pipefail
+
+          # Each sector's tracker cycle is what GNG actually has. Anything released
+          # on GitHub since then still needs writing up for GNG — possibly several
+          # cycles' worth if a sector has been sitting behind for months.
+          NUM=$(gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 200 \
+                  --json number,title \
+                  --jq '[.[] | select(.title | contains("Sector Deployment Tracker")) | .number] | max // empty')
+          if [ -z "$NUM" ]; then
+            echo "::warning::No tracker issue — cannot tell what GNG has. Skipping."
+            exit 0
+          fi
+          gh issue view "$NUM" --repo "$GITHUB_REPOSITORY" --json body --jq .body > /tmp/tracker.md
+
+          # One releases-list call per sector; the assembly happens in Python.
+          mkdir -p /tmp/rel
+          python3 -c "
+          import sys; sys.path.insert(0, 'repository-management')
+          from airac import load_sectors
+          print('\n'.join(s['repo'] for s in load_sectors()))
+          " > /tmp/repos.txt
+          while read -r r; do
+            gh api "repos/$GITHUB_REPOSITORY_OWNER/$r/releases?per_page=100" --paginate \
+              --jq '[.[] | {tag: .tag_name, name: .name, body: .body}]' > "/tmp/rel/$r.json" 2>/dev/null \
+              || echo '[]' > "/tmp/rel/$r.json"
+          done < /tmp/repos.txt
+
+          python3 - << 'PYEOF'
+          import json, os, sys
+          sys.path.insert(0, "repository-management")
+          from airac import load_sectors, seed_from, cycles_behind, UNKNOWN_CYCLE
+
+          current = os.environ["AIRAC_CYCLE"]
+          state = seed_from(open("/tmp/tracker.md", encoding="utf-8").read())
+          sectors = load_sectors()
+
+          def tag_cycle(tag: str) -> str | None:
+              # v26.07.1 -> 2607
+              t = tag.lstrip("v").split(".")
+              if len(t) < 2 or not (t[0].isdigit() and t[1].isdigit()):
+                  return None
+              return f"{t[0]}{t[1]}"
+
+          out = [
+              f"# GNG release notes outstanding — as of AIRAC {current}",
+              "",
+              "Every sector below is behind what GitHub has released. Each section",
+              "lists the release notes GNG has not been given yet, oldest first.",
+              "",
+              "Paste this whole file into Claude with the GNG formatting prompt.",
+              "",
+              "---",
+          ]
+
+          behind_count = 0
+          for s in sectors:
+              have = (state.get(s["name"], {}).get("cycle") or UNKNOWN_CYCLE).strip()
+              rels = json.load(open(f"/tmp/rel/{s['repo']}.json", encoding="utf-8"))
+
+              # Unknown cycle -> we cannot tell what GNG has, so take everything
+              # for the current cycle only rather than dumping the entire history.
+              def outstanding(r):
+                  c = tag_cycle(r["tag"])
+                  if c is None:
+                      return False
+                  if cycles_behind(c, current) is None or cycles_behind(c, current) < 0:
+                      return False  # future release, ignore
+                  if have == UNKNOWN_CYCLE or not have.isdigit():
+                      return c == current
+                  b = cycles_behind(c, have)
+                  return b is not None and b < 0  # released after what GNG has
+
+              todo = [r for r in rels if outstanding(r)]
+              todo.sort(key=lambda r: tag_cycle(r["tag"]) or "")
+              if not todo:
+                  continue
+
+              behind_count += 1
+              out.append("")
+              out.append(f"## {s['name']} — GNG has {have}, GitHub is at {current}")
+              for r in todo:
+                  out.append("")
+                  out.append(f"### {r['name'] or r['tag']} ({r['tag']})")
+                  out.append("")
+                  out.append((r["body"] or "_no notes_").strip())
+              out.append("")
+              out.append("---")
+
+          if behind_count == 0:
+              out = [
+                  f"# GNG release notes outstanding — as of AIRAC {current}",
+                  "",
+                  "Nothing outstanding. Every sector's GNG release matches GitHub.",
+              ]
+
+          open("repository-management/gng-notes.md", "w", encoding="utf-8", newline="\n").write(
+              "\n".join(out).rstrip() + "\n"
+          )
+          print(f"{behind_count} sector(s) behind")
+          PYEOF
+
+      - name: Commit the file
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- repository-management/gng-notes.md; then
+            echo "gng-notes.md unchanged."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add repository-management/gng-notes.md
+          git commit -m "chore(gng): refresh outstanding release notes for AIRAC ${AIRAC_CYCLE} (generated)"
+          # Best-effort, same as airac-dates.csv: a protected branch must not fail
+          # the whole publish. The file is regenerated every cycle anyway.
+          git push origin HEAD:main || \
+            echo "::warning::Could not push gng-notes.md (branch protection?). Re-run or copy it from the run logs."
 
   notify-success:
     name: Discord announcement on publish

@@ -10,7 +10,7 @@ name: AIRAC Deployment Tracker
 
 on:
   schedule:
-    - cron: "0 9 * * 1" # Mondays 09:00 UTC
+    - cron: "0 9 * * 1" # Mondays 09:00 UTC — weekly report + pre-AIRAC warning
   issues:
     types: [edited]
   workflow_dispatch:
@@ -93,16 +93,20 @@ jobs:
           python3 - > /tmp/payload.json << 'PYEOF'
           import json, os
 
-          base = f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
+          cycle = os.environ["CYCLE"]
+          total = os.environ["TOTAL"]
           print(json.dumps({
               "username": os.environ["BOT_NAME"],
               "avatar_url": os.environ["BOT_ICON"],
               "embeds": [{
-                  "title": f"AIRAC {os.environ['CYCLE']} fully deployed",
-                  "url": f"{base}/issues/{os.environ['NUMBER']}",
+                  "title": f"AIRAC {cycle} has been released for all sectors",
+                  "url": "https://files.aero-nav.com",
                   "color": 8116056,
                   "description": (
-                      f"All **{os.environ['TOTAL']}** sectors are out. Tracker closed."
+                      f"All **{total}** sector files are now on AIRAC {cycle}.\n\n"
+                      f"**This is a mandatory update.** Please update immediately — "
+                      f"support for older sector file versions is discontinued.\n\n"
+                      f"Download links for every sector are on the status board."
                   ),
               }],
           }))
@@ -139,10 +143,28 @@ jobs:
             --jq '.items[].repository_url' > /tmp/prs.txt
 
           python3 - > /tmp/payload.json << 'PYEOF'
-          import collections, json, os
+          import collections, json, os, sys
+          sys.path.insert(0, "repository-management")
+          from airac import next_airac, human
 
           org = os.environ["ORG"]
           embeds = []
+
+          # Pre-AIRAC warning. Cycles always start on a Thursday and this report
+          # runs on Mondays, so the "3 days out" Monday happens once every four.
+          nxt, nxt_date, days = next_airac()
+          if days <= 4:
+              embeds.append({
+                  "title": f"⚠️ AIRAC {nxt} goes live in {days} days",
+                  "url": f"https://github.com/{org}/sectorfile-overview/pulls",
+                  "color": 16426522,
+                  "description": (
+                      f"Effective **{human(nxt_date)}**.\n\n"
+                      f"Merge anything that needs to be in this cycle **before then** — "
+                      f"open pull requests are listed below. Once the cycle publishes, "
+                      f"whatever is still open rolls to AIRAC {nxt} and ships a cycle late."
+                  ),
+              })
 
           # Sector deployment — only while a cycle is genuinely outstanding.
           if os.environ.get("FOUND") == "true" and os.environ.get("COMPLETE") == "false":

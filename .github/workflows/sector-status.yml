@@ -1,0 +1,171 @@
+name: Sector Status Board
+
+# Keeps ONE Discord message permanently up to date with which AIRAC cycle every
+# sector is actually on. It never posts a second message: the first run creates
+# it and stores the message id in the SECTOR_STATUS_MESSAGE_ID repo variable;
+# every run after that PATCHes that same message.
+#
+# Source of truth is the newest tracker issue (open or closed) — the `cycle` and
+# Download link on each line. Order and grouping come from sectors.yml, so the
+# layout is stable no matter how the issue is edited.
+#
+# Colours: 🟢 current cycle · 🔵 one behind · 🟡 two behind · ⚪ older/unknown.
+#
+# ⚠️ A webhook can only edit messages IT posted. The old hand-written status
+# message cannot be adopted — delete it once this one is live.
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # daily 06:00 UTC
+  issues:
+    # Ticking a sector or changing its cycle refreshes the board immediately —
+    # no waiting for tomorrow's run, no manual dispatch.
+    types: [edited]
+  workflow_dispatch:
+
+permissions: {}
+
+env:
+  BOT_NAME: VATSSA Operations Bot
+  BOT_ICON: https://palette.vatssa.com/logo_icon.png
+
+concurrency:
+  # Two runs editing the same message would race on creating it.
+  group: sector-status
+  cancel-in-progress: false
+
+jobs:
+  board:
+    name: Update the board
+    # `issues: edited` fires for every issue in the repo — ignore all but trackers.
+    if: >-
+      github.event_name != 'issues'
+      || contains(github.event.issue.title, 'Sector Deployment Tracker')
+    runs-on: ubuntu-latest
+    # The PAT lives in this environment, which is restricted to `main`.
+    environment: sync
+    env:
+      GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+      WEBHOOK: ${{ secrets.DISCORD_STATUS_WEBHOOK }}
+      MESSAGE_ID: ${{ vars.SECTOR_STATUS_MESSAGE_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the board from the newest tracker
+        id: build
+        run: |
+          set -euo pipefail
+          if [ -z "${WEBHOOK:-}" ]; then
+            echo "::error::DISCORD_STATUS_WEBHOOK is not set — nothing to post to."
+            exit 1
+          fi
+
+          # Newest tracker wins, open or closed: between cycles the last one is
+          # still the truth about where each sector got to.
+          NUM=$(gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 200 \
+                  --json number,title \
+                  --jq '[.[] | select(.title | contains("Sector Deployment Tracker")) | .number] | max // empty')
+          if [ -z "$NUM" ]; then
+            echo "::error::No tracker issue exists yet — run the AIRAC workflow first."
+            exit 1
+          fi
+          echo "Reading tracker #$NUM"
+          gh issue view "$NUM" --repo "$GITHUB_REPOSITORY" --json body --jq .body > /tmp/tracker.md
+
+          python3 repository-management/airac.py --status /tmp/tracker.md > /tmp/board.txt
+          echo "--- board ---"
+          cat /tmp/board.txt
+
+          python3 - > /tmp/payload.json << 'PYEOF'
+          import json, os, sys, time
+          sys.path.insert(0, "repository-management")
+          from airac import current_cycle, date_for_cycle, human
+
+          board = open("/tmp/board.txt", encoding="utf-8").read().strip()
+          if not board:
+              # An empty board means the tracker did not parse. Posting it would
+              # silently blank the message staff rely on.
+              print("::error::Board rendered empty — tracker format changed?", file=sys.stderr)
+              raise SystemExit(1)
+
+          cur = current_cycle() or "----"
+          d = date_for_cycle(cur)
+          effective = human(d) if d else "unknown"
+          org = os.environ["GITHUB_REPOSITORY"].split("/")[0]
+
+          # <t:UNIX:R> renders as "2 hours ago" and keeps counting in the client,
+          # so it stays honest between runs instead of freezing at the last one.
+          stamp = f"<t:{int(time.time())}:R>"
+
+          description = (
+              f"{board}\n\n"
+              f"Last updated {stamp}\n\n"
+              f"**Want to Contribute?**\n"
+              f"Anyone with a GitHub account can help. Open an issue to report a "
+              f"problem with a sector file, or send a pull request if you can fix "
+              f"it yourself. Everything lives on the "
+              f"[VATSIM SSA GitHub organisation](https://github.com/{org})."
+          )
+
+          print(json.dumps({
+              "username": os.environ["BOT_NAME"],
+              "avatar_url": os.environ["BOT_ICON"],
+              "content": "",
+              "embeds": [{
+                  "title": "Sector File Status",
+                  "description": description,
+                  "color": 104368,
+                  "footer": {
+                      "text": (
+                          f"🟢 AIRAC {cur} (current)  ·  🔵 one cycle behind  ·  "
+                          f"🟡 two behind  ·  ⚪ older"
+                      ),
+                      "icon_url": os.environ["BOT_ICON"],
+                  },
+                  "fields": [{
+                      "name": "Current cycle",
+                      "value": f"**AIRAC {cur}** — effective {effective}",
+                      "inline": False,
+                  }],
+              }],
+          }))
+          PYEOF
+          echo "payload $(wc -c < /tmp/payload.json) bytes"
+
+      - name: Create or update the message
+        id: post
+        run: |
+          set -euo pipefail
+
+          # ?wait=true makes Discord return the created message so we can capture
+          # its id; without it the POST returns 204 and the id is lost forever.
+          create() {
+            ID=$(curl -sS -H "Content-Type: application/json" \
+                   -X POST "${WEBHOOK}?wait=true" -d @/tmp/payload.json \
+                 | python3 -c "import json,sys; print(json.load(sys.stdin)['id'])")
+            echo "Created status message $ID"
+            gh variable set SECTOR_STATUS_MESSAGE_ID --repo "$GITHUB_REPOSITORY" --body "$ID"
+            echo "Stored id in the SECTOR_STATUS_MESSAGE_ID variable"
+          }
+
+          if [ -z "${MESSAGE_ID:-}" ]; then
+            echo "No message id recorded — creating the board for the first time."
+            create
+            exit 0
+          fi
+
+          CODE=$(curl -sS -o /tmp/resp.json -w '%{http_code}' \
+                   -H "Content-Type: application/json" \
+                   -X PATCH "${WEBHOOK}/messages/${MESSAGE_ID}" -d @/tmp/payload.json)
+
+          if [ "$CODE" = "200" ]; then
+            echo "Updated status message ${MESSAGE_ID}"
+          elif [ "$CODE" = "404" ]; then
+            # Someone deleted it. Recreate rather than fail forever.
+            echo "::warning::Message ${MESSAGE_ID} is gone — recreating."
+            create
+          else
+            echo "::error::Discord returned $CODE"
+            cat /tmp/resp.json
+            exit 1
+          fi
