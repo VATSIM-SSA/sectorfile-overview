@@ -167,7 +167,14 @@ jobs:
               })
 
           # Sector deployment — only while a cycle is genuinely outstanding.
-          if os.environ.get("FOUND") == "true" and os.environ.get("COMPLETE") == "false":
+          # total == 0 means the tracker did not parse (wrong format, someone
+          # rewrote the body). Saying "0/0 deployed" would be a lie, so say
+          # nothing and make the run log complain instead.
+          total = int(os.environ.get("TOTAL") or 0)
+          if os.environ.get("FOUND") == "true" and total == 0:
+              print("::warning::Tracker found but parsed 0 sectors — is it in the old format?")
+
+          if os.environ.get("FOUND") == "true" and total > 0 and os.environ.get("COMPLETE") == "false":
               tracker = f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/issues/{os.environ['NUMBER']}"
               names = [n for n in os.environ.get("OUTSTANDING", "").split(", ") if n]
               # Discord embeds cap at 4096 chars; 25 sectors is nowhere near it,
