@@ -17,6 +17,12 @@ on:
 
 permissions: {}
 
+env:
+  # Discord webhook identity. The avatar MUST be a raster format — Discord's CDN
+  # silently ignores an SVG and falls back to a blank default avatar.
+  BOT_NAME: VATSSA Operation Help
+  BOT_ICON: https://palette.vatssa.com/logo_icon.png
+
 concurrency:
   # A Monday nag landing on top of a tick-triggered close would double-post.
   group: airac-tracker
@@ -89,7 +95,8 @@ jobs:
 
           base = f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
           print(json.dumps({
-              "username": "AIRAC Automation",
+              "username": os.environ["BOT_NAME"],
+              "avatar_url": os.environ["BOT_ICON"],
               "embeds": [{
                   "title": f"AIRAC {os.environ['CYCLE']} fully deployed",
                   "url": f"{base}/issues/{os.environ['NUMBER']}",
@@ -186,6 +193,10 @@ jobs:
               "description": desc,
           })
 
-          print(json.dumps({"username": "VATSSA Automation", "embeds": embeds}))
+          print(json.dumps({
+              "username": os.environ["BOT_NAME"],
+              "avatar_url": os.environ["BOT_ICON"],
+              "embeds": embeds,
+          }))
           PYEOF
           curl -sS -H "Content-Type: application/json" -X POST "$WEBHOOK" -d @/tmp/payload.json
