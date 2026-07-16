@@ -450,6 +450,13 @@ jobs:
           # cannot drift from reality. All boxes start unticked.
           python3 repository-management/airac.py --tracker "$AIRAC_CYCLE" $SEED_ARG > /tmp/body.md
 
+          # Link the GNG notes for this cycle straight into the issue. The
+          # gng-notes job uploads the artifact on THIS run, so staff download it
+          # from the run's Artifacts section (the file carries its own AI prompt).
+          RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          printf '\n\n---\n\n📄 **GNG release notes for AIRAC %s** — [download from this run](%s) (the `gng-notes-%s` artifact; paste it to the AI, the prompt is inside).\n' \
+            "$AIRAC_CYCLE" "$RUN_URL" "$AIRAC_CYCLE" >> /tmp/body.md
+
           NUM=$(gh issue create --repo "$GITHUB_REPOSITORY" \
                   --title "$TITLE" --body-file /tmp/body.md | grep -oE '[0-9]+$')
           echo "Opened tracker #$NUM"
@@ -672,6 +679,9 @@ jobs:
           issue = os.environ.get("ISSUE", "").strip()
           base = f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
           tracker = f"{base}/issues/{issue}" if issue else f"{base}/issues"
+          # Link straight to this run — the gng-notes artifact is uploaded here,
+          # so staff download the GNG notes from the run's Artifacts section.
+          run_url = f"{base}/actions/runs/{os.environ['GITHUB_RUN_ID']}"
 
           print(json.dumps({
               "username": os.environ["BOT_NAME"],
@@ -683,7 +693,9 @@ jobs:
                   "description": (
                       f"Effective **{human}**.\n"
                       f"Milestones and releases created across **{len(sectors)}** sector repos.\n\n"
-                      f"[Deployment tracker]({tracker}) — tick each sector as it goes out."
+                      f"[Deployment tracker]({tracker}) — tick each sector as it goes out.\n"
+                      f"📄 [Download the GNG release notes]({run_url}) — the `gng-notes-{cycle}` "
+                      f"artifact on this run; paste it to the AI (the prompt is inside)."
                   ),
               }],
           }))
