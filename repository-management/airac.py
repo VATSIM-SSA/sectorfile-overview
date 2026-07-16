@@ -60,11 +60,11 @@ MONTHS = [
 # Only the steps a human still has to do. The GitHub release, the tag, the
 # release notes, the Discord status message and the announcement are all
 # automated now — listing them here just invites someone to do them twice.
+# The begin/end sector-file download and the download verification are no longer
+# part of the process, so they are not listed.
 PROCESS_STEPS = [
-    "Download and open the current sector file; check for plugin crashes",
     "Review and merge pending pull requests",
     "Pull GitHub main to GNG",
-    "Ensure all files are checked",
     "Publish the install package",
     "Paste this sector's section of `repository-management/gng-notes.md` into "
     "Claude with the GNG prompt, then paste the result into GNG",

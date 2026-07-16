@@ -511,10 +511,18 @@ jobs:
                   c = tag_cycle(r["tag"])
                   if c is None:
                       return False
-                  if cycles_behind(c, current) is None or cycles_behind(c, current) < 0:
+                  cb = cycles_behind(c, current)
+                  if cb is None or cb < 0:
                       return False  # future release, ignore
+                  # The current cycle was JUST cut, so GNG needs its notes no
+                  # matter what the tracker says GNG already has. This is the fix
+                  # for the notes silently not generating: once a sector's tracker
+                  # cycle had been bumped to the current cycle, cycles_behind was 0
+                  # (not < 0) and the just-released notes were dropped.
+                  if c == current:
+                      return True
                   if have == UNKNOWN_CYCLE or not have.isdigit():
-                      return c == current
+                      return False  # older cycles only matter if we know GNG's state
                   b = cycles_behind(c, have)
                   return b is not None and b < 0  # released after what GNG has
 
