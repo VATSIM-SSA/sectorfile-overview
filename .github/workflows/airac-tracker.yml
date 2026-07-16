@@ -106,9 +106,14 @@ jobs:
 
           cycle = os.environ["CYCLE"]
           total = os.environ["TOTAL"]
+          # Ping the sector-file update role so members are actually notified of
+          # a mandatory update, not just shown a silent embed.
+          PING_ROLE = "1026807493000699904"
           print(json.dumps({
               "username": os.environ["BOT_NAME"],
               "avatar_url": os.environ["BOT_ICON"],
+              "content": f"<@&{PING_ROLE}>",
+              "allowed_mentions": {"roles": [PING_ROLE]},
               "embeds": [{
                   "title": f"AIRAC {cycle} has been released for all sectors",
                   "url": "https://files.aero-nav.com",

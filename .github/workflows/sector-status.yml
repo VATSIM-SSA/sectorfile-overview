@@ -96,8 +96,9 @@ jobs:
           effective = human(d) if d else "unknown"
           org = os.environ["GITHUB_REPOSITORY"].split("/")[0]
 
-          # One VATSSA teal across both embeds so they read as a single card.
-          TEAL = 0x0197B0
+          # VATSSA green across both embeds so they read as a single card and
+          # match the AIRAC publish/release announcements (which are green too).
+          TEAL = 0x7BD758
           BANNER = os.environ["BANNER_URL"]
 
           # <t:UNIX:R> renders as "2 hours ago" and keeps counting in the client,
