@@ -523,12 +523,32 @@ jobs:
               return f"{t[0]}{t[1]}"
 
           out = [
+              # Self-contained prompt: download this file, paste the whole thing
+              # to an AI, and it follows these instructions — no separate prompt.
+              "<!-- ============================ PROMPT FOR THE AI ============================",
+              "You are preparing GNG (aero-nav) release notes for VATSSA sector files.",
+              "",
+              "Below this comment is one section per sector, each containing that",
+              "sector's raw GitHub release notes for the current AIRAC cycle (and any",
+              "older cycles GNG is still behind on).",
+              "",
+              "For EACH sector section, produce a clean GNG changelog entry:",
+              f"  * Always start with: \"Updated NavData to the current AIRAC {current}\".",
+              "  * Then, in short plain bullet points, summarise any real changes in",
+              "    the release body (new positions, frequency changes, fixes, files).",
+              "  * DROP the raw \"**Full Changelog**\" GitHub compare links.",
+              "  * If a sector's only note is the NavData line, output just that line.",
+              "  * Keep it member-facing and concise; no GitHub/markdown noise.",
+              "",
+              "Output grouped by sector under a \"### <sector name>\" heading, ready to",
+              "copy each sector's block straight into GNG.",
+              "============================================================================ -->",
+              "",
               f"# GNG release notes outstanding — as of AIRAC {current}",
               "",
               "Every sector below is behind what GitHub has released. Each section",
               "lists the release notes GNG has not been given yet, oldest first.",
-              "",
-              "Paste this whole file into Claude with the GNG formatting prompt.",
+              "Paste this whole file to the AI; it follows the prompt at the top.",
               "",
               "---",
           ]
