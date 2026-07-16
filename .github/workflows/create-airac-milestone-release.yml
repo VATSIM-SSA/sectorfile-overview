@@ -368,6 +368,39 @@ jobs:
           gh release upload "$TAG" "/tmp/${CODE}.json" --repo "$REPO" --clobber
           echo "Attached ${CODE}.json to $TAG"
 
+      - name: Ensure the NavData note is on the release
+        # Create-release adds "Updated NavData to the current AIRAC ..." to the
+        # body, but only when it CREATES the release — an already-existing release
+        # (the skip path) never gets it. This runs every time and PATCHes the line
+        # onto the current cycle's latest release if it's missing, so re-running
+        # the workflow back-fills every sector that was published without it.
+        if: steps.guard.outputs.skip == 'false'
+        run: |
+          set -euo pipefail
+          YY="${AIRAC_CYCLE:0:2}"
+          NN="${AIRAC_CYCLE:2:2}"
+          TAG=$(gh api "repos/$REPO/releases?per_page=100" --paginate \
+                  --jq "[.[] | .tag_name | select(startswith(\"v${YY}.${NN}.\"))] | sort | last // empty")
+          if [ -z "$TAG" ]; then
+            echo "::warning::No release for AIRAC $AIRAC_CYCLE — nothing to annotate."
+            exit 0
+          fi
+
+          NOTE="Updated NavData to the current AIRAC ${AIRAC_CYCLE}"
+          gh api "repos/$REPO/releases/tags/$TAG" > /tmp/rel.json
+          ID=$(python3 -c "import json; print(json.load(open('/tmp/rel.json'))['id'])")
+          BODY=$(python3 -c "import json; print(json.load(open('/tmp/rel.json')).get('body') or '')")
+
+          if printf '%s' "$BODY" | grep -qF "$NOTE"; then
+            echo "NavData note already present on $TAG."
+            exit 0
+          fi
+
+          # Prepend the note so it sits above the generated changelog.
+          NEWBODY="$NOTE"$'\n\n'"$BODY"
+          gh api "repos/$REPO/releases/$ID" --method PATCH -f body="$NEWBODY" >/dev/null
+          echo "Added the NavData note to $TAG"
+
   tracker:
     name: Deployment tracker issue
     needs: prepare
