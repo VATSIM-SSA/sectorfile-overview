@@ -608,6 +608,17 @@ jobs:
           print(f"{behind_count} sector(s) behind")
           PYEOF
 
+      - name: Upload the notes as a downloadable artifact
+        # The commit below is best-effort — a protected main rejects the push, so
+        # gng-notes.md never lands in the repo. Uploading it as an artifact means
+        # it is always downloadable from the run, which is the copy you paste to
+        # the AI anyway.
+        uses: actions/upload-artifact@v4
+        with:
+          name: gng-notes-${{ needs.prepare.outputs.airac_cycle }}
+          path: repository-management/gng-notes.md
+          if-no-files-found: warn
+
       - name: Commit the file
         run: |
           set -euo pipefail
