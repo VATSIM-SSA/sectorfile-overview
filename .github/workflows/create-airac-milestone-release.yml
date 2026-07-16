@@ -694,8 +694,7 @@ jobs:
                       f"Effective **{human}**.\n"
                       f"Milestones and releases created across **{len(sectors)}** sector repos.\n\n"
                       f"[Deployment tracker]({tracker}) — tick each sector as it goes out.\n"
-                      f"📄 [Download the GNG release notes]({run_url}) — the `gng-notes-{cycle}` "
-                      f"artifact on this run; paste it to the AI (the prompt is inside)."
+                      f"📄 [Download the GNG release notes]({run_url})"
                   ),
               }],
           }))
