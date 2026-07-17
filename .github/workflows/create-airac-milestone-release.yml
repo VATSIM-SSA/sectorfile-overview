@@ -443,12 +443,12 @@ jobs:
           gh release upload "$TAG" "/tmp/${CODE}.json" --repo "$REPO" --clobber
           echo "Attached ${CODE}.json to $TAG"
 
-      - name: Ensure the NavData note is on the release
-        # Create-release adds "Updated NavData to the current AIRAC ..." to the
-        # body, but only when it CREATES the release — an already-existing release
-        # (the skip path) never gets it. This runs every time and PATCHes the line
-        # onto the current cycle's latest release if it's missing, so re-running
-        # the workflow back-fills every sector that was published without it.
+      - name: Ensure the NavData and synced-file notes are on the release
+        # Create-release writes `body` only when it CREATES the release — an
+        # already-existing release (the skip path) never gets the NavData line or
+        # the synced-file notes. This runs every time and PATCHes whichever of the
+        # two is missing onto the current cycle's latest release, so re-running the
+        # workflow back-fills every sector that was published without them.
         if: steps.guard.outputs.skip == 'false'
         run: |
           set -euo pipefail
@@ -461,20 +461,49 @@ jobs:
             exit 0
           fi
 
-          NOTE="Updated NavData to the current AIRAC ${AIRAC_CYCLE}"
           gh api "repos/$REPO/releases/tags/$TAG" > /tmp/rel.json
-          ID=$(python3 -c "import json; print(json.load(open('/tmp/rel.json'))['id'])")
-          BODY=$(python3 -c "import json; print(json.load(open('/tmp/rel.json')).get('body') or '')")
 
-          if printf '%s' "$BODY" | grep -qF "$NOTE"; then
-            echo "NavData note already present on $TAG."
+          # Built in Python: the body is arbitrary markdown, and hand-escaping it
+          # into JSON (or matching a multi-line note with grep -F, which treats each
+          # line as a SEPARATE pattern and would match on any one of them) is how
+          # this silently does the wrong thing.
+          python3 - << 'PYEOF' > /tmp/payload.json
+          import json, os
+
+          rel = json.load(open("/tmp/rel.json", encoding="utf-8"))
+          body = rel.get("body") or ""
+          navdata = f"Updated NavData to the current AIRAC {os.environ['AIRAC_CYCLE']}"
+          synced = (os.environ.get("SYNCED_NOTES") or "").strip()
+
+          new, changed = body, False
+
+          # NavData always leads.
+          if navdata not in new:
+              new = navdata + ("\n\n" + new if new else "")
+              changed = True
+
+          # The synced block goes directly UNDER the NavData line, not at the top:
+          # on the back-fill path NavData is already there, so prepending would put
+          # the synced notes above it and invert the order.
+          # The "**Synced files**" header is the marker — the bullets under it differ
+          # per cycle, but the header tells us the block is already present.
+          if synced and "**Synced files**" not in new:
+              end = new.find(navdata) + len(navdata)
+              new = new[:end] + "\n\n" + synced + new[end:]
+              changed = True
+
+          if changed:
+              print(json.dumps({"body": new}))
+          PYEOF
+
+          if [ ! -s /tmp/payload.json ]; then
+            echo "NavData and synced-file notes already present on $TAG."
             exit 0
           fi
 
-          # Prepend the note so it sits above the generated changelog.
-          NEWBODY="$NOTE"$'\n\n'"$BODY"
-          gh api "repos/$REPO/releases/$ID" --method PATCH -f body="$NEWBODY" >/dev/null
-          echo "Added the NavData note to $TAG"
+          ID=$(python3 -c "import json; print(json.load(open('/tmp/rel.json'))['id'])")
+          gh api "repos/$REPO/releases/$ID" --method PATCH --input /tmp/payload.json >/dev/null
+          echo "Annotated $TAG"
 
   tracker:
     name: Deployment tracker issue

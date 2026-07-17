@@ -66,8 +66,9 @@ PROCESS_STEPS = [
     "Review and merge pending pull requests",
     "Pull GitHub main to GNG",
     "Publish the install package",
-    "Paste this sector's section of `repository-management/gng-notes.md` into "
-    "Claude with the GNG prompt, then paste the result into GNG",
+    "Paste this sector's section of the GNG release notes (the `gng-notes` "
+    "artifact linked at the bottom of this issue) into Claude, then paste the "
+    "result into GNG",
     "Update the `cycle` in backticks on the line below, then tick the box",
 ]
 
