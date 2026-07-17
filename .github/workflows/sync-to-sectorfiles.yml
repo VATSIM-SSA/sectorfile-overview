@@ -22,6 +22,16 @@ on:
       - 'repository-management/sectors.yml'
       - '.github/workflows/sync-to-sectorfiles.yml'
   workflow_dispatch:
+    inputs:
+      only:
+        description: "Limit the sync to these sectors (comma-separated CODES, e.g. FASA,FVHF). Empty = all. Use to test one sector before a full run."
+        required: false
+        type: string
+      dry_run:
+        description: "Show exactly what WOULD change in each target and stop — no commit, no push. Verify a run this way before syncing for real."
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -37,6 +47,8 @@ jobs:
 
       - name: Read and validate config
         id: cfg
+        env:
+          ONLY: ${{ inputs.only }}
         run: |
           set -euo pipefail
 
@@ -56,9 +68,29 @@ jobs:
 
           # Targets come from the sector registry, not from sync.yml — one list,
           # shared with the AIRAC workflow, so they cannot drift apart.
-          targets="$(yq -o=json -I=0 '[.sectors[] | "VATSIM-SSA/" + .repo]' repository-management/sectors.yml)"
+          # The `only` dispatch input filters that list by sector CODE, so one
+          # sector can be synced on its own to verify a run before a full fan-out.
+          only_json="$(printf '%s' "$ONLY" | tr ',' '\n' | sed 's/^ *//; s/ *$//' | grep -v '^$' | jq -R 'ascii_upcase' | jq -s -c '.')"
+          echo "Filter: ${ONLY:-<all sectors>}"
+
+          # Validate every requested code exists, so a typo fails loudly instead
+          # of silently syncing nothing.
+          if [ "$only_json" != "[]" ]; then
+            unknown="$(yq -o=json '.' repository-management/sectors.yml \
+              | jq -r --argjson only "$only_json" \
+                  '($only) - ([.sectors[].code | ascii_upcase]) | .[]')"
+            if [ -n "$unknown" ]; then
+              echo "::error::unknown sector code(s) in 'only': $(echo "$unknown" | paste -sd, -)"
+              exit 1
+            fi
+          fi
+
+          targets="$(yq -o=json '.' repository-management/sectors.yml \
+            | jq -c --argjson only "$only_json" \
+                '[.sectors[] | select(($only|length)==0 or (([.code|ascii_upcase] - $only)|length)==0) | "VATSIM-SSA/" + .repo]')"
           echo "targets=$targets" >> "$GITHUB_OUTPUT"
           echo "Target repos: $(echo "$targets" | jq 'length')"
+          echo "$targets" | jq -r '.[]'
 
   sync:
     name: ${{ matrix.target }}
@@ -95,13 +127,21 @@ jobs:
       - name: Mirror configured paths
         run: |
           set -euo pipefail
+          # ADD-AND-OVERWRITE ONLY — never delete. rsync WITHOUT --delete copies
+          # every source file into the target, overwriting a target file that has
+          # the same path, and leaving every OTHER file in the target untouched.
+          # That is the whole point of this rewrite: each sector keeps its own
+          # custom files (per-repo GroundRadar/TopSky settings, extra profiles),
+          # and the only files this workflow ever changes are the ones it
+          # explicitly ships from the overview repo. A file removed from the
+          # overview repo is NOT removed from the sectors — deletion is never
+          # synced. (An earlier version used `--delete`, which wiped every
+          # per-repo custom file that did not also exist here.)
           while IFS=$'\t' read -r src dest; do
             echo "::group::$src -> $dest"
             if [ -d "source/$src" ]; then
               mkdir -p "target/$dest"
-              # --delete is what propagates removals: a file deleted in the
-              # overview repo is deleted in every target repo too.
-              rsync -a --delete "source/$src/" "target/$dest/"
+              rsync -a "source/$src/" "target/$dest/"
             else
               mkdir -p "$(dirname "target/$dest")"
               rsync -a "source/$src" "target/$dest"
@@ -111,14 +151,19 @@ jobs:
 
       - name: Commit and push
         working-directory: target
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
         run: |
           set -euo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           while IFS=$'\t' read -r src dest; do
-            # -A stages additions, modifications AND deletions.
-            git add -A -- "$dest"
+            # --ignore-removal stages additions and MODIFICATIONS but never a
+            # deletion — a second guard on top of dropping rsync's --delete, so
+            # even if a file vanished from a target for any other reason this
+            # workflow will not commit that removal. Deletion is never synced.
+            git add --ignore-removal -- "$dest"
           done < <(yq -o=json '.' ../source/.github/sync.yml | jq -r '.sync[] | [.src, .dest] | @tsv')
 
           if git diff --cached --quiet; then
@@ -128,6 +173,21 @@ jobs:
 
           echo "Changes for ${{ matrix.target }}:"
           git diff --cached --stat
+
+          # Belt-and-braces: this workflow must NEVER record a deletion. If a
+          # deletion is staged despite the two guards above, stop rather than
+          # push it — a failed run is recoverable, a silent mass-delete is what
+          # started all this.
+          if git diff --cached --name-status | grep -qE '^D'; then
+            echo "::error::A deletion was staged — refusing to push. This workflow never deletes."
+            git diff --cached --name-status | grep -E '^D' || true
+            exit 1
+          fi
+
+          if [ "${DRY_RUN:-false}" = "true" ]; then
+            echo "::notice::DRY RUN — the diff above is what WOULD be committed to ${{ matrix.target }}. Nothing pushed."
+            exit 0
+          fi
 
           git commit -m "chore: sync shared files from sectorfile-overview
 

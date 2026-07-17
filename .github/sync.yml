@@ -11,8 +11,12 @@
 #  drift between the sync workflow, the AIRAC workflow and the README.
 #
 #  HOW IT BEHAVES
-#  - Folders are MIRRORED. Add a file here, it appears there. Change it here,
-#    it changes there. **Delete it here, it is deleted there.**
+#  - ADD-AND-OVERWRITE ONLY. Add a file here, it appears there. Change it here,
+#    it changes there. **Deleting is NEVER synced** — a file removed here stays
+#    in every sector, and any per-repo custom file that is not listed here is
+#    never touched. The sync only ever writes the exact files it ships from this
+#    repo. (It used to mirror with `--delete`, which wiped per-repo custom files;
+#    that behaviour is gone for good.)
 #  - `src` is the path in THIS repo. `dest` is the path in the target repo.
 #    They do not have to match (see the vATIS entry).
 #  - If a `src` listed here does not exist, the workflow FAILS LOUDLY rather

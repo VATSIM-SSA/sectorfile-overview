@@ -52,7 +52,13 @@ jobs:
       WEBHOOK: ${{ secrets.DISCORD_STATUS_WEBHOOK }}
       MESSAGE_ID: ${{ vars.SECTOR_STATUS_MESSAGE_ID }}
     steps:
+      # Checkout with the PAT (not the default GITHUB_TOKEN) so the commit step
+      # below can push status.json back to main. The PAT is a ruleset bypass
+      # actor; GITHUB_TOKEN is not, so a default checkout could never land the
+      # file on a protected branch.
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
 
       - name: Build the board from the newest tracker
         id: build
@@ -146,6 +152,35 @@ jobs:
           }))
           PYEOF
           echo "payload $(wc -c < /tmp/payload.json) bytes"
+
+      - name: Write status.json and commit it
+        # The SAME board information as the Discord embed, emitted as JSON and
+        # committed to the repo so a website can fetch it from
+        # raw.githubusercontent.com/VATSIM-SSA/sectorfile-overview/main/data/status.json
+        # It is generated from the same tracker + sectors.yml as the embed, so
+        # the site and Discord can never show different cycles.
+        run: |
+          set -euo pipefail
+          mkdir -p data
+          python3 repository-management/airac.py --status-json /tmp/tracker.md > data/status.json
+          echo "--- status.json ---"
+          head -c 800 data/status.json; echo
+
+          if git diff --quiet -- data/status.json; then
+            echo "status.json unchanged — nothing to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/status.json
+          git commit -m "chore(status): refresh data/status.json (generated)"
+          # The checkout used the PAT (a bypass actor), so this push lands on main
+          # even with the branch ruleset active. A human may have pushed since.
+          git push origin HEAD:main || {
+            echo "Push rejected — rebasing and retrying once."
+            git pull --rebase origin main
+            git push origin HEAD:main
+          }
 
       - name: Create or update the message
         id: post

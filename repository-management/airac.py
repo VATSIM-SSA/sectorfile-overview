@@ -25,6 +25,7 @@ Usage:
   airac.py --tracker 2607 [--seed FILE]  print the tracker issue body
   airac.py --progress FILE               parse a tracker body; print key=value counts
   airac.py --status FILE [--as-of YYNN]  print the Discord status-board text
+  airac.py --status-json FILE [--as-of YYNN]  print the same board as JSON (for the website)
   airac.py --next 2607 [--count 3]       print the cycles that follow one
   airac.py --show [YYNN]                 print one cycle (default: today's, if any)
   airac.py --selftest                    verify the formula against known cycles
@@ -384,6 +385,87 @@ def status_body(
     return "\n".join(out).strip()
 
 
+# Machine-readable equivalent of status_body: the SAME board information the
+# Discord embed shows, shaped as JSON for a website to consume. Both are built
+# from the tracker + sectors.yml here so the two can never disagree.
+
+# Marker emoji -> stable machine name for the website. Keyed off the same
+# status_marker() the embed uses, so colours and states stay in lock-step.
+STATUS_NAMES = {
+    "🟢": "current",
+    "🔵": "one_behind",
+    "🟡": "two_behind",
+    "⚪": "older",
+}
+
+
+def status_data(
+    body: str,
+    reference: str | None = None,
+    sectors_path: str = "repository-management/sectors.yml",
+) -> dict:
+    """The status board as structured data — the JSON twin of status_body().
+
+    Same source (the tracker body + sectors.yml), same order, same colour rule,
+    so the website and the Discord embed always show identical information.
+    """
+    from datetime import datetime, timezone
+
+    reference = reference or current_cycle() or ""
+    ref_date = date_for_cycle(reference) if reference else None
+    state = seed_from(body)
+    sectors = load_sectors(sectors_path)
+
+    regions: list[dict] = []
+    for region in regions_in_order(sectors):
+        rows = [s for s in sectors if s.get("region") == region]
+        if not rows:
+            continue
+        entries: list[dict] = []
+        for s in rows:
+            cyc = (state.get(s["name"], {}).get("cycle") or UNKNOWN_CYCLE).strip() or UNKNOWN_CYCLE
+            link = state.get(s["name"], {}).get("link") or download_url(s)
+            marker = status_marker(cyc, reference)
+            behind = cycles_behind(cyc, reference)
+            cyc_date = date_for_cycle(cyc)
+            entries.append({
+                "repo": s["repo"],
+                "code": s["code"],
+                "name": s["name"],
+                "label": s.get("label") or s["code"],
+                "region": region,
+                "cycle": cyc,
+                "cycle_effective": cyc_date.isoformat() if cyc_date else None,
+                "status": STATUS_NAMES.get(marker, "older"),
+                "marker": marker,
+                "cycles_behind": behind if (behind is not None and behind >= 0) else (0 if behind is not None else None),
+                "download_url": link,
+                # A non-aero-nav link is an override (e.g. a Discord ticket while
+                # a sector is unavailable), not a real file — the website should
+                # label it differently, exactly as the embed does.
+                "download_is_override": not link.startswith(DOWNLOAD_BASE),
+                "vatis_url": vatis_url(s),
+                "github_url": f"{GITHUB_ORG}/{s['repo']}",
+                "gng_url": f"{GNG_BASE}/{s['code']}/",
+                "includes": s.get("includes"),
+            })
+        regions.append({"region": region, "sectors": entries})
+
+    return {
+        "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+        "current_cycle": reference or None,
+        "current_cycle_effective": ref_date.isoformat() if ref_date else None,
+        "current_cycle_effective_human": human(ref_date) if ref_date else None,
+        "legend": {
+            "current": "on the current cycle",
+            "one_behind": "one cycle behind",
+            "two_behind": "two cycles behind",
+            "older": "three or more cycles behind, or unknown",
+        },
+        "regions": regions,
+    }
+
+
 # Cycles taken from the hand-maintained CSV this formula replaces. If the maths
 # ever drifts from published reality, --selftest fails loudly.
 KNOWN = {
@@ -472,6 +554,20 @@ def selftest() -> int:
         ok = st["cycle"] == "2607" and st["link"] == "https://example.test/x"
         print(f"{'ok  ' if ok else 'FAIL'} seed carries over -> {st}")
         bad += 0 if ok else 1
+
+        # The JSON board and the text board must describe the SAME sectors in the
+        # SAME order with the SAME status — that is the whole point of building
+        # both from one place. A drift here means the website and Discord would
+        # disagree.
+        data = status_data(body, reference="2607")
+        json_flat = [(e["code"], e["marker"]) for reg in data["regions"] for e in reg["sectors"]]
+        text_markers = [ln for ln in status_body(body, reference="2607").splitlines() if "│" in ln]
+        ok = (len(json_flat) == n
+              and len(text_markers) == n
+              and data["current_cycle"] == "2607"
+              and all(m in STATUS_NAMES for _, m in json_flat))
+        print(f"{'ok  ' if ok else 'FAIL'} status_data matches board -> {len(json_flat)}/{n} sectors, cycle {data['current_cycle']!r}")
+        bad += 0 if ok else 1
     except FileNotFoundError:
         print("skip tracker round-trip (run from the repo root to include it)")
 
@@ -487,6 +583,7 @@ def main() -> int:
     p.add_argument("--seed", metavar="FILE", help="previous tracker body to carry values over from")
     p.add_argument("--progress", metavar="FILE", help="parse a tracker body; print key=value counts")
     p.add_argument("--status", metavar="FILE", help="print the Discord status-board text")
+    p.add_argument("--status-json", metavar="FILE", help="print the status board as JSON (for the website)")
     p.add_argument("--as-of", metavar="YYNN", help="cycle to colour the board against (default: today's)")
     p.add_argument("--next", metavar="YYNN", help="print the cycles following one")
     p.add_argument("--count", type=int, default=3, help="how many cycles --next prints (default 3)")
@@ -518,6 +615,12 @@ def main() -> int:
     if a.status:
         with open(a.status, encoding="utf-8") as f:
             print(status_body(f.read(), reference=a.as_of))
+        return 0
+
+    if a.status_json:
+        import json as _json
+        with open(a.status_json, encoding="utf-8") as f:
+            print(_json.dumps(status_data(f.read(), reference=a.as_of), indent=2, ensure_ascii=False))
         return 0
 
     if a.progress:
