@@ -166,13 +166,17 @@ jobs:
           echo "--- status.json ---"
           head -c 800 data/status.json; echo
 
-          if git diff --quiet -- data/status.json; then
+          # Stage FIRST, then compare the index against HEAD. `git diff --quiet`
+          # on its own ignores an untracked file, so on the very first run (when
+          # data/status.json does not yet exist in the repo) it wrongly reported
+          # "unchanged" and never committed the new file.
+          git add data/status.json
+          if git diff --cached --quiet -- data/status.json; then
             echo "status.json unchanged — nothing to commit."
             exit 0
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/status.json
           git commit -m "chore(status): refresh data/status.json (generated)"
           # The checkout used the PAT (a bypass actor), so this push lands on main
           # even with the branch ruleset active. A human may have pushed since.
