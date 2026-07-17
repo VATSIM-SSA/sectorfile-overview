@@ -70,7 +70,10 @@ jobs:
           # shared with the AIRAC workflow, so they cannot drift apart.
           # The `only` dispatch input filters that list by sector CODE, so one
           # sector can be synced on its own to verify a run before a full fan-out.
-          only_json="$(printf '%s' "$ONLY" | tr ',' '\n' | sed 's/^ *//; s/ *$//' | grep -v '^$' | jq -R 'ascii_upcase' | jq -s -c '.')"
+          # awk trims and drops blank lines and exits 0 on EMPTY input; an earlier
+          # `grep -v '^$'` returned exit 1 on the empty (all-sectors) case, which
+          # tripped `set -o pipefail` and failed the whole job before any sync.
+          only_json="$(printf '%s' "$ONLY" | tr ',' '\n' | awk '{gsub(/^ +| +$/,"")} NF' | jq -R 'ascii_upcase' | jq -s -c '.')"
           echo "Filter: ${ONLY:-<all sectors>}"
 
           # Validate every requested code exists, so a typo fails loudly instead
