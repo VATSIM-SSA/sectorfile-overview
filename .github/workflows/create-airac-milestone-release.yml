@@ -28,7 +28,7 @@ on:
         default: false
         type: boolean
       extra_notes:
-        description: "Extra release-note text added to EVERY sector (e.g. files synced from this repo). Markdown, blank lines OK."
+        description: "Extra MANUAL release-note text added to EVERY sector, on top of the automatic synced-file notes. Markdown, blank lines OK."
         required: false
         type: string
       only_sectors:
@@ -65,8 +65,13 @@ jobs:
       should_run: ${{ steps.airac.outputs.should_run }}
       sectors: ${{ steps.airac.outputs.sectors }}
       future: ${{ steps.airac.outputs.future }}
+      synced_notes: ${{ steps.synced.outputs.notes }}
     steps:
+      # fetch-depth: 0 — the synced-notes step below walks this repo's history
+      # back to the previous cycle, which a shallow checkout does not have.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Resolve cycle from the 28-day formula
         id: airac
@@ -132,6 +137,71 @@ jobs:
           print(f"Milestones : {[c for c, _ in future]}")
           PYEOF
 
+      - name: Collect synced-file notes since the previous cycle
+        id: synced
+        if: steps.airac.outputs.should_run == 'true'
+        env:
+          CYCLE: ${{ steps.airac.outputs.airac_cycle }}
+        run: |
+          python3 << 'PYEOF'
+          import os, subprocess, sys
+          sys.path.insert(0, "repository-management")
+          from airac import date_for_cycle
+          from datetime import timedelta
+
+          cycle = os.environ["CYCLE"]
+          cur = date_for_cycle(cycle)
+          # Everything synced since the PREVIOUS cycle's release was cut belongs in
+          # this cycle's notes: the last releases went out then, so any file that
+          # fanned out to the sectors afterwards is new to members now.
+          since = (cur - timedelta(days=28)).isoformat() if cur else "1970-01-01"
+
+          # WHAT is synced comes from .github/sync.yml — reading the src paths here
+          # means a new sync entry is picked up automatically, with no second list.
+          srcs = []
+          for line in open(".github/sync.yml", encoding="utf-8"):
+              s = line.strip()
+              if s.startswith("- src:"):
+                  srcs.append(s.split(":", 1)[1].strip().strip('"').strip("'"))
+
+          changed = set()
+          if srcs:
+              out = subprocess.run(
+                  ["git", "log", f"--since={since}T00:00:00", "--name-only",
+                   "--pretty=format:", "--", *srcs],
+                  capture_output=True, text=True, check=True,
+              ).stdout
+              changed = {ln.strip() for ln in out.splitlines() if ln.strip()}
+
+          def label(src):
+              leaf = src.rstrip("/").split("/")[-1]
+              if src.startswith("Plugins/"):
+                  return f"Updated {leaf} plugin"
+              if src.startswith("vatis/"):
+                  return "Updated vATIS airport profiles"
+              if "templates/issues" in src:
+                  return "Updated GitHub issue templates"
+              return f"Updated {leaf}"
+
+          # Preserve sync.yml order; one bullet per src that actually changed.
+          bullets = []
+          for src in srcs:
+              if any(p == src or p.startswith(src + "/") for p in changed):
+                  lab = label(src)
+                  if lab not in bullets:
+                      bullets.append(lab)
+
+          notes = "**Synced files**\n" + "\n".join(f"- {b}" for b in bullets) if bullets else ""
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+              f.write("notes<<SYNCEOF\n")
+              f.write(notes + "\n")
+              f.write("SYNCEOF\n")
+
+          print("Synced-file notes for AIRAC " + cycle + ":")
+          print(notes or "(nothing synced since the previous cycle)")
+          PYEOF
+
   refresh-dates:
     name: Top up airac-dates.csv
     runs-on: ubuntu-latest
@@ -176,6 +246,7 @@ jobs:
       AIRAC_DATE: ${{ needs.prepare.outputs.airac_date }}
       NEW_REVISION: ${{ inputs.new_revision }}
       EXTRA_NOTES: ${{ inputs.extra_notes }}
+      SYNCED_NOTES: ${{ needs.prepare.outputs.synced_notes }}
       REPO: VATSIM-SSA/${{ matrix.sector.repo }}
       CODE: ${{ matrix.sector.code }}
       HAS_VATIS: ${{ matrix.sector.vatis }}
@@ -314,11 +385,15 @@ jobs:
           TAG="v${YY}.${NN}.${REV}"
           NAME="AIRAC ${AIRAC_CYCLE} #${REV}"
 
-          # GitHub PRE-pends `body` to the notes it generates, so the NavData line
-          # and any synced-file notes sit above the auto PR list.
-          # EXTRA_NOTES only exists on a manual dispatch — the scheduled run gets
-          # the NavData line alone, since there is nobody there to type the rest.
+          # GitHub PRE-pends `body` to the notes it generates, so the NavData line,
+          # the automatic synced-file notes and any manual extra notes sit above the
+          # auto PR list. SYNCED_NOTES is computed once (in prepare) from this repo's
+          # history for the cycle — the files that fanned out to every sector since
+          # the last release. EXTRA_NOTES only exists on a manual dispatch.
           BODY="Updated NavData to the current AIRAC ${AIRAC_CYCLE}"
+          if [ -n "${SYNCED_NOTES:-}" ]; then
+            BODY="${BODY}"$'\n\n'"${SYNCED_NOTES}"
+          fi
           if [ -n "${EXTRA_NOTES:-}" ]; then
             BODY="${BODY}"$'\n\n'"${EXTRA_NOTES}"
           fi
@@ -535,20 +610,90 @@ jobs:
               "<!-- ============================ PROMPT FOR THE AI ============================",
               "You are preparing GNG (aero-nav) release notes for VATSSA sector files.",
               "",
-              "Below this comment is one section per sector, each containing that",
-              "sector's raw GitHub release notes for the current AIRAC cycle (and any",
-              "older cycles GNG is still behind on).",
+              "Below this comment is one section per sector, each holding that sector's raw",
+              "GitHub release notes for the current AIRAC cycle (and any older cycles GNG is",
+              "still behind on).",
               "",
-              "For EACH sector section, produce a clean GNG changelog entry:",
-              f"  * Always start with: \"Updated NavData to the current AIRAC {current}\".",
-              "  * Then, in short plain bullet points, summarise any real changes in",
-              "    the release body (new positions, frequency changes, fixes, files).",
-              "  * DROP the raw \"**Full Changelog**\" GitHub compare links.",
-              "  * If a sector's only note is the NavData line, output just that line.",
-              "  * Keep it member-facing and concise; no GitHub/markdown noise.",
+              "For EACH sector, output ONE plain-text changelog block under a heading of the",
+              "form '### <sector name>', in EXACTLY this layout:",
               "",
-              "Output grouped by sector under a \"### <sector name>\" heading, ready to",
-              "copy each sector's block straight into GNG.",
+              "    WHAT'S CHANGED",
+              "    ==============",
+              "",
+              "    NAVDATA",
+              "    -------",
+              f"    - Updated NavData to the current AIRAC {current}",
+              "",
+              "    <CATEGORY>",
+              "    ----------",
+              "    - Short description of the change (PR #n)",
+              "",
+              "    NEW CONTRIBUTORS",
+              "    ================",
+              "    - name made their first contribution (PR #n)",
+              "",
+              "    Full changelog:",
+              "    github.com/VATSIM-SSA/sectorfile-<code>/compare/<from>...<to>",
+              "",
+              "Rules:",
+              "  * Underline 'WHAT'S CHANGED' and 'NEW CONTRIBUTORS' with '='; underline every",
+              "    category heading with '-'. Category headings are UPPER CASE.",
+              "  * NAVDATA is always first, even when it is the only change.",
+              "  * Sort the raw 'What's Changed' bullets into these categories, in this order,",
+              "    keeping ONLY the ones that have items:",
+              "        NAVDATA, TOPSKY, CDM, PLUGINS, AIRPORT & AIRSPACE,",
+              "        NOTAMs & CLOSURES, DOCUMENTATION",
+              "    Anything that fits none of them goes under a MISC heading at the end.",
+              "  * One bullet per change: '- <plain description> (PR #n)'. KEEP the PR number.",
+              "    Strip '@handles' and the trailing ' in <url>'.",
+              "  * NEW CONTRIBUTORS only if the raw notes list any; keep the '(PR #n)'.",
+              "  * 'Full changelog:' then the compare URL from the raw notes with 'https://'",
+              "    removed. KEEP it, do not drop it.",
+              "  * If a sector is behind by more than one cycle, merge every outstanding cycle",
+              "    into ONE block: one NAVDATA line, the union of the changes, the newest",
+              "    compare URL.",
+              "  * Plain member-facing text only: no '## What's Changed' markdown, no @handles,",
+              "    no raw markdown links.",
+              "",
+              "Worked example (a sector with a few changes):",
+              "",
+              "    ### HTDC Dar es Salaam",
+              "",
+              "    WHAT'S CHANGED",
+              "    ==============",
+              "",
+              "    NAVDATA",
+              "    -------",
+              f"    - Updated NavData to the current AIRAC {current}",
+              "",
+              "    CDM",
+              "    ---",
+              "    - CDM to HTDC airports HTDA, HTZA (PR #19)",
+              "",
+              "    PLUGINS",
+              "    -------",
+              "    - vATIS profile now in plugin (PR #20)",
+              "",
+              "    NEW CONTRIBUTORS",
+              "    ================",
+              "    - TopPilot8362 made their first contribution (PR #19)",
+              "",
+              "    Full changelog:",
+              "    github.com/VATSIM-SSA/sectorfile-htdc/compare/v26.02.1...v26.07.1",
+              "",
+              "Worked example (a sector with nothing beyond NavData):",
+              "",
+              "    ### FBGR Gaborone",
+              "",
+              "    WHAT'S CHANGED",
+              "    ==============",
+              "",
+              "    NAVDATA",
+              "    -------",
+              f"    - Updated NavData to the current AIRAC {current}",
+              "",
+              "    Full changelog:",
+              "    github.com/VATSIM-SSA/sectorfile-fbgr/compare/v26.06.1...v26.07.1",
               "============================================================================ -->",
               "",
               f"# GNG release notes outstanding — as of AIRAC {current}",

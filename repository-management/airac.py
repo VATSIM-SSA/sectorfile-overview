@@ -279,7 +279,7 @@ def tracker_body(
                 f"- [ ] `{cyc}` **{s['name']}** — "
                 f"[Download]({link}) · "
                 f"[GitHub]({GITHUB_ORG}/{s['repo']}) · "
-                f"[GNG]({GNG_BASE}/{s['code']}/)"
+                f"[GNG]({GNG_BASE}/{s['code']}/files_upload)"
             )
     out.append("")
     return "\n".join(out)
