@@ -1,3 +1,0 @@
-===== Airports =====
-
-<catlist airport: -exclupage -noHead -noAddPageButton -sortAscending>

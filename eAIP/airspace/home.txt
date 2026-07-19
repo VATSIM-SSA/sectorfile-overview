@@ -1,3 +1,0 @@
-===== Airspace =====
-
-<catlist airspace: -exclupage -noHead -noAddPageButton -sortAscending>
