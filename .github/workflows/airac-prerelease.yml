@@ -1,0 +1,643 @@
+name: AIRAC Pre-release Cycle
+
+# The pre-release lifecycle that runs in the week BEFORE each AIRAC Thursday.
+# Anchored on the 28-day formula in repository-management/airac.py (cycles are
+# exactly 28 days apart from AIRAC 2601 = 2026-01-22, so every date here is
+# COMPUTED, never looked up):
+#
+#   * Friday (T-6) — "review & merge open pull requests before the freeze": the
+#                    pre-AIRAC warning + org-wide open-PR list, to the staff
+#                    channel. Moved forward from the Monday tracker report so PRs
+#                    are merged before the Sunday RC cut.
+#   * Sunday (T-4) — cut the RC pre-release for every sector (v26.07.1-rc1, marked
+#                    prerelease=true so it is NOT the "latest" release), open ONE
+#                    pre-release prep issue with a per-sector checkbox, and post a
+#                    live progress message to the staff channel. NO ping yet — the
+#                    GNG releases are still done by hand.
+#   * on edit      — whenever a checkbox on the prep issue is ticked, refresh the
+#                    staff progress message. Once EVERY sector is ticked, ping the
+#                    testers ("ready to test") and close the prep issue.
+#   * Tuesday (T-2)— remind the testers the final release is two days out: please
+#                    finalise all testing.
+#
+# The prep issue closes when all sectors are ticked; if that never happens, the
+# final-release workflow (create-airac-milestone-release.yml) closes it on the
+# AIRAC date as a backstop.
+#
+# The FINAL release (real releases, milestones, deployment tracker) is still cut
+# on the AIRAC Thursday by create-airac-milestone-release.yml. The Monday
+# deployment chase and the weekly open-PR list still live in airac-tracker.yml.
+
+on:
+  schedule:
+    - cron: "0 9 * * 5" # Fridays 09:00 UTC  — merge-your-PRs warning (T-6)
+    - cron: "0 9 * * 0" # Sundays 09:00 UTC  — cut the pre-release     (T-4)
+    - cron: "0 9 * * 2" # Tuesdays 09:00 UTC — finalise-testing nudge  (T-2)
+  issues:
+    # Ticking a sector on the prep issue refreshes the progress message and, once
+    # all are ticked, fires the ready-to-test ping. Every issue edit in the repo
+    # triggers this; prepare filters to the prep issue and no-ops on the rest.
+    types: [edited]
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: "Force a phase regardless of today's date (for testing). auto = derive from the calendar."
+        required: false
+        default: auto
+        type: choice
+        options: [auto, friday, sunday, tuesday]
+      airac_cycle:
+        description: "AIRAC cycle to act on (YYNN, e.g. 2607). Empty = the next upcoming cycle."
+        required: false
+        type: string
+
+permissions: {}
+
+env:
+  # Discord webhook identity. The avatar MUST be a raster format — Discord's CDN
+  # silently ignores an SVG and falls back to a blank default avatar.
+  BOT_NAME: VATSSA Operations Bot
+  BOT_ICON: https://palette.vatssa.com/logo_icon.png
+
+concurrency:
+  # Literal, not ${{ github.workflow }}: a run stuck in GitHub's backend holds its
+  # group forever, and renaming this is the only way to retire one. Serialised (no
+  # cancel) so two quick checkbox ticks can never double-cut RCs or double-ping.
+  group: airac-prerelease
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Resolve phase and cycle
+    runs-on: ubuntu-latest
+    outputs:
+      phase: ${{ steps.plan.outputs.phase }}
+      cycle: ${{ steps.plan.outputs.cycle }}
+      date: ${{ steps.plan.outputs.date }}
+      human: ${{ steps.plan.outputs.human }}
+      days: ${{ steps.plan.outputs.days }}
+      sectors: ${{ steps.plan.outputs.sectors }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Work out which phase (if any) fires
+        id: plan
+        env:
+          PHASE_INPUT: ${{ inputs.phase }}
+          CYCLE_INPUT: ${{ inputs.airac_cycle }}
+          EVENT_NAME: ${{ github.event_name }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          python3 << 'PYEOF'
+          import json, os, re, sys
+          sys.path.insert(0, "repository-management")
+          from airac import next_airac, date_for_cycle, human, load_sectors
+          from datetime import date
+
+          today = date.today()
+          event = os.environ.get("EVENT_NAME", "")
+          forced = (os.environ.get("PHASE_INPUT") or "auto").strip() or "auto"
+          override = (os.environ.get("CYCLE_INPUT") or "").strip()
+
+          phase, cycle, cdate, days = "none", "", today, 0
+
+          if event == "issues":
+              # Only the prep issue matters; every other edit no-ops.
+              title = os.environ.get("ISSUE_TITLE") or ""
+              m = re.search(r"AIRAC\s+(\d{4}).*Pre-release Testing", title)
+              if m:
+                  cycle = m.group(1)
+                  cdate = date_for_cycle(cycle) or today
+                  phase = "edit"
+              else:
+                  phase = "ignore"
+          else:
+              # The upcoming cycle and how far out its Thursday is. On the three
+              # days we care about that Thursday is 6 / 4 / 2 days away; on the OTHER
+              # Fridays, Sundays and Tuesdays in a 28-day cycle it is 13/20/27,
+              # 11/18/25 and 9/16/23 — so the day-count uniquely identifies the week.
+              if override:
+                  cdate = date_for_cycle(override)
+                  if cdate is None:
+                      raise SystemExit(f"'{override}' is not a valid AIRAC cycle")
+                  cycle, days = override, (cdate - today).days
+              else:
+                  cycle, cdate, days = next_airac(today)
+
+              weekday = today.weekday()  # Mon=0 ... Sun=6
+              auto = "none"
+              if weekday == 4 and days == 6:
+                  auto = "friday"
+              elif weekday == 6 and days == 4:
+                  auto = "sunday"
+              elif weekday == 1 and days == 2:
+                  auto = "tuesday"
+              phase = forced if forced != "auto" else auto
+
+          sectors = load_sectors("repository-management/sectors.yml")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"phase={phase}\n")
+              f.write(f"cycle={cycle}\n")
+              f.write(f"date={cdate.isoformat()}\n")
+              f.write(f"human={human(cdate) if cycle else ''}\n")
+              f.write(f"days={days}\n")
+              # Same shape as the final-release workflow: code + vatis are needed to
+              # find and attach the vATIS profile to each RC.
+              f.write("sectors=" + json.dumps(
+                  [{"repo": s["repo"], "code": s["code"], "vatis": bool(s.get("vatis"))}
+                   for s in sectors]
+              ) + "\n")
+
+          print(f"Event : {event}")
+          print(f"Phase : {phase}" + (" (forced)" if forced != "auto" else ""))
+          print(f"Cycle : {cycle} on {cdate} — {days} day(s) out")
+          PYEOF
+
+  # ── Friday (T-6): merge-your-PRs warning ────────────────────────────────────
+  nag:
+    name: Friday — review open pull requests
+    needs: prepare
+    if: needs.prepare.outputs.phase == 'friday'
+    runs-on: ubuntu-latest
+    # The PAT lives in this environment, which is restricted to `main`.
+    environment: sync
+    env:
+      GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+      WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      ORG: ${{ github.repository_owner }}
+      CYCLE: ${{ needs.prepare.outputs.cycle }}
+      HUMAN: ${{ needs.prepare.outputs.human }}
+      DAYS: ${{ needs.prepare.outputs.days }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Post the pre-release merge warning + open-PR list
+        run: |
+          set -euo pipefail
+          if [ -z "${WEBHOOK:-}" ]; then
+            echo "::warning::DISCORD_WEBHOOK not set — no warning sent."
+            exit 0
+          fi
+
+          # `archived:false` is a native search qualifier, so archived repos never
+          # enter the result set — no post-filtering, no extra API calls.
+          gh api -X GET search/issues \
+            -f q="org:${ORG} is:pr is:open archived:false" \
+            -f per_page=100 --paginate \
+            --jq '.items[].repository_url' > /tmp/prs.txt
+
+          python3 - > /tmp/payload.json << 'PYEOF'
+          import collections, json, os
+
+          org = os.environ["ORG"]
+          cycle = os.environ["CYCLE"]
+
+          embeds = [{
+              "title": f"⚠️ AIRAC {cycle} pre-release is cut on Sunday — merge now",
+              "url": f"https://github.com/{org}/sectorfile-overview/pulls",
+              "color": 16426522,
+              "description": (
+                  f"AIRAC {cycle} goes live **{os.environ['HUMAN']}** "
+                  f"({os.environ['DAYS']} days). The pre-release is cut this **Sunday** — "
+                  f"anything still open then misses the test build and rolls a cycle late.\n\n"
+                  f"Review and merge the open pull requests below before Sunday."
+              ),
+          }]
+
+          counts = collections.Counter()
+          with open("/tmp/prs.txt", encoding="utf-8") as f:
+              for line in f:
+                  line = line.strip()
+                  if line:
+                      counts[line.rsplit("/", 1)[1]] += 1
+
+          total = sum(counts.values())
+          if total:
+              rows = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+              shown = rows[:20]
+              listed = "\n".join(
+                  f"• [{repo}](https://github.com/{org}/{repo}/pulls) — **{n}**"
+                  for repo, n in shown
+              )
+              if len(rows) > len(shown):
+                  listed += f"\n• …and {len(rows) - len(shown)} more repos"
+              desc = f"**{total}** open across **{len(rows)}** repositories:\n{listed}"
+          else:
+              desc = "Nothing open — nice and clean going into the pre-release."
+
+          embeds.append({
+              "title": f"Open pull requests — {org}",
+              "url": f"https://github.com/pulls?q=is%3Aopen+is%3Apr+org%3A{org}+archived%3Afalse",
+              "color": 8116056 if not total else 104368,
+              "description": desc,
+          })
+
+          print(json.dumps({
+              "username": os.environ["BOT_NAME"],
+              "avatar_url": os.environ["BOT_ICON"],
+              "embeds": embeds,
+          }))
+          PYEOF
+          curl -sS -H "Content-Type: application/json" -X POST "$WEBHOOK" -d @/tmp/payload.json
+
+  # ── Sunday (T-4): cut the RC pre-release for every sector ────────────────────
+  cut:
+    name: "RC · ${{ matrix.sector.repo }}"
+    needs: prepare
+    if: needs.prepare.outputs.phase == 'sunday'
+    runs-on: ubuntu-latest
+    # The PAT lives in this environment, which is restricted to `main`.
+    environment: sync
+    strategy:
+      fail-fast: false
+      matrix:
+        sector: ${{ fromJSON(needs.prepare.outputs.sectors) }}
+    env:
+      AIRAC_CYCLE: ${{ needs.prepare.outputs.cycle }}
+      REPO: VATSIM-SSA/${{ matrix.sector.repo }}
+      CODE: ${{ matrix.sector.code }}
+      HAS_VATIS: ${{ matrix.sector.vatis }}
+      GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Skip archived repositories
+        id: guard
+        run: |
+          set -euo pipefail
+          if [ "$(gh api "repos/$REPO" --jq .archived)" = "true" ]; then
+            echo "::notice::$REPO is archived — skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Cut the pre-release
+        if: steps.guard.outputs.skip == 'false'
+        run: |
+          set -euo pipefail
+
+          # Final tags are v<YY>.<NN>.<REV> (AIRAC 2607 #1 -> v26.07.1). The RC that
+          # precedes it hangs an -rc<N> suffix off the revision the final WILL take.
+          # A pre-release is the first cut of a cycle, so that revision is normally
+          # .1; a re-run bumps the rc number (-rc2), never the base.
+          YY="${AIRAC_CYCLE:0:2}"
+          NN="${AIRAC_CYCLE:2:2}"
+          BASE="v${YY}.${NN}.1"
+
+          # Highest rc already cut for this base, so a re-run lands on -rc2, -rc3...
+          LATEST=$(gh api "repos/$REPO/releases?per_page=100" --paginate \
+                     --jq "[.[] | .tag_name | select(startswith(\"${BASE}-rc\")) | ltrimstr(\"${BASE}-rc\") | tonumber] | max // 0")
+          RC=$((LATEST + 1))
+          TAG="${BASE}-rc${RC}"
+          NAME="AIRAC ${AIRAC_CYCLE} pre-release #${RC}"
+
+          # prerelease=true keeps this OUT of /releases/latest, so the sector's
+          # published download link keeps serving the last FINAL release until the
+          # real one is cut on Thursday. generate_release_notes builds the PR list
+          # since the previous release — no hand-written changelog.
+          gh api "repos/$REPO/releases" --method POST \
+            -f tag_name="$TAG" \
+            -f target_commitish="main" \
+            -f name="$NAME" \
+            -f body="Pre-release test build for AIRAC ${AIRAC_CYCLE}. **Not** the final release — for testing only. The final AIRAC ${AIRAC_CYCLE} release is cut on the AIRAC date." \
+            -F draft=false \
+            -F prerelease=true \
+            -F generate_release_notes=true >/dev/null
+
+          echo "Cut pre-release '$NAME' ($TAG)"
+
+      - name: Attach the vATIS profile to the pre-release
+        # Testers need the complete package, so the RC carries the vATIS profile
+        # exactly like a final release does.
+        if: steps.guard.outputs.skip == 'false' && env.HAS_VATIS == 'true'
+        run: |
+          set -euo pipefail
+          YY="${AIRAC_CYCLE:0:2}"
+          NN="${AIRAC_CYCLE:2:2}"
+          BASE="v${YY}.${NN}.1"
+          TAG=$(gh api "repos/$REPO/releases?per_page=100" --paginate \
+                  --jq "[.[] | .tag_name | select(startswith(\"${BASE}-rc\"))] | sort_by(ltrimstr(\"${BASE}-rc\") | tonumber) | last // empty")
+          if [ -z "$TAG" ]; then
+            echo "::warning::No pre-release for AIRAC $AIRAC_CYCLE — nothing to attach to."
+            exit 0
+          fi
+
+          URL=$(gh api "repos/$REPO/contents/vATIS/${CODE}.json" --jq .download_url 2>/dev/null || true)
+          if [ -z "$URL" ] || [ "$URL" = "null" ]; then
+            echo "::warning::$REPO has no vATIS/${CODE}.json — clear 'vatis' in sectors.yml."
+            exit 0
+          fi
+
+          curl -sSfL "$URL" -o "/tmp/${CODE}.json"
+          python3 -c "import json,sys; json.load(open(sys.argv[1]))" "/tmp/${CODE}.json" \
+            || { echo "::error::vATIS/${CODE}.json is not valid JSON"; exit 1; }
+
+          gh release upload "$TAG" "/tmp/${CODE}.json" --repo "$REPO" --clobber
+          echo "Attached ${CODE}.json to $TAG"
+
+  # ── Sunday: open the prep issue · on edit: progress + ready-to-test ping ─────
+  track:
+    name: Prep issue and progress
+    needs: [prepare, cut]
+    # Sunday (only if the RCs cut cleanly) OR any edit to the prep issue.
+    if: >-
+      always()
+      && (
+        (needs.prepare.outputs.phase == 'sunday'
+          && !contains(needs.cut.result, 'failure')
+          && !contains(needs.cut.result, 'cancelled'))
+        || needs.prepare.outputs.phase == 'edit'
+      )
+    runs-on: ubuntu-latest
+    environment: sync
+    env:
+      GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+      # Everything goes to the staff channel: the progress board and the ping.
+      WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      STATUS_ID: ${{ vars.PRERELEASE_STATUS_MESSAGE_ID }}
+      PING_ID: ${{ vars.PRERELEASE_MESSAGE_ID }}
+      PHASE: ${{ needs.prepare.outputs.phase }}
+      CYCLE: ${{ needs.prepare.outputs.cycle }}
+      HUMAN: ${{ needs.prepare.outputs.human }}
+      EVENT_ISSUE: ${{ github.event.issue.number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve the prep issue (open it on Sunday)
+        id: issue
+        run: |
+          set -euo pipefail
+          TITLE="AIRAC ${CYCLE} — Pre-release Testing"
+
+          if [ "$PHASE" = "edit" ]; then
+            echo "number=$EVENT_ISSUE" >> "$GITHUB_OUTPUT"
+            echo "Edit of prep issue #$EVENT_ISSUE"
+            exit 0
+          fi
+
+          # Sunday: find or create the prep issue.
+          NUM=$(gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 200 \
+                  --json number,title \
+                  --jq ".[] | select(.title == \"$TITLE\") | .number" | head -1)
+          if [ -n "$NUM" ]; then
+            echo "Prep issue already exists: #$NUM"
+            echo "number=$NUM" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Body generated from the sector registry, so the per-sector checklist
+          # cannot drift from what actually ships. All boxes start unticked.
+          python3 - > /tmp/body.md << 'PYEOF'
+          import os, sys
+          sys.path.insert(0, "repository-management")
+          from airac import load_sectors, regions_in_order, human, date_for_cycle, GITHUB_ORG, GNG_BASE
+
+          cycle = os.environ["CYCLE"]
+          d = date_for_cycle(cycle)
+          sectors = load_sectors("repository-management/sectors.yml")
+
+          out = [
+              f"# AIRAC {cycle} — Pre-release Testing",
+              "",
+              f"RC pre-release builds are cut for every sector. The **final** AIRAC "
+              f"{cycle} release goes live **{human(d)}**.",
+              "",
+              "For each sector: **make the GNG release → download from GNG → upload to "
+              "Google Drive**, then tick the box. When every sector is ticked, the "
+              "testers are pinged automatically and this issue closes.",
+              "",
+          ]
+          for region in regions_in_order(sectors):
+              out.append(f"## {region}")
+              for s in (x for x in sectors if x.get("region") == region):
+                  out.append(
+                      f"- [ ] **{s['name']}** — "
+                      f"[Pre-release]({GITHUB_ORG}/{s['repo']}/releases) · "
+                      f"[GitHub]({GITHUB_ORG}/{s['repo']}) · "
+                      f"[GNG]({GNG_BASE}/{s['code']}/files_upload)"
+                  )
+              out.append("")
+          sys.stdout.write("\n".join(out).rstrip() + "\n")
+          PYEOF
+
+          NUM=$(gh issue create --repo "$GITHUB_REPOSITORY" \
+                  --title "$TITLE" --body-file /tmp/body.md | grep -oE '[0-9]+$')
+          echo "Opened prep issue #$NUM"
+          echo "number=$NUM" >> "$GITHUB_OUTPUT"
+
+          # Only ever one live prep issue: close the previous cycle's and link on.
+          PREV=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 200 \
+                   --json number,title \
+                   --jq ".[] | select(.title | contains(\"Pre-release Testing\")) | select(.number != $NUM) | .number")
+          for p in $PREV; do
+            gh issue comment "$p" --repo "$GITHUB_REPOSITORY" --body "Superseded by #${NUM} (AIRAC ${CYCLE})."
+            gh issue close "$p" --repo "$GITHUB_REPOSITORY"
+            echo "Closed previous prep issue #$p"
+          done
+
+      - name: Build the progress board and detect completion
+        id: prog
+        env:
+          NUMBER: ${{ steps.issue.outputs.number }}
+        run: |
+          set -euo pipefail
+          gh issue view "$NUMBER" --repo "$GITHUB_REPOSITORY" --json body,state \
+            --jq '.body' > /tmp/issue.md
+          STATE=$(gh issue view "$NUMBER" --repo "$GITHUB_REPOSITORY" --json state --jq .state)
+          echo "state=$STATE" >> "$GITHUB_OUTPUT"
+
+          ISSUE_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/issues/${NUMBER}"
+          # tee so the counts show in the run log as well as feeding later steps.
+          ISSUE_URL="$ISSUE_URL" python3 - | tee -a "$GITHUB_OUTPUT" << 'PYEOF'
+          import json, os, re
+
+          body = open("/tmp/issue.md", encoding="utf-8").read()
+          rows = re.findall(r"^- \[([ xX])\]\s*\*\*(.+?)\*\*", body, re.M)
+          done = [n for c, n in rows if c.lower() == "x"]
+          todo = [n for c, n in rows if c == " "]
+          total = len(rows)
+          complete = total > 0 and not todo
+
+          cycle = os.environ["CYCLE"]
+          issue = os.environ["ISSUE_URL"]
+          shown = todo[:20]
+          listed = "\n".join(f"• {n}" for n in shown)
+          if len(todo) > len(shown):
+              listed += f"\n• …and {len(todo) - len(shown)} more"
+          if todo:
+              desc = (
+                  f"**{len(done)}/{total}** sectors ready to test.\n\n"
+                  f"Still to prep (GNG release → download → Drive):\n{listed}\n\n"
+                  f"[Open the prep issue]({issue}) to tick them off."
+              )
+          else:
+              desc = f"**{total}/{total}** sectors ready to test — testers pinged."
+
+          payload = {
+              "username": os.environ["BOT_NAME"],
+              "avatar_url": os.environ["BOT_ICON"],
+              "embeds": [{
+                  "title": f"AIRAC {cycle} — pre-release testing progress",
+                  "url": issue,
+                  "color": 8116056 if complete else 104368,
+                  "description": desc,
+              }],
+          }
+          with open("/tmp/status.json", "w", encoding="utf-8") as f:
+              json.dump(payload, f)
+
+          # GITHUB_OUTPUT lines (captured via tee).
+          print(f"complete={'true' if complete else 'false'}")
+          print(f"issue_url={issue}")
+          PYEOF
+
+      - name: Post or update the staff progress message
+        run: |
+          set -euo pipefail
+          if [ -z "${WEBHOOK:-}" ]; then
+            echo "::warning::DISCORD_WEBHOOK not set — no progress message."
+            exit 0
+          fi
+
+          # One permanent progress message, reused each cycle: create it once, then
+          # PATCH it on every tick. ?wait=true returns the message so we get its id.
+          create() {
+            ID=$(curl -sS -H "Content-Type: application/json" \
+                   -X POST "${WEBHOOK}?wait=true" -d @/tmp/status.json \
+                 | python3 -c "import json,sys; print(json.load(sys.stdin)['id'])")
+            echo "Created progress message $ID"
+            gh variable set PRERELEASE_STATUS_MESSAGE_ID --repo "$GITHUB_REPOSITORY" --body "$ID"
+          }
+
+          if [ -z "${STATUS_ID:-}" ]; then
+            create
+          else
+            CODE=$(curl -sS -o /dev/null -w '%{http_code}' \
+                     -H "Content-Type: application/json" \
+                     -X PATCH "${WEBHOOK}/messages/${STATUS_ID}" -d @/tmp/status.json)
+            case "$CODE" in
+              200) echo "Updated progress message ${STATUS_ID}" ;;
+              404) echo "::warning::Progress message ${STATUS_ID} is gone — recreating."; create ;;
+              *)   echo "::error::Discord returned $CODE on progress PATCH"; exit 1 ;;
+            esac
+          fi
+
+      - name: Ping the testers and close the issue once every sector is ticked
+        if: steps.prog.outputs.complete == 'true' && steps.prog.outputs.state == 'OPEN'
+        env:
+          NUMBER: ${{ steps.issue.outputs.number }}
+          ISSUE_URL: ${{ steps.prog.outputs.issue_url }}
+        run: |
+          set -euo pipefail
+          if [ -z "${WEBHOOK:-}" ]; then
+            echo "::warning::DISCORD_WEBHOOK not set — cannot ping, leaving issue open."
+            exit 0
+          fi
+
+          python3 - > /tmp/ping.json << 'PYEOF'
+          import json, os
+
+          cycle = os.environ["CYCLE"]
+          issue = os.environ["ISSUE_URL"]
+          # The testers role — pinged in `content` (embeds never ping) so testers
+          # are actually notified. allowed_mentions whitelists just this role.
+          PING_ROLE = "1528431367048790067"
+          print(json.dumps({
+              "username": os.environ["BOT_NAME"],
+              "avatar_url": os.environ["BOT_ICON"],
+              "content": f"<@&{PING_ROLE}>",
+              "allowed_mentions": {"roles": [PING_ROLE]},
+              "embeds": [{
+                  "title": f"AIRAC {cycle} pre-release is ready for testing",
+                  "url": issue,
+                  "color": 8116056,
+                  "description": (
+                      f"Every sector's GNG pre-release is up. Please test before the "
+                      f"final AIRAC {cycle} release on **{os.environ['HUMAN']}**.\n\n"
+                      f"Download each sector's `-rc` build from its GitHub releases page."
+                  ),
+              }],
+          }))
+          PYEOF
+
+          # Only one live "ready to test" message should exist. Delete last cycle's
+          # before posting so the channel does not fill with stale notices.
+          if [ -n "${PING_ID:-}" ]; then
+            CODE=$(curl -sS -o /dev/null -w '%{http_code}' \
+                     -X DELETE "${WEBHOOK}/messages/${PING_ID}")
+            case "$CODE" in
+              204) echo "Deleted the previous ready-to-test message (${PING_ID})" ;;
+              404) echo "::notice::Previous ready-to-test message ${PING_ID} already gone." ;;
+              *)   echo "::warning::Could not delete ${PING_ID} (HTTP $CODE) — continuing." ;;
+            esac
+          fi
+
+          ID=$(curl -sS -H "Content-Type: application/json" \
+                 -X POST "${WEBHOOK}?wait=true" -d @/tmp/ping.json \
+               | python3 -c "import json,sys; print(json.load(sys.stdin)['id'])")
+          echo "Pinged testers for AIRAC ${CYCLE} as message ${ID}"
+          gh variable set PRERELEASE_MESSAGE_ID --repo "$GITHUB_REPOSITORY" --body "$ID"
+
+          gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY" \
+            --comment "All sectors prepped for AIRAC ${CYCLE} — testers pinged. Closing."
+          echo "Closed prep issue #$NUMBER"
+
+  # ── Tuesday (T-2): finalise-testing nudge ───────────────────────────────────
+  remind:
+    name: Tuesday — finalise testing
+    needs: prepare
+    if: needs.prepare.outputs.phase == 'tuesday'
+    runs-on: ubuntu-latest
+    environment: sync
+    env:
+      GH_TOKEN: ${{ secrets.ACT_COPY_TO_REPO_PAT }}
+      WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      CYCLE: ${{ needs.prepare.outputs.cycle }}
+      HUMAN: ${{ needs.prepare.outputs.human }}
+      DAYS: ${{ needs.prepare.outputs.days }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Post the finalise-testing reminder
+        run: |
+          set -euo pipefail
+          if [ -z "${WEBHOOK:-}" ]; then
+            echo "::warning::DISCORD_WEBHOOK not set — no reminder sent."
+            exit 0
+          fi
+
+          # Link the prep issue if it exists (open or closed), else the issues list.
+          export NUM
+          NUM=$(gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 200 \
+                  --json number,title \
+                  --jq ".[] | select(.title == \"AIRAC ${CYCLE} — Pre-release Testing\") | .number" | head -1)
+
+          python3 - > /tmp/payload.json << 'PYEOF'
+          import json, os
+
+          cycle = os.environ["CYCLE"]
+          base = f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}"
+          num = os.environ.get("NUM", "").strip()
+          issue = f"{base}/issues/{num}" if num else f"{base}/issues"
+          # The testers role — pinged in `content` (embeds never ping).
+          PING_ROLE = "1528431367048790067"
+          print(json.dumps({
+              "username": os.environ["BOT_NAME"],
+              "avatar_url": os.environ["BOT_ICON"],
+              "content": f"<@&{PING_ROLE}>",
+              "allowed_mentions": {"roles": [PING_ROLE]},
+              "embeds": [{
+                  "title": f"AIRAC {cycle} releases in {os.environ['DAYS']} days — finalise testing",
+                  "url": issue,
+                  "color": 16426522,
+                  "description": (
+                      f"The final AIRAC {cycle} release is cut **{os.environ['HUMAN']}** "
+                      f"({os.environ['DAYS']} days). Please finish testing the pre-release "
+                      f"builds and report anything broken before then."
+                  ),
+              }],
+          }))
+          PYEOF
+          curl -sS -H "Content-Type: application/json" -X POST "$WEBHOOK" -d @/tmp/payload.json

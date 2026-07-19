@@ -2,7 +2,10 @@ name: AIRAC Deployment Tracker
 
 # The publish workflow opens the tracker issue; this one chases it.
 #   * Mondays      — one Discord post: outstanding sectors (only while a cycle is
-#                    live) plus every open PR across the org, busiest repo first
+#                    live) plus every open PR across the org, busiest repo first.
+#                    The pre-AIRAC merge warning that used to ride along here now
+#                    lives in airac-prerelease.yml (fired on the Friday before the
+#                    Sunday RC cut), so this report is the post-release phase only.
 #   * on any edit  — close the tracker once every sector is ticked
 #
 # The checkbox parsing lives in repository-management/airac.py next to the code
@@ -10,16 +13,10 @@ name: AIRAC Deployment Tracker
 
 on:
   schedule:
-    - cron: "0 9 * * 1" # Mondays 09:00 UTC — weekly report + pre-AIRAC warning
+    - cron: "0 9 * * 1" # Mondays 09:00 UTC — deployment chase + open-PR list
   issues:
     types: [edited]
   workflow_dispatch:
-    inputs:
-      force_warning:
-        description: "Show the pre-AIRAC warning even when the next cycle is weeks away (for testing)."
-        required: false
-        default: false
-        type: boolean
 
 permissions: {}
 
@@ -155,7 +152,6 @@ jobs:
         if: github.event_name != 'issues'
         env:
           ORG: ${{ github.repository_owner }}
-          FORCE_WARNING: ${{ inputs.force_warning }}
           FOUND: ${{ steps.find.outputs.found }}
           NUMBER: ${{ steps.find.outputs.number }}
           CYCLE: ${{ steps.prog.outputs.cycle }}
@@ -181,26 +177,13 @@ jobs:
           python3 - > /tmp/payload.json << 'PYEOF'
           import collections, json, os, sys
           sys.path.insert(0, "repository-management")
-          from airac import next_airac, human
-
           org = os.environ["ORG"]
           embeds = []
 
-          # Pre-AIRAC warning. Cycles always start on a Thursday and this report
-          # runs on Mondays, so the "3 days out" Monday happens once every four.
-          nxt, nxt_date, days = next_airac()
-          if days <= 4 or os.environ.get("FORCE_WARNING") == "true":
-              embeds.append({
-                  "title": f"⚠️ AIRAC {nxt} goes live in {days} days",
-                  "url": f"https://github.com/{org}/sectorfile-overview/pulls",
-                  "color": 16426522,
-                  "description": (
-                      f"Effective **{human(nxt_date)}**.\n\n"
-                      f"Merge anything that needs to be in this cycle **before then** — "
-                      f"open pull requests are listed below. Once the cycle publishes, "
-                      f"whatever is still open rolls to AIRAC {nxt} and ships a cycle late."
-                  ),
-              })
+          # The pre-AIRAC merge warning moved to the Friday pre-release workflow
+          # (airac-prerelease.yml), so PRs get merged before the Sunday RC cut. This
+          # Monday report is now the post-release deployment chase plus the standing
+          # org-wide open-PR list.
 
           # Sector deployment — only while a cycle is genuinely outstanding.
           # total == 0 means the tracker did not parse (wrong format, someone
