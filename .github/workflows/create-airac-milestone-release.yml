@@ -576,6 +576,21 @@ jobs:
             echo "Closed previous tracker #$p"
           done
 
+      - name: Backstop — close any open pre-release testing issue
+        # The pre-release workflow (airac-prerelease.yml) normally closes the prep
+        # issue itself once every sector is ticked. If prep was never finished, the
+        # cycle has now published anyway, so the prep issue is spent — close it.
+        run: |
+          set -euo pipefail
+          OPEN=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 200 \
+                   --json number,title \
+                   --jq '.[] | select(.title | contains("Pre-release Testing")) | .number')
+          for p in $OPEN; do
+            gh issue close "$p" --repo "$GITHUB_REPOSITORY" \
+              --comment "AIRAC ${AIRAC_CYCLE} has published — closing the pre-release testing issue."
+            echo "Closed pre-release testing issue #$p"
+          done
+
   gng-notes:
     name: Collect GNG release notes
     needs: [prepare, create, tracker]
