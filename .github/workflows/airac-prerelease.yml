@@ -327,6 +327,7 @@ jobs:
 
       - name: Cut the pre-release
         if: steps.guard.outputs.skip == 'false'
+        id: release
         run: |
           set -euo pipefail
 
@@ -358,19 +359,23 @@ jobs:
             -F prerelease=true \
             -F generate_release_notes=true >/dev/null
 
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "Cut pre-release '$NAME' ($TAG)"
 
       - name: Attach the vATIS profile to the pre-release
         # Testers need the complete package, so the RC carries the vATIS profile
         # exactly like a final release does.
         if: steps.guard.outputs.skip == 'false' && env.HAS_VATIS == 'true'
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
         run: |
           set -euo pipefail
-          YY="${AIRAC_CYCLE:0:2}"
-          NN="${AIRAC_CYCLE:2:2}"
-          BASE="v${YY}.${NN}.1"
-          TAG=$(gh api "repos/$REPO/releases?per_page=100" --paginate \
-                  --jq "[.[] | .tag_name | select(startswith(\"${BASE}-rc\"))] | sort_by(ltrimstr(\"${BASE}-rc\") | tonumber) | last // empty")
+
+          # The tag comes from the step that just cut it, never from re-listing
+          # releases. GitHub's release list is stale for a few seconds after a
+          # POST, which is what silently attached every final-release profile to
+          # the PREVIOUS tag on 2026-07-17 and 404'd every download button.
+          TAG="${RELEASE_TAG:-}"
           if [ -z "$TAG" ]; then
             echo "::warning::No pre-release for AIRAC $AIRAC_CYCLE — nothing to attach to."
             exit 0
@@ -383,8 +388,21 @@ jobs:
           fi
 
           curl -sSfL "$URL" -o "/tmp/${CODE}.json"
-          python3 -c "import json,sys; json.load(open(sys.argv[1]))" "/tmp/${CODE}.json" \
-            || { echo "::error::vATIS/${CODE}.json is not valid JSON"; exit 1; }
+          # Valid JSON is not enough: sectorfile-fywf shipped a profile whose
+          # `stations` array was empty, which imports into vATIS as a profile
+          # with nothing in it. Refuse to publish one.
+          python3 - "/tmp/${CODE}.json" <<'PYEOF' || exit 1
+          import json, sys
+          try:
+              profile = json.load(open(sys.argv[1]))
+          except Exception as exc:
+              print(f"::error::vATIS profile is not valid JSON: {exc}")
+              sys.exit(1)
+          if not profile.get("stations"):
+              print("::error::vATIS profile has no stations. It is an empty stub. "
+                    "Clear 'vatis' in sectors.yml until a real profile exists.")
+              sys.exit(1)
+          PYEOF
 
           gh release upload "$TAG" "/tmp/${CODE}.json" --repo "$REPO" --clobber
           echo "Attached ${CODE}.json to $TAG"
