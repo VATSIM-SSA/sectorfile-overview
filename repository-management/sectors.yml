@@ -72,6 +72,11 @@ sectors:
     region: Southern Africa
 
   # ⚠️ repo suffix (fywf) deliberately differs from the code (FYWH).
+  # No `vatis` flag on purpose. The repo does carry vATIS/FYWF.json, and the old
+  # PHP site offered it as a download, but the file is an EMPTY STUB — its
+  # `stations` array has zero entries, so importing it gives a controller a
+  # profile with nothing in it. Set the flag once a real profile exists, and
+  # name it FYWH.json to match `code` above.
   - repo: sectorfile-fywf
     code: FYWH
     name: FYWH Windhoek
@@ -147,6 +152,7 @@ sectors:
 
   - repo: sectorfile-fzza
     code: FZZA
+    vatis: true
     name: FZZA Kinshasa
     region: Central Africa
 
