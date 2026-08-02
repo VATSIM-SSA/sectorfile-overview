@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-01T08:06:50+00:00",
+  "generated_at": "2026-08-02T08:08:53+00:00",
   "current_cycle": "2607",
   "current_cycle_effective": "2026-07-09",
   "current_cycle_effective_human": "9 July 2026",
@@ -329,7 +329,7 @@
           "cycles_behind": 0,
           "download_url": "https://files.aero-nav.com/FZZA",
           "download_is_override": false,
-          "vatis_url": null,
+          "vatis_url": "https://github.com/VATSIM-SSA/sectorfile-fzza/releases/latest/download/FZZA.json",
           "github_url": "https://github.com/VATSIM-SSA/sectorfile-fzza",
           "gng_url": "https://gng.aero-nav.com/FZZA/",
           "includes": null
