@@ -373,8 +373,12 @@ jobs:
 
           # Highest revision already cut for this cycle, so a re-run lands on
           # #2, #3... rather than colliding or silently doing nothing.
+          # Only tags whose revision is PURELY numeric count. The pre-release
+          # cycle cuts v<YY>.<NN>.1-rc<N>, which also starts with v<YY>.<NN>. —
+          # feeding "1-rc1" to tonumber aborts the run under pipefail, and on
+          # 2026-09-03 that killed the AIRAC 2609 release in all 25 repos.
           LATEST=$(gh api "repos/$REPO/releases?per_page=100" --paginate \
-                     --jq "[.[] | .tag_name | select(startswith(\"v${YY}.${NN}.\")) | split(\".\") | last | tonumber] | max // 0")
+                     --jq "[.[] | .tag_name | select(startswith(\"v${YY}.${NN}.\")) | ltrimstr(\"v${YY}.${NN}.\") | (tonumber? // empty)] | max // 0")
 
           if [ "$LATEST" -gt 0 ] && [ "$NEW_REVISION" != "true" ]; then
             echo "v${YY}.${NN}.${LATEST} already exists for AIRAC $AIRAC_CYCLE — skipping."
@@ -477,8 +481,15 @@ jobs:
           set -euo pipefail
           YY="${AIRAC_CYCLE:0:2}"
           NN="${AIRAC_CYCLE:2:2}"
-          TAG=$(gh api "repos/$REPO/releases?per_page=100" --paginate \
-                  --jq "[.[] | .tag_name | select(startswith(\"v${YY}.${NN}.\"))] | sort | last // empty")
+          # Numeric revisions only, compared as NUMBERS. A lexical sort picks the
+          # pre-release cycle's v<YY>.<NN>.1-rc<N> over the real v<YY>.<NN>.1, and
+          # would also rank v26.09.9 above v26.09.10.
+          REV=$(gh api "repos/$REPO/releases?per_page=100" --paginate \
+                  --jq "[.[] | .tag_name | select(startswith(\"v${YY}.${NN}.\")) | ltrimstr(\"v${YY}.${NN}.\") | (tonumber? // empty)] | max // empty")
+          TAG=""
+          if [ -n "$REV" ]; then
+            TAG="v${YY}.${NN}.${REV}"
+          fi
           if [ -z "$TAG" ]; then
             echo "::warning::No release for AIRAC $AIRAC_CYCLE — nothing to annotate."
             exit 0
