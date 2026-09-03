@@ -520,7 +520,12 @@ jobs:
 
           ISSUE_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/issues/${NUMBER}"
           # tee so the counts show in the run log as well as feeding later steps.
-          ISSUE_URL="$ISSUE_URL" python3 - | tee -a "$GITHUB_OUTPUT" << 'PYEOF'
+          # The heredoc MUST attach to python3, not to the pipeline: a redirection
+          # binds to its own simple command, so `python3 - | tee << X` hands the
+          # script to TEE, which appends the Python source to GITHUB_OUTPUT
+          # ("Invalid format 'import json, os, re'") while python3 reads an empty
+          # stdin and writes no payload at all.
+          ISSUE_URL="$ISSUE_URL" python3 - << 'PYEOF' | tee -a "$GITHUB_OUTPUT"
           import json, os, re
 
           body = open("/tmp/issue.md", encoding="utf-8").read()
